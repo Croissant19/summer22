@@ -19,12 +19,11 @@ public class Anime {
 	public enum Type {SERIES, SPECIAL}
 	
 	/**
-	 * Indicates whether the content features
-	 * Specials include OVAs, movies, and special one-off episodes.
+	 * Indicates the language used in the anime
 	 * 
 	 * @author Hunter Pruitt
 	 */
-	public enum Language {SUB, DUB, OTHER}
+	public enum Language {SUB, DUB, UNKNOWN, OTHER}
 	//TODO: feature so that when language is other, have a field to elaborate
 
 	/** Title of the anime */
@@ -61,12 +60,34 @@ public class Anime {
 	////////////
 	
 	/**
-	 * Constructor for an anime object
+	 * Constructor for an anime object, used when reading in data
+	 * 
+	 * @param title name of entry
+	 * @param count number of episodes watched
+	 * @param lan language
+	 * @param type series or special
+	 * @param finished if the user finished watching
+	 * @param dropped if the user stopped watching
+	 * @param director 
+	 * @param notes personal notes about the entry
+	 * @throws IllegalArgumentException if passed bad parameters
 	 */
-	public Anime() {
-		
+	public Anime(String title, int count, Language lan, Type type, boolean finished, 
+			boolean dropped, String director, String notes) {
+
+		//Delegate checks to setters
+		setTitle(title);
+		setCount(count);
+		setLanguage(lan);
+		setType(type);
+		setFinished(finished);
+		setDropped(dropped);
+		setDirector(director);
+		setNotes(notes);
 	}
 
+	//TODO add other constructor for when user creates entry w/ less details, like a watch list
+	
 	/**
 	 * Returns the title for display on the GUI
 	 * @return the title
@@ -78,8 +99,12 @@ public class Anime {
 	/**
 	 * Changes or sets the title field
 	 * @param title the title to set
+	 * @throws IllegalArumentException if title is blank
 	 */
 	public void setTitle(String title) {
+		if (title.isBlank()) {
+			throw new IllegalArgumentException("Title cannot be blank");
+		}
 		this.title = title;
 	}
 
@@ -94,8 +119,12 @@ public class Anime {
 	/**
 	 * Changes or sets the count field
 	 * @param count the count to set
+	 * @throws IllegalArumentException if passed a negative value
 	 */
 	public void setCount(int count) {
+		if (count < 0) {
+			throw new IllegalArgumentException("Count must be non-negative");
+		}
 		this.count = count;
 	}
 
@@ -113,6 +142,7 @@ public class Anime {
 	 */
 	public void setLanguage(Language language) {
 		this.language = language;
+		//TODO: If add details for other edit this
 	}
 
 	/**
@@ -142,8 +172,12 @@ public class Anime {
 	/**
 	 * Changes or sets the finished field
 	 * @param finished the finished to set
+	 * @throws IllegalArgumentException if dropped is also true
 	 */
 	public void setFinished(boolean finished) {
+		if (finished && dropped) {
+			throw new IllegalArgumentException("Show cannot be both dropped and finished");
+		}
 		this.finished = finished;
 	}
 
@@ -158,8 +192,12 @@ public class Anime {
 	/**
 	 * Changes or sets the dropped field
 	 * @param dropped the dropped to set
+	 * @throws IllegalArgumentException if finished is also true
 	 */
 	public void setDropped(boolean dropped) {
+		if (finished && dropped) {
+			throw new IllegalArgumentException("Show cannot be both dropped and finished");
+		}
 		this.dropped = dropped;
 	}
 
@@ -176,6 +214,7 @@ public class Anime {
 	 * @param director the director to set
 	 */
 	public void setDirector(String director) {
+		//Accepts empty values
 		this.director = director;
 	}
 
@@ -192,6 +231,7 @@ public class Anime {
 	 * @param notes the notes to set
 	 */
 	public void setNotes(String notes) {
+		//Accepts empty values
 		this.notes = notes;
 	}
 	
