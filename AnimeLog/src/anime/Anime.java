@@ -16,14 +16,34 @@ public class Anime {
 	 * 
 	 * @author Hunter Pruitt
 	 */
-	public enum Type {SERIES, SPECIAL}
+	public enum Type {
+		SERIES("Series"), 
+		SPECIAL("Special");
+		
+		public final String formattedName;
+
+		Type(String formattedName){
+			this.formattedName = formattedName;
+		}
+	}
 	
 	/**
 	 * Indicates the language used in the anime
 	 * 
 	 * @author Hunter Pruitt
 	 */
-	public enum Language {SUB, DUB, UNKNOWN, OTHER}
+	public enum Language {
+		SUB("Sub"), 
+		DUB("Dub"),
+		UNKNOWN("Unknown"),
+		OTHER("Other");
+		
+		public final String formattedName;
+		
+		Language(String formattedName){
+			this.formattedName = formattedName;
+		}
+	}
 	//TODO: feature so that when language is other, have a field to elaborate
 
 	/** Title of the anime */
@@ -129,11 +149,11 @@ public class Anime {
 	}
 
 	/**
-	 * Returns the language for display on the GUI
+	 * Returns the formatted name of the language for display on the GUI
 	 * @return the language
 	 */
-	public Language getLanguage() {
-		return language;
+	public String getLanguage() {
+		return language.formattedName;
 	}
 
 	/**
@@ -149,8 +169,8 @@ public class Anime {
 	 * Returns the type classification for display on the GUI
 	 * @return the type
 	 */
-	public Type getType() {
-		return type;
+	public String getType() {
+		return type.formattedName;
 	}
 
 	/**
