@@ -14,11 +14,12 @@ import anime.Anime.Type;
 class AnimeTest {
 
 	/**
-	 * Tests a generic case of the constructor
+	 * Tests a generic case of the constructor and that 
+	 * field methods return correct values
 	 */
 	@Test
 	void testAnimeSuccess() {
-		Anime a = new Anime("Gurren Lagann", 26, Language.SUB, Type.SERIES, true, false, 
+		Anime a = new Anime("Gurren Lagann", 2007, 26, Language.SUB, Type.SERIES, true, false, 
 				"Hiroyuki Imaishi", "Very good op!");
 
 		//Test getters and setters
@@ -33,6 +34,7 @@ class AnimeTest {
 				() -> assertEquals("Very good op!", a.getNotes())
 				);
 	}
+	
 
 	/**
 	 * Tests exceptions for Anime constructor
@@ -40,21 +42,42 @@ class AnimeTest {
 	@Test
 	void testAnimeExceptions() {
 		Exception e1 = assertThrows(IllegalArgumentException.class, 
-				() -> new Anime("Bleach", 100, Language.DUB, Type.SERIES, true, true, "Multiple directors", ""));
+				() -> new Anime("Bleach", 2004, 100, Language.DUB, Type.SERIES, true, true, "Multiple directors", ""));
 
 		assertEquals("Show cannot be both dropped and finished", e1.getMessage());
 	}
 	
 	
 
-	@Test
-	void testToString() {
-		fail("Not yet implemented");
-	}
 
+	/**
+	 * Tests toString and equals methods for Anime objects
+	 */
 	@Test
-	void testEquals() {
-		fail("Not yet implemented");
-	}
+	void testToStringAndEquals() {
 
+		Anime a = new Anime("Gurren Lagann", 2007, 26, Language.SUB, Type.SERIES, true, false, 
+				"Hiroyuki Imaishi", "Very good op!");
+		Anime b = new Anime("Gurren Lagann", 2007, 26, Language.DUB, Type.SERIES, true, false, 
+				"Hiroyuki Imaishi", "Very good op!");
+		Anime c = new Anime("Your Name", 2017, 1, Language.SUB, Type.SPECIAL, true, false, 
+				"Makoto Shinkai","");
+		
+		//Test toString
+		assertEquals("Gurren Lagann,2007,26,Sub,Series,finished,,Hiroyuki Imaishi,Very good op!",
+				a.toString());
+
+		assertEquals("Gurren Lagann,2007,26,Dub,Series,finished,,Hiroyuki Imaishi,Very good op!",
+				b.toString());
+		
+		assertEquals("Your Name,2017,1,Sub,Special,finished,,Makoto Shinkai,",
+				c.toString());
+	
+		//Test equals
+		assertTrue(a.equals(b));
+		assertTrue(b.equals(a));
+		assertFalse(a.equals(c));
+		assertFalse(a.equals(null));
+	}
+	
 }

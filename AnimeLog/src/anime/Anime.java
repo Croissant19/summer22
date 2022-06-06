@@ -1,7 +1,10 @@
 package anime;
 
+import java.util.Objects;
+
 /**
- * 
+ * Defines an Anime object as the fundamental piece of the AnimeLog program.
+ * In this program, two anime cannot have the same name and year
  * @author Hunter Pruitt
  */
 public class Anime {
@@ -49,6 +52,9 @@ public class Anime {
 	/** Title of the anime */
 	private String title;
 
+	/** First release year of the anime*/
+	private int year;
+
 	/** Number of episodes watched */
 	private int count;
 	
@@ -72,7 +78,7 @@ public class Anime {
 	private String notes;
 	
 	//TODO: add image data when get closer to GUI implementation
-	
+	//TODO: year, season field?
 	
 	
 	////////////
@@ -83,6 +89,7 @@ public class Anime {
 	 * Constructor for an anime object, used when reading in data
 	 * 
 	 * @param title name of entry
+	 * @param year release year for first episode
 	 * @param count number of episodes watched
 	 * @param lan language
 	 * @param type series or special
@@ -92,11 +99,12 @@ public class Anime {
 	 * @param notes personal notes about the entry
 	 * @throws IllegalArgumentException if passed bad parameters
 	 */
-	public Anime(String title, int count, Language lan, Type type, boolean finished, 
+	public Anime(String title, int year, int count, Language lan, Type type, boolean finished, 
 			boolean dropped, String director, String notes) {
 
 		//Delegate checks to setters
 		setTitle(title);
+		setYear(year);
 		setCount(count);
 		setLanguage(lan);
 		setType(type);
@@ -126,6 +134,26 @@ public class Anime {
 			throw new IllegalArgumentException("Title cannot be blank");
 		}
 		this.title = title;
+	}
+
+	/**
+	 * Returns the year the anime was released in
+	 * @return the year
+	 */
+	public int getYear() {
+		return year;
+	}
+
+	/**
+	 * Sets the release year of the anime
+	 * @param year the year to set
+	 * @throws IllegalArgumentException if year is not between 1900 and 2100
+	 */
+	public void setYear(int year) {
+		if (year > 2100 || year < 1900) {
+			throw new IllegalArgumentException("Invalid year");
+		}
+		this.year = year;
 	}
 
 	/**
@@ -253,6 +281,55 @@ public class Anime {
 	public void setNotes(String notes) {
 		//Accepts empty values
 		this.notes = notes;
+	}
+
+	/**
+	 * Generates a String representation of an anime for use in file io
+	 * @return String representation of fields
+	 */
+	@Override
+	public String toString() {
+		String s = title + "," + year + "," + count + "," + language.formattedName 
+				+ "," + type.formattedName + ",";
+
+		//Add non-boolean indicators for if finished or dropped
+		if (finished) {
+			s += "finished";
+		}
+		s += ",";
+		if (dropped) {
+			s += "dropped";
+		}
+
+		//Finish the string
+		s += "," + director + "," + notes;
+
+		return s;
+	}
+
+	/**
+	 * Hashing method for Anime objects
+	 * @return a hash code
+	 */
+	@Override
+	public int hashCode() {
+		return Objects.hash(count, director, dropped, finished, language, notes, title, type);
+	}
+
+	/**
+	 * Compares two anime to see if they are the same
+	 * They are the same if they have the same name and release year
+	 * @return boolean indicator of equivalence
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		//Checks that obj is an anime and if titles and years match
+		if (obj instanceof Anime) {
+			Anime a = (Anime)obj;
+			return this.title.equals(a.getTitle()) && this.year == a.getYear();
+		} else {
+			return false;
+		}
 	}
 	
 }
