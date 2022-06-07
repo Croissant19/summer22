@@ -41,10 +41,30 @@ class AnimeTest {
 	 */
 	@Test
 	void testAnimeExceptions() {
+		//Finished and dropped
 		Exception e1 = assertThrows(IllegalArgumentException.class, 
 				() -> new Anime("Bleach", 2004, 100, Language.DUB, Type.SERIES, true, true, "Multiple directors", ""));
-
 		assertEquals("Show cannot be both dropped and finished", e1.getMessage());
+
+		//Blank title
+		Exception e2 = assertThrows(IllegalArgumentException.class, 
+				() -> new Anime("", 2004, 100, Language.DUB, Type.SERIES, true, false, "Multiple directors", ""));
+		assertEquals("Title cannot be blank", e2.getMessage());
+		
+		//Year out of bounds
+		Exception e3 = assertThrows(IllegalArgumentException.class, 
+				() -> new Anime("Bleach", 2101, 100, Language.DUB, Type.SERIES, true, false, "Multiple directors", ""));
+		assertEquals("Invalid year", e3.getMessage());
+	
+		Exception e4 = assertThrows(IllegalArgumentException.class, 
+				() -> new Anime("Bleach", 1899, 100, Language.DUB, Type.SERIES, true, false, "Multiple directors", ""));
+		assertEquals("Invalid year", e4.getMessage());
+		
+		//Negative count
+		Exception e5 = assertThrows(IllegalArgumentException.class, 
+				() -> new Anime("Bleach", 2004, -1, Language.DUB, Type.SERIES, true, false, "Multiple directors", ""));
+		assertEquals("Count must be non-negative", e5.getMessage());
+		
 	}
 	
 	
