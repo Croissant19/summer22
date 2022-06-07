@@ -13,6 +13,19 @@ import anime.Anime.Type;
  */
 class AnimeTest {
 
+	/**	Test anime for comparisons, Gurren Lagann */
+	private static final Anime GURREN = new Anime("Gurren Lagann", 2007, 26, 
+			Language.SUB, Type.SERIES, true, false, "Hiroyuki Imaishi", "Very good op!");
+
+	/**	Test anime for comparisons, Fullmetal Alchemist */
+	private static final Anime FMA03 = new Anime("Fullmetal Alchemist", 2003, 51, 
+			Language.SUB, Type.SERIES, false, true, "Seiji Mizushima", "");
+	
+	/**	Test anime for comparisons, Fullmetal Alchemist Brotherhood */
+	private static final Anime FMA09 = new Anime("Fullmetal Alchemist", 2009, 26, 
+			Language.UNKNOWN, Type.SERIES, false, false, "Yasuhiro Irie", null);
+	
+	
 	/**
 	 * Tests a generic case of the constructor and that 
 	 * field methods return correct values
@@ -67,7 +80,17 @@ class AnimeTest {
 		
 	}
 	
-	
+	/**
+	 * Tests the compareTo methods for anime
+	 */
+	@Test
+	void testComareTo() {
+		assertTrue(GURREN.compareTo(FMA03) > 0);
+		assertTrue(FMA09.compareTo(GURREN) < 0);
+		assertTrue(FMA03.compareTo(FMA09) < 0);
+		assertTrue(FMA09.compareTo(FMA03) > 0);
+		assertTrue(GURREN.compareTo(GURREN) == 0);
+	}
 
 
 	/**
@@ -78,25 +101,20 @@ class AnimeTest {
 
 		Anime a = new Anime("Gurren Lagann", 2007, 26, Language.SUB, Type.SERIES, true, false, 
 				"Hiroyuki Imaishi", "Very good op!");
-		Anime b = new Anime("Gurren Lagann", 2007, 26, Language.DUB, Type.SERIES, true, false, 
-				"Hiroyuki Imaishi", "Very good op!");
-		Anime c = new Anime("Your Name", 2017, 1, Language.SUB, Type.SPECIAL, true, false, 
+		Anime b = new Anime("Your Name", 2017, 1, Language.SUB, Type.SPECIAL, true, false, 
 				"Makoto Shinkai","");
 		
 		//Test toString
 		assertEquals("Gurren Lagann,2007,26,Sub,Series,finished,,Hiroyuki Imaishi,Very good op!",
 				a.toString());
-
-		assertEquals("Gurren Lagann,2007,26,Dub,Series,finished,,Hiroyuki Imaishi,Very good op!",
-				b.toString());
 		
 		assertEquals("Your Name,2017,1,Sub,Special,finished,,Makoto Shinkai,",
-				c.toString());
+				b.toString());
 	
 		//Test equals
-		assertTrue(a.equals(b));
-		assertTrue(b.equals(a));
-		assertFalse(a.equals(c));
+		assertTrue(a.equals(GURREN));
+		assertTrue(GURREN.equals(a));
+		assertFalse(a.equals(b));
 		assertFalse(a.equals(null));
 	}
 	

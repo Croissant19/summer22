@@ -7,7 +7,7 @@ import java.util.Objects;
  * In this program, two anime cannot have the same name and year
  * @author Hunter Pruitt
  */
-public class Anime {
+public class Anime implements Comparable<Anime> {
 	
 	////////////
 	//Fields
@@ -16,8 +16,6 @@ public class Anime {
 	/**
 	 * Indicates whether the content is a series, or a special.
 	 * Specials include OVAs, movies, and special one-off episodes.
-	 * 
-	 * @author Hunter Pruitt
 	 */
 	public enum Type {
 		SERIES("Series"), 
@@ -32,8 +30,6 @@ public class Anime {
 	
 	/**
 	 * Indicates the language used in the anime
-	 * 
-	 * @author Hunter Pruitt
 	 */
 	public enum Language {
 		SUB("Sub"), 
@@ -115,6 +111,30 @@ public class Anime {
 	}
 
 	//TODO add other constructor for when user creates entry w/ less details, like a watch list
+	
+	/**
+	 * Compared two anime for sorting.
+	 * Using alphabetical order (and year if both titles match), this method returns
+	 * negative if this anime precedes the other, 0 if both have the same year and title, 
+	 * and positve if this anime follows the other in sorted order
+	 * 
+	 * @param a anime to be compared to
+	 * @return numerical indicator of where this anime should be sorted in compairison to another anime
+	 */
+	@Override
+	public int compareTo(Anime a) {
+		//Get and compare titles
+		String thisTitle = this.title;
+		String otherTitle = a.getTitle();
+		if (!thisTitle.equals(otherTitle)) {
+			return thisTitle.compareTo(otherTitle);
+		} else { //Compare years
+			Integer thisYear = year;
+			Integer otherYear = a.getYear();
+			return thisYear.compareTo(otherYear);
+		}
+	}
+	
 	
 	/**
 	 * Returns the title for display on the GUI
@@ -331,5 +351,5 @@ public class Anime {
 			return false;
 		}
 	}
-	
+
 }
