@@ -21,11 +21,32 @@ public class Anime implements Comparable<Anime> {
 		SERIES("Series"), 
 		SPECIAL("Special");
 		
+		/** Formatted String for each Type for display in the GUI */
 		public final String formattedName;
 
+		/**
+		 * Constructor for each Type enum, setting the formattedName field
+		 * @param formattedName String representation of the Type
+		 */
 		Type(String formattedName){
 			this.formattedName = formattedName;
 		}
+
+		/**
+		 * Classifies a string of text into the correct type enum
+		 * @param text containing a type name
+		 * @return Type classification
+		 */
+		public static Type parseType(String text) {
+				if (text.equals(SERIES.formattedName)) {
+					return SERIES;
+				} else if (text.equals(SPECIAL.formattedName)) {
+					return SPECIAL;
+				} else {
+					throw new IllegalArgumentException("Not a valid type");
+				}
+		}
+	
 	}
 	
 	/**
@@ -34,13 +55,34 @@ public class Anime implements Comparable<Anime> {
 	public enum Language {
 		SUB("Sub"), 
 		DUB("Dub"),
-		UNKNOWN("Unknown"),
 		OTHER("Other");
 		
+		/** How the Language will appear when formatted */
 		public final String formattedName;
 		
+		/**
+		 * Constructor for Language, assigns formattedName field
+		 * @param formattedName String as the name will appear in programming
+		 */
 		Language(String formattedName){
 			this.formattedName = formattedName;
+		}
+		
+		/**
+		 * Classifies a string of text into the correct language enum
+		 * @param text containing a language name
+		 * @return Language classification
+		 */
+		public static Language parseLang(String text) {
+			if (text.equals(SUB.formattedName)) {
+				return SUB;
+			} else if (text.equals(DUB.formattedName)) {
+				return DUB;
+			} else if (text.equals(OTHER.formattedName)) {
+				return OTHER;
+			} else {
+				throw new IllegalArgumentException("Not a valid language");
+			}
 		}
 	}
 	//TODO: feature so that when language is other, have a field to elaborate
@@ -309,20 +351,9 @@ public class Anime implements Comparable<Anime> {
 	 */
 	@Override
 	public String toString() {
-		String s = title + "," + year + "," + count + "," + language.formattedName 
-				+ "," + type.formattedName + ",";
-
-		//Add non-boolean indicators for if finished or dropped
-		if (finished) {
-			s += "finished";
-		}
-		s += ",";
-		if (dropped) {
-			s += "dropped";
-		}
-
-		//Finish the string
-		s += "," + director + "," + notes;
+		String s = title + ",_" + year + ",_" + count + ",_" + language.formattedName 
+				+ ",_" + type.formattedName + ",_" + finished + ",_" + dropped + ",_" 
+				+ director + ",_" + notes;
 
 		return s;
 	}

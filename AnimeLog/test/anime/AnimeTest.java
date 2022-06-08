@@ -23,7 +23,7 @@ class AnimeTest {
 	
 	/**	Test anime for comparisons, Fullmetal Alchemist Brotherhood */
 	private static final Anime FMA09 = new Anime("Fullmetal Alchemist", 2009, 26, 
-			Language.UNKNOWN, Type.SERIES, false, false, "Yasuhiro Irie", null);
+			Language.OTHER, Type.SERIES, false, false, "Yasuhiro Irie", null);
 	
 	
 	/**
@@ -105,10 +105,10 @@ class AnimeTest {
 				"Makoto Shinkai","");
 		
 		//Test toString
-		assertEquals("Gurren Lagann,2007,26,Sub,Series,finished,,Hiroyuki Imaishi,Very good op!",
+		assertEquals("Gurren Lagann,_2007,_26,_Sub,_Series,_true,_false,_Hiroyuki Imaishi,_Very good op!",
 				a.toString());
 		
-		assertEquals("Your Name,2017,1,Sub,Special,finished,,Makoto Shinkai,",
+		assertEquals("Your Name,_2017,_1,_Sub,_Special,_true,_false,_Makoto Shinkai,_",
 				b.toString());
 	
 		//Test equals
