@@ -24,7 +24,7 @@ public class AnimeIO {
 	 * @throws IllegalArgumentException if the file cannot be read
 	 * @return sorted collection of anime from a user import
 	 */
-	public SortedList<Anime> readFile(String filename) {
+	public static SortedList<Anime> readFile(String filename) {
 		//Setup list and file contents
 		SortedList<Anime> list = new SortedList<Anime>();
 		String contents = "";
@@ -63,7 +63,7 @@ public class AnimeIO {
 	 * @param blurb
 	 * @return Anime with imported user data
 	 */
-	private Anime processAnime(String blurb) {
+	private static Anime processAnime(String blurb) {
 		
 		Scanner in = new Scanner(blurb);
 		in.useDelimiter(",_");
