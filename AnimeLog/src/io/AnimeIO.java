@@ -22,7 +22,7 @@ public class AnimeIO {
 	 * 
 	 * @param filename
 	 * @throws IllegalArgumentException if the file cannot be read
-	 * @return sorted collection of anime from a user import
+	 * @return sorted collection of anime from a user import, null if an error occurs
 	 */
 	public static SortedList<Anime> readFile(String filename) {
 		//Setup list and file contents

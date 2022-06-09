@@ -81,8 +81,6 @@ class AnimeIOTest {
 				() -> assertEquals("", actualNaruto.getDirector()), 
 				() -> assertEquals("W\nO\nA\nH", actualNaruto.getNotes()) 
 		);
-	
-	
 	}
 
 }
