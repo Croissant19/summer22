@@ -3,6 +3,7 @@ package io;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import anime.Anime;
 import anime.Anime.Language;
@@ -39,12 +40,17 @@ public class AnimeIO {
 		//Read file into one long String
 		Scanner fileReader = new Scanner(fis);
 		while (fileReader.hasNextLine()) {
-			contents += fileReader.nextLine() + "\n";
+			contents += fileReader.nextLine();
+			if (fileReader.hasNextLine()) {
+				contents += "\n";
+			}
 		}
 		fileReader.close();
 
+		System.out.println(Pattern.quote("\n<|>"));
+		
 		//Break file into Strings containing each Anime
-		String[] splits = contents.split("<\\|>");
+		String[] splits = contents.split("\\n?<[|]>");
 
 		//Process each Anime and add to the list
 		for (String s : splits) {

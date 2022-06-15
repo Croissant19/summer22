@@ -39,16 +39,16 @@ class AnimeIOTest {
 		assertEquals(3, list.size());
 
 		Anime actualGurren = list.get(0);
-		Anime actualOnePiece = list.get(1);
-		Anime actualNaruto = list.get(2);
+		Anime actualNaruto = list.get(1);
+		Anime actualOnePiece = list.get(2);
 
 		//Assert first anime is correct
 		assertAll(
 				() -> assertEquals("Gurren Lagann", actualGurren.getTitle()), 
 				() -> assertEquals(2007, actualGurren.getYear()), 
 				() -> assertEquals(26, actualGurren.getCount()), 
-				() -> assertEquals(Language.SUB, actualGurren.getLanguage()), 
-				() -> assertEquals(Type.SERIES, actualGurren.getType()), 
+				() -> assertEquals("Sub", actualGurren.getLanguage()), 
+				() -> assertEquals("Series", actualGurren.getType()), 
 				() -> assertTrue(actualGurren.isFinished()),
 				() -> assertFalse(actualGurren.isDropped()),
 				() -> assertEquals("Hiroyuki Imaishi", actualGurren.getDirector()), 
@@ -57,29 +57,29 @@ class AnimeIOTest {
 		
 		//Assert second anime is correct
 		assertAll(
-				() -> assertEquals("One Piece", actualOnePiece.getTitle()), 
-				() -> assertEquals(1999, actualOnePiece.getYear()), 
-				() -> assertEquals(100, actualOnePiece.getCount()), 
-				() -> assertEquals(Language.DUB, actualOnePiece.getLanguage()), 
-				() -> assertEquals(Type.SERIES, actualOnePiece.getType()), 
-				() -> assertFalse(actualOnePiece.isFinished()),
-				() -> assertFalse(actualOnePiece.isDropped()),
-				() -> assertEquals("multiple", actualOnePiece.getDirector()), 
-				() -> assertEquals("Watching with brother", actualOnePiece.getNotes()) 
+				() -> assertEquals("Naruto", actualNaruto.getTitle()), 
+				() -> assertEquals(2002, actualNaruto.getYear()), 
+				() -> assertEquals(0, actualNaruto.getCount()), 
+				() -> assertEquals("Other", actualNaruto.getLanguage()), 
+				() -> assertEquals("Special", actualNaruto.getType()), 
+				() -> assertFalse(actualNaruto.isFinished()),
+				() -> assertTrue(actualNaruto.isDropped()),
+				() -> assertEquals("", actualNaruto.getDirector()), 
+				() -> assertEquals("W\nO\nA\nH", actualNaruto.getNotes()) 
 		);
 
 		
 		//Assert third anime is correct
 		assertAll(
-				() -> assertEquals("Naruto", actualNaruto.getTitle()), 
-				() -> assertEquals(2002, actualNaruto.getYear()), 
-				() -> assertEquals(0, actualNaruto.getCount()), 
-				() -> assertEquals(Language.OTHER, actualNaruto.getLanguage()), 
-				() -> assertEquals(Type.SPECIAL, actualNaruto.getType()), 
-				() -> assertFalse(actualNaruto.isFinished()),
-				() -> assertTrue(actualNaruto.isDropped()),
-				() -> assertEquals("", actualNaruto.getDirector()), 
-				() -> assertEquals("W\nO\nA\nH", actualNaruto.getNotes()) 
+				() -> assertEquals("One Piece", actualOnePiece.getTitle()), 
+				() -> assertEquals(1999, actualOnePiece.getYear()), 
+				() -> assertEquals(100, actualOnePiece.getCount()), 
+				() -> assertEquals("Dub", actualOnePiece.getLanguage()), 
+				() -> assertEquals("Series", actualOnePiece.getType()), 
+				() -> assertFalse(actualOnePiece.isFinished()),
+				() -> assertFalse(actualOnePiece.isDropped()),
+				() -> assertEquals("multiple", actualOnePiece.getDirector()), 
+				() -> assertEquals("Watching with brother", actualOnePiece.getNotes())
 		);
 	}
 
