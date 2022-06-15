@@ -44,12 +44,15 @@ public class AnimeIO {
 		fileReader.close();
 
 		//Break file into Strings containing each Anime
-		String[] splits = contents.split("<|>");
+		String[] splits = contents.split("<\\|>");
 
 		//Process each Anime and add to the list
 		for (String s : splits) {
-			Anime a = processAnime(s);
-			list.add(a);
+			//Skip empty Strings
+			if (!s.isEmpty()) {
+				Anime a = processAnime(s);
+				list.add(a);	
+			}
 		}
 		
 		
