@@ -1,6 +1,6 @@
 <|>Gurren Lagann,_2007,_26,_Sub,_Series,_true,_false,_   Hiroyuki Imaishi   ,_Very good op!
-<|>One Piece,_1999,_100,_Dub,Series,_false,_false,_multiple,_    Watching with brother     
-<|>  Naruto   ,_2002,_0,_Other,_Special,_false,_true,_,_,_W
+<|>One Piece,_1999,_100,_Dub,_Series,_false,_false,_multiple,_    Watching with brother     
+<|>  Naruto   ,_2002,_0,_Other,_Special,_false,_true,_,_W
 O
 A
 H
