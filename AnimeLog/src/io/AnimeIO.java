@@ -3,8 +3,6 @@ package io;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-import java.util.regex.Pattern;
-
 import anime.Anime;
 import anime.Anime.Language;
 import anime.Anime.Type;
@@ -47,20 +45,30 @@ public class AnimeIO {
 		}
 		fileReader.close();
 
-		System.out.println(Pattern.quote("\n<|>"));
-		
+		//TODO: Later use the delimit type as an indicator of anime vs manga type data?
+		//Check that the file type is correct
+		if (!contents.substring(0, 3).equals("<|>")) {
+			throw new IllegalArgumentException("Bad file data");
+			//TODO: Could improve this by adding code to remove the first 3 
+			//chars of the substring  so there is not an empty split data piece
+		}
+
+			
 		//Break file into Strings containing each Anime
 		String[] splits = contents.split("\\n?<[|]>");
 
 		//Process each Anime and add to the list
-		for (String s : splits) {
-			//Skip empty Strings
-			if (!s.isEmpty()) {
-				Anime a = processAnime(s);
-				list.add(a);	
+		try {
+			for (String s : splits) {
+				//Skip empty Strings
+				if (!s.isEmpty()) {
+					Anime a = processAnime(s);
+					list.add(a);	
+				}
 			}
-		}
-		
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Bad file data");
+		}		
 		
 		
 		return list;
@@ -78,18 +86,18 @@ public class AnimeIO {
 		in.useDelimiter(",_");
 		
 		//Read data
-		String title = in.next();
+		String title = in.next().trim();
 		int year = Integer.parseInt(in.next());
 		int count = Integer.parseInt(in.next());
 		Language lang = Language.parseLang(in.next());
 		Type type = Type.parseType(in.next());
 		boolean finished = Boolean.parseBoolean(in.next());
 		boolean dropped = Boolean.parseBoolean(in.next());
-		String director = in.next();
-		String notes = in.next();
+		String director = in.next().trim();
+		String notes = in.next().trim();
 		if (in.hasNext()) {
 			in.close();
-			throw new IllegalArgumentException("Incorrect data");
+			throw new IllegalArgumentException();
 		}
 		in.close();
 		

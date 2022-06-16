@@ -1,0 +1,3 @@
+FirstAnimeEmptyFinished.txt is actually not a bad file because parse boolean 
+does not look for false, just that it does not say "true". blank is read as false.
+This file is omitted from the tests.
