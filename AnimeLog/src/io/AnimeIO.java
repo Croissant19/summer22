@@ -1,5 +1,6 @@
 package io;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -24,7 +25,7 @@ public class AnimeIO {
 	 * @param filename save data destination
 	 * @throws IllegalArgumentException if an error occurs
 	 */
-	public static void writeData(SortedList<Anime> list, String filename) {
+	public static void writeData(SortedList<Anime> list, File filename) {
 
 		try {
 			PrintWriter out = new PrintWriter(filename);
