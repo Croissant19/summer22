@@ -2,6 +2,7 @@ package io;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import anime.Anime;
 import anime.Anime.Language;
@@ -18,7 +19,33 @@ import util.SortedList;
 public class AnimeIO {
 
 	/**
-	 * 
+	 * Writes data from files into a plaintext file compatible with the program's file reader
+	 * @param list sorted list of Anime to be saved
+	 * @param filename save data destination
+	 * @throws IllegalArgumentException if an error occurs
+	 */
+	public static void writeData(SortedList<Anime> list, String filename) {
+
+		try {
+			PrintWriter out = new PrintWriter(filename);
+			
+			//Write data for each Anime to file
+			for (int i = 0; i < list.size(); i++) {
+				out.println("<|>" + list.get(i).toString());
+			}
+			
+			out.close();
+			
+		} catch (FileNotFoundException e1) {
+			throw new IllegalArgumentException("Data cannot be written");
+		}
+		
+		
+	}
+	
+	
+	/**
+	 * Transforms a passed file into a sorted collection of Anime objects
 	 * @param filename
 	 * @throws IllegalArgumentException if the file cannot be read
 	 * @return sorted collection of anime from a user import, null if an error occurs
@@ -47,13 +74,15 @@ public class AnimeIO {
 
 		//TODO: Later use the delimit type as an indicator of anime vs manga type data?
 		//Check that the file type is correct
-		if (!contents.substring(0, 3).equals("<|>")) {
+		if (contents.substring(0, 3).equals("<|>")) {
+			//Remove the initial delimiter after verifying in the if conditional
+			contents = contents.substring(3);
+		} else {
+			//If missing first delimiter, throw exception
 			throw new IllegalArgumentException("Bad file data");
-			//TODO: Could improve this by adding code to remove the first 3 
-			//chars of the substring  so there is not an empty split data piece
 		}
 
-			
+		
 		//Break file into Strings containing each Anime
 		String[] splits = contents.split("\\n?<[|]>");
 
