@@ -115,7 +115,7 @@ class AnimeTest {
 		assertTrue(a.equals(GURREN));
 		assertTrue(GURREN.equals(a));
 		assertFalse(a.equals(b));
-		assertFalse(a.equals(null));
+		assertNull(a);
 	}
 	
 }
