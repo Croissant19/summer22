@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -23,6 +24,10 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JToolBar;
+import javax.swing.JEditorPane;
+import javax.swing.JComboBox;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class GUI extends JFrame {
 
@@ -34,7 +39,10 @@ public class GUI extends JFrame {
 	
 	private JPanel contentPane;
 	private JTable table;
-	private JTextField textFieldNotes;
+	private JTextField txtYourTxtHere;
+
+
+	private JComboBox<String> fileOptions;
 
 	//TODO: attribute logo
 	//https://www.flaticon.com/premium-icon/anime_2314736?term=anime&related_id=2314736#
@@ -80,59 +88,86 @@ public class GUI extends JFrame {
 		
 		JPanel imgPanel = new JPanel();
 		
-		textFieldNotes = new JTextField();
-		textFieldNotes.setColumns(10);
-		
-		JButton btnAddImg = new JButton("Add Image");
-		
-		JButton btnResetImg = new JButton("Reset");
-		
 		JLabel lblNotes = new JLabel("Notes:");
 		lblNotes.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		JEditorPane txtNotes = new JEditorPane();
+		
+		JToolBar toolBar = new JToolBar();
+		toolBar.setFloatable(false);
+		
+		JLabel lblTitle = new JLabel("Title:");
+		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 13));
+		
+		txtYourTxtHere = new JTextField();
+		txtYourTxtHere.setText("your txt here");
+		txtYourTxtHere.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtYourTxtHere.setColumns(10);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(textFieldNotes, GroupLayout.PREFERRED_SIZE, 256, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNotes))
-					.addGap(10)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, 679, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(imgPanel, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE))
-						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(btnResetImg, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(btnAddImg, Alignment.LEADING))
-							.addGap(28)))
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(txtNotes, GroupLayout.PREFERRED_SIZE, 255, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(imgPanel, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+										.addComponent(lblTitle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(lblNotes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(txtYourTxtHere, GroupLayout.PREFERRED_SIZE, 351, GroupLayout.PREFERRED_SIZE)))))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(16)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED, 70, GroupLayout.PREFERRED_SIZE)
-							.addComponent(imgPanel, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnAddImg)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnResetImg)
-							.addGap(16))
+					.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
+					.addGap(34)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 365, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGap(267)
-							.addComponent(lblNotes)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(textFieldNotes, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE))
-						.addComponent(scrollPane, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 365, GroupLayout.PREFERRED_SIZE))
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblTitle, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
+								.addComponent(txtYourTxtHere, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(lblNotes)
+									.addGap(8)
+									.addComponent(txtNotes, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE))
+								.addComponent(imgPanel, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE))))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
+		
+		fileOptions = new JComboBox<String>();
+
+
+		//Header and options for the fileOptions dropdown
+		fileOptions.addItem("File");
+		fileOptions.addItem("Load");
+		fileOptions.addItem("Save");
+
+		toolBar.add(fileOptions);
+		
+		JButton btnAdd = new JButton("Add");
+		toolBar.add(btnAdd);
+		
+		JButton btnEdit = new JButton("Edit");
+		toolBar.add(btnEdit);
+		
+		JButton btnImg = new JButton("Image");
+		toolBar.add(btnImg);
+		
+		JButton btnRemove = new JButton("Remove");
+		toolBar.add(btnRemove);
 		//TODO: add rowData, COLUMN_NAMES
 		table = new JTable();
 		scrollPane.setViewportView(table);
@@ -144,6 +179,25 @@ public class GUI extends JFrame {
 	 * Code for creating events
 	 */
 	private void createEvents() {
-		
+		fileOptions.addItemListener(new ItemListener() {
+
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					if (fileOptions.getSelectedItem().equals("Load")) {
+						//TODO: Save popup
+						JOptionPane.showMessageDialog(null, "FIXME");
+						//JOptionPane.showInputDialog()
+
+						fileOptions.setSelectedIndex(0);
+						
+					} else if (fileOptions.getSelectedItem().equals("Save")) {
+						//TODO: load popup
+						JOptionPane.showMessageDialog(null, "FIXME");
+						fileOptions.setSelectedIndex(0);
+					}
+				}
+			}
+
+		});
 	}	
 }
