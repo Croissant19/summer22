@@ -30,6 +30,8 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.CardLayout;
+import javax.swing.UIManager;
 
 public class GUI extends JFrame {
 
@@ -41,10 +43,11 @@ public class GUI extends JFrame {
 	
 	private JPanel contentPane;
 	private JTable table;
-	private JTextField txtYourTxtHere;
+	private JPanel cardPanel;
 
 
 	private JComboBox<String> fileOptions;
+	private JTextField textField;
 
 	//TODO: attribute logo
 	//https://www.flaticon.com/premium-icon/anime_2314736?term=anime&related_id=2314736#
@@ -53,6 +56,11 @@ public class GUI extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -88,23 +96,11 @@ public class GUI extends JFrame {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
-		JPanel imgPanel = new JPanel();
-		
-		JLabel lblNotes = new JLabel("Notes:");
-		lblNotes.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		JEditorPane txtNotes = new JEditorPane();
-		
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
+		cardPanel = new JPanel();
+
 		
-		JLabel lblTitle = new JLabel("Title:");
-		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 13));
-		
-		txtYourTxtHere = new JTextField();
-		txtYourTxtHere.setText("your txt here");
-		txtYourTxtHere.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		txtYourTxtHere.setColumns(10);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -114,18 +110,8 @@ public class GUI extends JFrame {
 						.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, 679, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(txtNotes, GroupLayout.PREFERRED_SIZE, 255, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(imgPanel, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
-										.addComponent(lblTitle, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(lblNotes, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(txtYourTxtHere, GroupLayout.PREFERRED_SIZE, 351, GroupLayout.PREFERRED_SIZE)))))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(cardPanel, GroupLayout.PREFERRED_SIZE, 426, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -133,21 +119,47 @@ public class GUI extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
 					.addGap(34)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 365, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblTitle, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtYourTxtHere, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(lblNotes)
-									.addGap(8)
-									.addComponent(txtNotes, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE))
-								.addComponent(imgPanel, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE))))
+						.addComponent(cardPanel, GroupLayout.PREFERRED_SIZE, 365, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
+		cardPanel.setLayout(new CardLayout(0, 0));
+		
+		//Create default view
+		
+		JPanel defaultView = new JPanel();
+		cardPanel.add(defaultView, "defaultView");
+		defaultView.setLayout(null);
+		
+		JLabel lblTitle = new JLabel("Title:");
+		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblTitle.setBounds(0, 0, 39, 23);
+		defaultView.add(lblTitle);
+		
+		textField = new JTextField();
+		textField.setText("your txt here");
+		textField.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textField.setColumns(10);
+		textField.setBounds(43, 0, 351, 22);
+		defaultView.add(textField);
+		
+		JEditorPane txtNotes = new JEditorPane();
+		txtNotes.setBounds(0, 243, 255, 122);
+		defaultView.add(txtNotes);
+		
+		JLabel lblNotes = new JLabel("Notes:");
+		lblNotes.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNotes.setBounds(0, 220, 39, 15);
+		defaultView.add(lblNotes);
+		
+		JPanel imgPanel = new JPanel();
+		imgPanel.setBounds(265, 149, 153, 216);
+		defaultView.add(imgPanel);
+		
+		
+		JPanel addView = new NewAnimeView();
+		cardPanel.add(addView, "addView");
 		
 		fileOptions = new JComboBox<String>();
 
@@ -160,13 +172,15 @@ public class GUI extends JFrame {
 		toolBar.add(fileOptions);
 		
 		JButton btnAdd = new JButton("Add");
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnAdd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				NewAnimeView newEntry = new NewAnimeView();
-				contentPane.setVisible(false);
-				setContentPane(newEntry);
-				newEntry.setVisible(true);
+				CardLayout cl = (CardLayout)cardPanel.getLayout();
+				cl.show(cardPanel, "addView");
 			}
 		});
 		toolBar.add(btnAdd);

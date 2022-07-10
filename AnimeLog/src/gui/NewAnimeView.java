@@ -25,13 +25,13 @@ public class NewAnimeView extends JPanel {
 	public NewAnimeView() {
 		setLayout(null);
 		
-		JButton btnSave = new JButton("Save");
+		JButton btnSave = new JButton("Add");
 		btnSave.setBounds(269, 262, 89, 23);
 		add(btnSave);
 		
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(90, 262, 89, 23);
-		add(btnCancel);
+		JButton btnBack = new JButton("Back");
+		btnBack.setBounds(90, 262, 89, 23);
+		add(btnBack);
 		
 		JPanel pnlFields = new JPanel();
 		pnlFields.setBounds(10, 11, 430, 232);
