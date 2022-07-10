@@ -28,6 +28,8 @@ import javax.swing.JEditorPane;
 import javax.swing.JComboBox;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class GUI extends JFrame {
 
@@ -158,6 +160,15 @@ public class GUI extends JFrame {
 		toolBar.add(fileOptions);
 		
 		JButton btnAdd = new JButton("Add");
+		btnAdd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				NewAnimeView newEntry = new NewAnimeView();
+				contentPane.setVisible(false);
+				setContentPane(newEntry);
+				newEntry.setVisible(true);
+			}
+		});
 		toolBar.add(btnAdd);
 		
 		JButton btnEdit = new JButton("Edit");
@@ -181,11 +192,13 @@ public class GUI extends JFrame {
 	private void createEvents() {
 		fileOptions.addItemListener(new ItemListener() {
 
+			//For loading and saving files
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					if (fileOptions.getSelectedItem().equals("Load")) {
 						//TODO: Save popup
-						JOptionPane.showMessageDialog(null, "FIXME");
+						//TODO: Explore JFileChooser
+						JOptionPane.showInputDialog(null, "FIXME");
 						//JOptionPane.showInputDialog()
 
 						fileOptions.setSelectedIndex(0);

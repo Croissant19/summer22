@@ -10,8 +10,19 @@ import util.SortedList;
  */
 public class Manager {
 
-	/** Collection of user anime*/
+	/** Singleton pointer to the Manager object */
+	private static Manager instance = new Manager();
+	
+	/** Collection of user anime */
 	private SortedList<Anime> animeList;
+	
+	/** 
+	 * Retrieves the manager for method calls
+	 * @return the Singleton instance of the Manager
+	 */
+	public static Manager getInstance() {
+		return instance;
+	}
 	
 	/**
 	 * Grabs title, year, and count for each anime for display on the GUI.
