@@ -26,15 +26,15 @@ public class NewAnimeView extends JPanel {
 		setLayout(null);
 		
 		JButton btnSave = new JButton("Add");
-		btnSave.setBounds(269, 262, 89, 23);
+		btnSave.setBounds(253, 341, 89, 23);
 		add(btnSave);
 		
 		JButton btnBack = new JButton("Back");
-		btnBack.setBounds(90, 262, 89, 23);
+		btnBack.setBounds(82, 341, 89, 23);
 		add(btnBack);
 		
 		JPanel pnlFields = new JPanel();
-		pnlFields.setBounds(10, 11, 430, 232);
+		pnlFields.setBounds(10, 11, 405, 319);
 		add(pnlFields);
 		pnlFields.setLayout(null);
 		
@@ -76,7 +76,7 @@ public class NewAnimeView extends JPanel {
 		lblDirector.setBounds(10, 154, 99, 14);
 		pnlFields.add(lblDirector);
 		
-		JLabel lblNotes = new JLabel("You can add notes or comments to this entry on the main window.");
+		JLabel lblNotes = new JLabel("You can add notes/comments or an image to this entry on the main viewer.");
 		lblNotes.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNotes.setBounds(10, 178, 410, 36);
 		pnlFields.add(lblNotes);

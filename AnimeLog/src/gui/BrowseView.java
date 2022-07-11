@@ -136,6 +136,8 @@ public class BrowseView extends JPanel {
 		imgPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JLabel lblIcon = new JLabel("");
+		//TODO: attribute image icon from
+		//flaticon.com/premium-icon/new_4131729?term=add%20image&page=1&position=52&page=1&position=52&related_id=4131729&origin=style#
 //		lblIcon.setIcon(new ImageIcon(BrowseView.class.getResource("/resources/addImgIcon_128.png")));
 		lblIcon.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/resources/addImgPoster.png")).getImage().getScaledInstance(imgPanel.getWidth(), imgPanel.getHeight(), Image.SCALE_SMOOTH)));
 		imgPanel.add(lblIcon);
