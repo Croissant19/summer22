@@ -31,7 +31,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.CardLayout;
+import java.awt.Component;
+
 import javax.swing.UIManager;
+import java.awt.Dimension;
 
 public class GUI extends JFrame {
 
@@ -48,6 +51,12 @@ public class GUI extends JFrame {
 
 	private JComboBox<String> fileOptions;
 	private JTextField textField;
+
+
+	private JButton btnAdd;
+
+	
+	private JButton btnEdit;
 
 	//TODO: attribute logo
 	//https://www.flaticon.com/premium-icon/anime_2314736?term=anime&related_id=2314736#
@@ -99,6 +108,7 @@ public class GUI extends JFrame {
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
 		cardPanel = new JPanel();
+		cardPanel.setMaximumSize(new Dimension(450, 300));
 
 		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
@@ -106,22 +116,22 @@ public class GUI extends JFrame {
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, 679, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(cardPanel, GroupLayout.PREFERRED_SIZE, 426, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(cardPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
-					.addGap(34)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 365, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cardPanel, GroupLayout.PREFERRED_SIZE, 365, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(scrollPane, 0, 0, Short.MAX_VALUE)
+						.addComponent(cardPanel, GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		cardPanel.setLayout(new CardLayout(0, 0));
@@ -160,7 +170,9 @@ public class GUI extends JFrame {
 		
 		JPanel addView = new NewAnimeView();
 		cardPanel.add(addView, "addView");
-		
+		JPanel browseView = new BrowseView();
+		cardPanel.add(browseView, "browseView");
+
 		fileOptions = new JComboBox<String>();
 
 
@@ -171,21 +183,10 @@ public class GUI extends JFrame {
 
 		toolBar.add(fileOptions);
 		
-		JButton btnAdd = new JButton("Add");
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnAdd.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				CardLayout cl = (CardLayout)cardPanel.getLayout();
-				cl.show(cardPanel, "addView");
-			}
-		});
+		btnAdd = new JButton("Add");
 		toolBar.add(btnAdd);
 		
-		JButton btnEdit = new JButton("Edit");
+		btnEdit = new JButton("Edit");
 		toolBar.add(btnEdit);
 		
 		JButton btnImg = new JButton("Image");
@@ -204,16 +205,13 @@ public class GUI extends JFrame {
 	 * Code for creating events
 	 */
 	private void createEvents() {
+		//File import and export options
 		fileOptions.addItemListener(new ItemListener() {
-
-			//For loading and saving files
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					if (fileOptions.getSelectedItem().equals("Load")) {
-						//TODO: Save popup
 						//TODO: Explore JFileChooser
 						JOptionPane.showInputDialog(null, "FIXME");
-						//JOptionPane.showInputDialog()
 
 						fileOptions.setSelectedIndex(0);
 						
@@ -224,7 +222,24 @@ public class GUI extends JFrame {
 					}
 				}
 			}
-
 		});
+
+		//Add new Anime button on toolbar
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cl = (CardLayout)cardPanel.getLayout();
+				cl.show(cardPanel, "addView");
+
+			}
+		});
+
+		//Edit button for editing the selected Anime
+		btnEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cl = (CardLayout)cardPanel.getLayout();
+				cl.show(cardPanel, "browseView");
+			}
+		});
+
 	}	
 }
