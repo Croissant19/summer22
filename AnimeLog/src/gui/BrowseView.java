@@ -3,6 +3,7 @@ package gui;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
@@ -13,6 +14,8 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.BoxLayout;
 import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Defines the GUI components for viewing anime
@@ -32,11 +35,11 @@ public class BrowseView extends JPanel {
 		setLayout(null);
 		
 		JButton btnNext = new JButton("Next");
-		btnNext.setBounds(253, 341, 89, 23);
+		btnNext.setBounds(295, 341, 89, 23);
 		add(btnNext);
 		
 		JButton btnPrevious = new JButton("Previous");
-		btnPrevious.setBounds(82, 341, 89, 23);
+		btnPrevious.setBounds(39, 341, 89, 23);
 		add(btnPrevious);
 		
 		JPanel pnlFields = new JPanel();
@@ -45,13 +48,13 @@ public class BrowseView extends JPanel {
 		pnlFields.setLayout(null);
 		
 		JLabel lblTitle = new JLabel("Title:");
-		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		lblTitle.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTitle.setBounds(10, 10, 99, 14);
 		pnlFields.add(lblTitle);
 		
 		JLabel lblYear = new JLabel("Year:");
-		lblYear.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblYear.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		lblYear.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblYear.setBounds(10, 34, 99, 14);
 		pnlFields.add(lblYear);
@@ -67,7 +70,7 @@ public class BrowseView extends JPanel {
 		pnlFields.add(lblLanguage);
 		
 		JLabel lblType = new JLabel("Content Type:");
-		lblType.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblType.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		lblType.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblType.setBounds(10, 106, 99, 14);
 		pnlFields.add(lblType);
@@ -99,7 +102,7 @@ public class BrowseView extends JPanel {
 		
 		textField_3 = new JTextField();
 		textField_3.setColumns(10);
-		textField_3.setBounds(119, 151, 198, 20);
+		textField_3.setBounds(119, 151, 172, 20);
 		pnlFields.add(textField_3);
 		
 		JRadioButton rdbtnSub = new JRadioButton("Sub");
@@ -131,9 +134,16 @@ public class BrowseView extends JPanel {
 		pnlFields.add(rdbtnSpecial);
 		
 		JPanel imgPanel = new JPanel();
-		imgPanel.setBounds(330, 148, 99, 132);
+		imgPanel.setBounds(296, 176, 99, 132);
 		pnlFields.add(imgPanel);
 		imgPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		imgPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				imagePopup();
+			}
+		});
+
 		
 		JLabel lblIcon = new JLabel("");
 		//TODO: attribute image icon from
@@ -143,7 +153,7 @@ public class BrowseView extends JPanel {
 		imgPanel.add(lblIcon);
 		
 		notesField = new JTextField();
-		notesField.setBounds(10, 205, 307, 75);
+		notesField.setBounds(10, 205, 274, 103);
 		pnlFields.add(notesField);
 		notesField.setColumns(10);
 		
@@ -151,6 +161,19 @@ public class BrowseView extends JPanel {
 		lblNotes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblNotes.setBounds(10, 190, 70, 14);
 		pnlFields.add(lblNotes);
+		
+		JButton btnEdit = new JButton("Edit");
+		btnEdit.setBounds(167, 341, 89, 23);
+		add(btnEdit);
 
+	}
+
+	/**
+	 * Handles process when user clicks on image in BrowseView
+	 */
+	private void imagePopup() {
+		// TODO Auto-generated method stub
+		//TODO: JFrame for image work
+		JOptionPane.showMessageDialog(null, "");
 	}
 }
