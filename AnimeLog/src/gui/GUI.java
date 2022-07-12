@@ -52,10 +52,8 @@ public class GUI extends JFrame {
 	private JComboBox<String> fileOptions;
 	private JTextField textField;
 
-
+	private JButton btnHome;
 	private JButton btnAdd;
-
-	
 	private JButton btnEdit;
 
 	//TODO: attribute logo
@@ -138,36 +136,10 @@ public class GUI extends JFrame {
 		
 		//Create default view
 		
-		JPanel defaultView = new JPanel();
-		cardPanel.add(defaultView, "defaultView");
-		defaultView.setLayout(null);
-		
-		JLabel lblTitle = new JLabel("Title:");
-		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblTitle.setBounds(0, 0, 39, 23);
-		defaultView.add(lblTitle);
-		
-		textField = new JTextField();
-		textField.setText("your txt here");
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		textField.setColumns(10);
-		textField.setBounds(43, 0, 351, 22);
-		defaultView.add(textField);
-		
-		JEditorPane txtNotes = new JEditorPane();
-		txtNotes.setBounds(0, 243, 255, 122);
-		defaultView.add(txtNotes);
-		
-		JLabel lblNotes = new JLabel("Notes:");
-		lblNotes.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNotes.setBounds(0, 220, 39, 15);
-		defaultView.add(lblNotes);
-		
-		JPanel imgPanel = new JPanel();
-		imgPanel.setBounds(265, 149, 153, 216);
-		defaultView.add(imgPanel);
 		
 		
+		JPanel homeView = new HomeView();
+		cardPanel.add(homeView, "homeView");
 		JPanel addView = new NewAnimeView();
 		cardPanel.add(addView, "addView");
 		JPanel browseView = new BrowseView();
@@ -183,14 +155,14 @@ public class GUI extends JFrame {
 
 		toolBar.add(fileOptions);
 		
+		btnHome = new JButton("Home");
+		toolBar.add(btnHome);
+		
 		btnAdd = new JButton("Add");
 		toolBar.add(btnAdd);
 		
 		btnEdit = new JButton("Edit");
 		toolBar.add(btnEdit);
-		
-		JButton btnImg = new JButton("Image");
-		toolBar.add(btnImg);
 		
 		JButton btnRemove = new JButton("Remove");
 		toolBar.add(btnRemove);
@@ -224,6 +196,16 @@ public class GUI extends JFrame {
 			}
 		});
 
+		//Add new Anime button on toolbar
+		btnHome.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cl = (CardLayout)cardPanel.getLayout();
+				cl.show(cardPanel, "homeView");
+
+			}
+		});
+
+		
 		//Add new Anime button on toolbar
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
