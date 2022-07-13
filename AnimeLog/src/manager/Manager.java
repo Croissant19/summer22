@@ -3,6 +3,8 @@ package manager;
 import java.io.File;
 
 import anime.Anime;
+import anime.Anime.Language;
+import anime.Anime.Type;
 import io.AnimeIO;
 import util.SortedList;
 
@@ -64,8 +66,164 @@ public class Manager {
 		
 	}
 
-	private void File() {
-		// TODO Auto-generated method stub
-		
+	
+	////////////////////////
+	//Stat retrieval methods
+	////////////////////////
+
+	/**
+	 * Returns the number of entries for use as a stat on the HomeView
+	 * @return total number of entries
+	 */
+	public int getEntryCount() {
+		return animeList.size();
 	}
+	
+	/**
+	 * Returns the number of entries that are series for use as a stat on the HomeView
+	 * @return total number of series
+	 */	
+	public int getNumSeries() {
+		int tally = 0;
+		//TODO: VERY IMPORTANT
+		//TODO: make sortedlist iteratable to decrease computation time or switch to arraylist model
+		//Increment each time an anime on the list is Type Series
+		for (int i = 0; i < animeList.size(); i++) {
+			if (animeList.get(i).getType().equals(Type.SERIES.formattedName)) {
+				tally++;
+			}
+		}
+
+		return tally;
+	}
+	
+	/**
+	 * Returns the number of entries that are classified as specials for use as a stat on the HomeView
+	 * @return total number of specials
+	 */		
+	public int getNumSpecial() {
+		int tally = 0;
+		//TODO: VERY IMPORTANT
+		//TODO: make sortedlist iteratable to decrease computation time or switch to arraylist model
+		//Increment each time an anime on the list is Type Special
+		for (int i = 0; i < animeList.size(); i++) {
+			if (animeList.get(i).getType().equals(Type.SPECIAL.formattedName)) {
+				tally++;
+			}
+		}
+
+		return tally;
+	}
+	
+	/**
+	 * Returns the sum of all counts for use as a stat on the HomeView
+	 * @return sum of all anime counts
+	 */
+	public int getCountSum() {
+		int tally = 0;
+		for (int i = 0; i < animeList.size(); i++) {
+			Anime currAnime = animeList.get(i);
+			tally += currAnime.getCount();
+		}
+
+		return tally;
+	}
+
+	/**
+	 * Computes the most used language type by entry (not count) and the percent for display 
+	 * @return most used language and its percent as a String for the GUI
+	 */
+	public String getFavoredLanguageAndPercent() {
+		int subCt = 0, dubCt = 0, otherCt = 0;
+		
+		//Tally counts for each language classification
+		for (int i = 0; i < animeList.size(); i++) {
+			Anime currAnime = animeList.get(i);
+
+			switch (Language.parseLang(currAnime.getLanguage())) {
+			
+			case SUB: 
+				subCt++;
+				break;
+			case DUB: 
+				dubCt++;
+				break;
+			case OTHER: 
+				otherCt++;
+				break;	
+			}
+				
+		}
+		//TODO: handle ties
+		//Determine winning count
+		String winner;
+		int winnerCt = 0;
+		if (subCt > dubCt) {
+			winner = "Sub";
+			winnerCt = subCt;
+		} else if (dubCt > subCt) {
+			winner = "Dub";
+			winnerCt = dubCt;
+		} else {
+			winner = "Tie";
+		}
+
+		//Get winner percent and finish building string
+		int sumCt = subCt + dubCt + otherCt;
+		int percent = winnerCt / sumCt * 100;
+		
+		winner += percent + "%";
+		
+		return winner;	
+	}
+	
+	
+	/**
+	 * Provides a string representation of the user's percent of finished anime,
+	 * followed by the percent sign (%)
+	 * @return percent of total anime finished
+	 */
+	public String getPercentFinished() {
+		int sumCt = 0;
+		int finCt = 0;
+		//Iterate through each anime and tally the desired flag
+		for (int i = 0; i < animeList.size(); i++) {
+			Anime currAnime = animeList.get(i);
+			if (currAnime.isFinished()) {
+				finCt++;
+			}
+			sumCt++;
+		}
+		
+		//Get finished percent and build String
+		int percent = finCt / sumCt * 100;
+
+		return percent + "%";
+	}
+	
+	/**
+	 * Provides a string representation of the user's percent of dropped anime,
+	 * followed by the percent sign (%)
+	 * @return percent of total anime dropped
+	 */
+	public String getPercentDropped() {
+		int sumCt = 0;
+		int finCt = 0;
+		//Iterate through each anime and tally the desired flag
+		for (int i = 0; i < animeList.size(); i++) {
+			Anime currAnime = animeList.get(i);
+			if (currAnime.isDropped()) {
+				finCt++;
+			}
+			sumCt++;
+		}
+		
+		//Get finished percent and build String
+		int percent = finCt / sumCt * 100;
+
+		return percent + "%";
+	}
+	//TODO: test!!!
+	//TODO: can we combine the above stat methods? def need an iterator!
+	
 }
