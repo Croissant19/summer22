@@ -134,12 +134,6 @@ public class NewAnimeView extends JPanel {
 		rdBtnSub = new JRadioButton("Sub");
 		//TODO: make other buttons be unselected when one is clicked.
 	
-//		rdbtnSub.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				if (rdbtnSub.isSelected())
-//			
-//			}
-//		});
 
 		rdBtnSub.setBounds(115, 141, 55, 23);
 		pnlFields.add(rdBtnSub);
@@ -149,7 +143,7 @@ public class NewAnimeView extends JPanel {
 		pnlFields.add(rdBtnDub);
 		
 		rdBtnOther = new JRadioButton("Other/TBD");
-		rdBtnOther.setBounds(229, 141, 55, 23);
+		rdBtnOther.setBounds(229, 141, 82, 23);
 		pnlFields.add(rdBtnOther);
 		
 		chckBxFinished = new JCheckBox("Finished");
@@ -168,6 +162,61 @@ public class NewAnimeView extends JPanel {
 		rdBtnSpecial.setBounds(189, 165, 70, 23);
 		pnlFields.add(rdBtnSpecial);
 		
+		createEvents();
+	}
+	
+	private void createEvents() {
+
+		//Events for ensuring only one radio button of each type can be selected at once
+		//Language
+		rdBtnSub.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnSub.isSelected()) {
+					rdBtnDub.setSelected(false);
+					rdBtnOther.setSelected(false);
+				}
+			
+			}
+		});
+		rdBtnDub.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnDub.isSelected()) {
+					rdBtnSub.setSelected(false);
+					rdBtnOther.setSelected(false);
+				}
+			
+			}
+		});
+		rdBtnOther.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnOther.isSelected()) {
+					rdBtnSub.setSelected(false);
+					rdBtnDub.setSelected(false);
+				}
+			
+			}
+		});
+
+		//Type
+		rdBtnSeries.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnSeries.isSelected()) {
+					rdBtnSpecial.setSelected(false);
+				}
+			
+			}
+		});
+		rdBtnSpecial.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnSpecial.isSelected()) {
+					rdBtnSeries.setSelected(false);
+				}
+			
+			}
+		});
+
+	
+	
 	}
 	
 	/**

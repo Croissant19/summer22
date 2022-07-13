@@ -17,6 +17,8 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.BoxLayout;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -25,11 +27,23 @@ import java.awt.event.MouseEvent;
  * @author Hunter Pruitt
  */
 public class BrowseView extends JPanel {
+
+	private JPanel imgPanel;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTextField notesField;
+	private JRadioButton rdBtnSub;
+	private JRadioButton rdBtnDub;
+	private JRadioButton rdBtnOther;
+	private JRadioButton rdBtnSpecial;
+	private JRadioButton rdBtnSeries;
+	private JCheckBox chckBxFinished;
+	private JCheckBox chckBxDropped;
+	private JButton btnEdit;
+	private JButton btnNext;
+	private JButton btnPrevious;
 
 	/**
 	 * Create the panel.
@@ -37,11 +51,11 @@ public class BrowseView extends JPanel {
 	public BrowseView() {
 		setLayout(null);
 		
-		JButton btnNext = new JButton("Next");
+		btnNext = new JButton("Next");
 		btnNext.setBounds(295, 341, 89, 23);
 		add(btnNext);
 		
-		JButton btnPrevious = new JButton("Previous");
+		btnPrevious = new JButton("Previous");
 		btnPrevious.setBounds(39, 341, 89, 23);
 		add(btnPrevious);
 		
@@ -108,44 +122,39 @@ public class BrowseView extends JPanel {
 		textField_3.setBounds(119, 151, 172, 20);
 		pnlFields.add(textField_3);
 		
-		JRadioButton rdbtnSub = new JRadioButton("Sub");
-		rdbtnSub.setBounds(115, 78, 55, 23);
-		pnlFields.add(rdbtnSub);
+		rdBtnSub = new JRadioButton("Sub");
+		rdBtnSub.setBounds(115, 78, 55, 23);
+		pnlFields.add(rdBtnSub);
 		
-		JRadioButton rdbtnDub = new JRadioButton("Dub");
-		rdbtnDub.setBounds(172, 78, 55, 23);
-		pnlFields.add(rdbtnDub);
+		rdBtnDub = new JRadioButton("Dub");
+		rdBtnDub.setBounds(172, 78, 55, 23);
+		pnlFields.add(rdBtnDub);
 		
-		JRadioButton rdbtnOther = new JRadioButton("Other/TBD");
-		rdbtnOther.setBounds(229, 78, 55, 23);
-		pnlFields.add(rdbtnOther);
+		rdBtnOther = new JRadioButton("Other/TBD");
+		rdBtnOther.setBounds(229, 78, 77, 23);
+		pnlFields.add(rdBtnOther);
 		
-		JCheckBox chckbxFinished = new JCheckBox("Finished");
-		chckbxFinished.setBounds(115, 126, 70, 23);
-		pnlFields.add(chckbxFinished);
+		chckBxFinished = new JCheckBox("Finished");
+		chckBxFinished.setBounds(115, 126, 70, 23);
+		pnlFields.add(chckBxFinished);
 		
-		JCheckBox chckbxDropped = new JCheckBox("Dropped");
-		chckbxDropped.setBounds(187, 126, 70, 23);
-		pnlFields.add(chckbxDropped);
+		chckBxDropped = new JCheckBox("Dropped");
+		chckBxDropped.setBounds(187, 126, 70, 23);
+		pnlFields.add(chckBxDropped);
 		
-		JRadioButton rdbtnSeries = new JRadioButton("Series");
-		rdbtnSeries.setBounds(115, 102, 70, 23);
-		pnlFields.add(rdbtnSeries);
+		rdBtnSeries = new JRadioButton("Series");
+		rdBtnSeries.setBounds(115, 102, 70, 23);
+		pnlFields.add(rdBtnSeries);
 		
-		JRadioButton rdbtnSpecial = new JRadioButton("Special");
-		rdbtnSpecial.setBounds(189, 102, 70, 23);
-		pnlFields.add(rdbtnSpecial);
+		rdBtnSpecial = new JRadioButton("Special");
+		rdBtnSpecial.setBounds(189, 102, 70, 23);
+		pnlFields.add(rdBtnSpecial);
 		
-		JPanel imgPanel = new JPanel();
+		imgPanel = new JPanel();
 		imgPanel.setBounds(296, 176, 99, 132);
 		pnlFields.add(imgPanel);
 		imgPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		imgPanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				imagePopup();
-			}
-		});
+
 
 		
 		JLabel lblIcon = new JLabel("");
@@ -165,12 +174,74 @@ public class BrowseView extends JPanel {
 		lblNotes.setBounds(10, 190, 70, 14);
 		pnlFields.add(lblNotes);
 		
-		JButton btnEdit = new JButton("Edit");
+		btnEdit = new JButton("Edit");
 		btnEdit.setBounds(167, 341, 89, 23);
 		add(btnEdit);
 
+		
+		createEvents();
 	}
 
+	private void createEvents() {
+		imgPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				imagePopup();
+			}
+		});
+		
+		
+		//Events for ensuring only one radio button of each type can be selected at once
+		//Language
+		rdBtnSub.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnSub.isSelected()) {
+					rdBtnDub.setSelected(false);
+					rdBtnOther.setSelected(false);
+				}
+			
+			}
+		});
+		rdBtnDub.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnDub.isSelected()) {
+					rdBtnSub.setSelected(false);
+					rdBtnOther.setSelected(false);
+				}
+			
+			}
+		});
+		rdBtnOther.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnOther.isSelected()) {
+					rdBtnSub.setSelected(false);
+					rdBtnDub.setSelected(false);
+				}
+			
+			}
+		});
+
+		//Type
+		rdBtnSeries.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnSeries.isSelected()) {
+					rdBtnSpecial.setSelected(false);
+				}
+			
+			}
+		});
+		rdBtnSpecial.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnSpecial.isSelected()) {
+					rdBtnSeries.setSelected(false);
+				}
+			
+			}
+		});
+	}
+	
+	
+	
 	/**
 	 * Fills the page with information about a selected anime
 	 * @param a Anime to fill fields with

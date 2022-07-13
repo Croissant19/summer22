@@ -287,7 +287,6 @@ public class GUI extends JFrame {
 	 */
 	private void updateTable() {
 		Object[][] rowVals = Manager.getInstance().getAllAnimeAsArray();
-		System.out.println(rowVals.toString());
 		//TODO: Investigate jtable models to better current system
 		//problems: cols swappable, resizeable, highlight weird
 		table = new JTable(rowVals, COLUMN_NAMES);
