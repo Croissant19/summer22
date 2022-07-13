@@ -196,6 +196,8 @@ public class GUI extends JFrame {
 						try {
 							filename = getFilename(true);	
 							Manager.getInstance().processFile(filename);
+							updateTable();
+							homeView.updateStats();
 						} catch (IllegalArgumentException iae) {
 							JOptionPane.showMessageDialog(null, iae.getMessage());
 						} catch (IllegalStateException ise) {
@@ -203,11 +205,7 @@ public class GUI extends JFrame {
 						}
 						
 						//Reset selection of dropdown and update as necessary
-						fileOptions.setSelectedIndex(0);
-						//TODO: Repopulate graph
-						updateTable();
-						homeView.updateStats();
-						
+						fileOptions.setSelectedIndex(0);						
 						
 						
 					} else if (fileOptions.getSelectedItem().equals("Save")) {
