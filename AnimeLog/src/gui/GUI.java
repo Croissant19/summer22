@@ -64,6 +64,9 @@ public class GUI extends JFrame {
 	private HomeView homeView = new HomeView();
 	private BrowseView browseView = new BrowseView();
 	private NewAnimeView newAnimeView = new NewAnimeView();
+
+
+	private JScrollPane scrollPane;
 	
 	
 	//TODO: attribute logo
@@ -111,7 +114,7 @@ public class GUI extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
@@ -202,7 +205,9 @@ public class GUI extends JFrame {
 						//Reset selection of dropdown and update as necessary
 						fileOptions.setSelectedIndex(0);
 						//TODO: Repopulate graph
+						updateTable();
 						homeView.updateStats();
+						
 						
 						
 					} else if (fileOptions.getSelectedItem().equals("Save")) {
@@ -277,5 +282,19 @@ public class GUI extends JFrame {
 		//Get and return path from user selection
 		File logFile = fc.getSelectedFile();
 		return logFile.getAbsolutePath();
-	}	
+	}
+	
+	/**
+	 * Updates the table with information from the user's anime log data
+	 */
+	private void updateTable() {
+		Object[][] rowVals = Manager.getInstance().getAllAnimeAsArray();
+		System.out.println(rowVals.toString());
+		//TODO: Investigate jtable models to better current system
+		//problems: cols swappable, resizeable, highlight weird
+		table = new JTable(rowVals, COLUMN_NAMES);
+		table.setDragEnabled(false);
+		scrollPane.setViewportView(table);
+	}
+	
 }
