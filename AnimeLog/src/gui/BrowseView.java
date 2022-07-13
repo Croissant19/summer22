@@ -5,6 +5,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+
+import anime.Anime;
+
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
@@ -168,6 +171,15 @@ public class BrowseView extends JPanel {
 
 	}
 
+	/**
+	 * Fills the page with information about a selected anime
+	 * @param a Anime to fill fields with
+	 */
+	public void loadData(Anime a) {
+		
+	}
+	
+	
 	/**
 	 * Handles process when user clicks on image in BrowseView
 	 */

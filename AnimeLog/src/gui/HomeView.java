@@ -125,4 +125,11 @@ public class HomeView extends JPanel {
 		statsPanel.add(txtA5);
 		
 	}
+	
+	/**
+	 * Updates the statistics on the HomeView after loading a file or editing the anime list stored in Manager
+	 */
+	public void updateStats() {
+		//TODO:
+	}
 }

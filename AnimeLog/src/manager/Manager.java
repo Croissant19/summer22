@@ -1,6 +1,9 @@
 package manager;
 
+import java.io.File;
+
 import anime.Anime;
+import io.AnimeIO;
 import util.SortedList;
 
 /**
@@ -25,6 +28,15 @@ public class Manager {
 	}
 	
 	/**
+	 * Retrieves data from a user selected file
+	 * @param filename file selected by user in JFileChooser
+	 */
+	public void processFile(String filename) {
+		animeList = AnimeIO.readFile(filename);
+	}
+	
+	
+	/**
 	 * Grabs title, year, and count for each anime for display on the GUI.
 	 * @return 2D array of anime data for display on the GUI
 	 */
@@ -40,5 +52,20 @@ public class Manager {
 		}
 
 		return list;
+	}
+
+	/**
+	 * Saves data to a file location specified by the user in JFileChooser
+	 * @param filename location to save data at
+	 */
+	public void saveFile(String filename) {
+		AnimeIO.writeData(animeList, new File(filename));
+		// TODO: warning to prevent overwriting existing file?
+		
+	}
+
+	private void File() {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import manager.Manager;
+
 import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.JLabel;
@@ -25,11 +28,13 @@ import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JToolBar;
 import javax.swing.JEditorPane;
+import javax.swing.JFileChooser;
 import javax.swing.JComboBox;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.awt.CardLayout;
 import java.awt.Component;
 
@@ -55,7 +60,12 @@ public class GUI extends JFrame {
 	private JButton btnHome;
 	private JButton btnAdd;
 	private JButton btnEdit;
-
+	
+	private HomeView homeView = new HomeView();
+	private BrowseView browseView = new BrowseView();
+	private NewAnimeView newAnimeView = new NewAnimeView();
+	
+	
 	//TODO: attribute logo
 	//https://www.flaticon.com/premium-icon/anime_2314736?term=anime&related_id=2314736#
 	
@@ -132,17 +142,13 @@ public class GUI extends JFrame {
 						.addComponent(cardPanel, GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
+		
+		
+		//Create cards
 		cardPanel.setLayout(new CardLayout(0, 0));
-		
-		//Create default view
-		
-		
-		
-		JPanel homeView = new HomeView();
+				
 		cardPanel.add(homeView, "homeView");
-		JPanel addView = new NewAnimeView();
-		cardPanel.add(addView, "addView");
-		JPanel browseView = new BrowseView();
+		cardPanel.add(newAnimeView, "addView");
 		cardPanel.add(browseView, "browseView");
 
 		fileOptions = new JComboBox<String>();
@@ -181,16 +187,39 @@ public class GUI extends JFrame {
 		fileOptions.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
+					String filename;
 					if (fileOptions.getSelectedItem().equals("Load")) {
-						//TODO: Explore JFileChooser
-						JOptionPane.showInputDialog(null, "FIXME");
-
+						//Get filename and watch for errors
+						try {
+							filename = getFilename(true);	
+							Manager.getInstance().processFile(filename);
+						} catch (IllegalArgumentException iae) {
+							JOptionPane.showMessageDialog(null, iae.getMessage());
+						} catch (IllegalStateException ise) {
+							//Do nothing
+						}
+						
+						//Reset selection of dropdown and update as necessary
 						fileOptions.setSelectedIndex(0);
+						//TODO: Repopulate graph
+						homeView.updateStats();
+						
 						
 					} else if (fileOptions.getSelectedItem().equals("Save")) {
-						//TODO: load popup
-						JOptionPane.showMessageDialog(null, "FIXME");
+
+						try {
+							filename = getFilename(false);
+							Manager.getInstance().saveFile(filename);
+						} catch (IllegalArgumentException iae) {
+							JOptionPane.showMessageDialog(null, iae.getMessage());
+						} catch (IllegalStateException ise) {
+							//Do nothing
+						}
+						
+						//Reset selection of dropdown
 						fileOptions.setSelectedIndex(0);
+
+						
 					}
 				}
 			}
@@ -223,5 +252,30 @@ public class GUI extends JFrame {
 			}
 		});
 
+	}
+
+	/**
+	 * Gets a file location on the user's system via JFileChooser to save at or load information from.
+	 * @param boolean indicator of if JFileChooser needs to handle load or save procedure, true for load
+	 * @return filename for loading or saving a file
+	 * @throws IllegalStateException if user does not select a file
+	 */
+	private String getFilename(boolean load) {
+		//TODO: note: "./" sets to currect working directory, is necessary? works good blank too...
+		JFileChooser fc = new JFileChooser("./");
+		int returnVal;
+		//Show user prompts
+		if (load) {
+			returnVal = fc.showOpenDialog(fc);
+		} else {
+			returnVal = fc.showSaveDialog(null);
+		}
+		if (returnVal != JFileChooser.APPROVE_OPTION) {
+			throw new IllegalStateException();
+		}
+		
+		//Get and return path from user selection
+		File logFile = fc.getSelectedFile();
+		return logFile.getAbsolutePath();
 	}	
 }
