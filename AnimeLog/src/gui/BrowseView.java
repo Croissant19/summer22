@@ -116,7 +116,7 @@ public class BrowseView extends JPanel {
 		rdbtnDub.setBounds(172, 78, 55, 23);
 		pnlFields.add(rdbtnDub);
 		
-		JRadioButton rdbtnOther = new JRadioButton("Other");
+		JRadioButton rdbtnOther = new JRadioButton("Other/TBD");
 		rdbtnOther.setBounds(229, 78, 55, 23);
 		pnlFields.add(rdbtnOther);
 		

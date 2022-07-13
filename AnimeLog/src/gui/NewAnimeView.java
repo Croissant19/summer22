@@ -4,10 +4,18 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import anime.Anime;
+import anime.Anime.Language;
+import anime.Anime.Type;
+import manager.Manager;
+
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JCheckBox;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /**
  * Defines the GUI components for creating a new Anime
@@ -21,10 +29,19 @@ public class NewAnimeView extends JPanel {
 	/** Text that appears in the box if an anime has already been added since opening this view */
 	private String secondaryText;
 	
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField txtFldTitle;
+	private JTextField txtFldYear;
+	private JTextField txtFldCount;
+	private JTextField txtFldDirector;
+
+	private JRadioButton rdBtnSub;
+	private JRadioButton rdBtnDub;
+	private JRadioButton rdBtnOther;
+	private JRadioButton rdBtnSeries;
+	private JRadioButton rdBtnSpecial;
+
+	private JCheckBox chckBxFinished;
+	private JCheckBox chckBxDropped;
 
 	/**
 	 * Create the panel.
@@ -68,6 +85,7 @@ public class NewAnimeView extends JPanel {
 		pnlFields.add(lblCount);
 		
 		JLabel lblLanguage = new JLabel("Language:");
+		lblLanguage.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblLanguage.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblLanguage.setBounds(10, 145, 99, 14);
 		pnlFields.add(lblLanguage);
@@ -93,53 +111,139 @@ public class NewAnimeView extends JPanel {
 		lblNotes.setBounds(10, 258, 385, 36);
 		pnlFields.add(lblNotes);
 		
-		textField = new JTextField();
-		textField.setBounds(119, 70, 224, 20);
-		pnlFields.add(textField);
-		textField.setColumns(10);
+		txtFldTitle = new JTextField();
+		txtFldTitle.setBounds(119, 70, 224, 20);
+		pnlFields.add(txtFldTitle);
+		txtFldTitle.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(119, 94, 55, 20);
-		pnlFields.add(textField_1);
+		txtFldYear = new JTextField();
+		txtFldYear.setColumns(10);
+		txtFldYear.setBounds(119, 94, 55, 20);
+		pnlFields.add(txtFldYear);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(119, 118, 55, 20);
-		pnlFields.add(textField_2);
+		txtFldCount = new JTextField();
+		txtFldCount.setColumns(10);
+		txtFldCount.setBounds(119, 118, 55, 20);
+		pnlFields.add(txtFldCount);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(119, 214, 224, 20);
-		pnlFields.add(textField_3);
+		txtFldDirector = new JTextField();
+		txtFldDirector.setColumns(10);
+		txtFldDirector.setBounds(119, 214, 224, 20);
+		pnlFields.add(txtFldDirector);
 		
-		JRadioButton rdbtnSub = new JRadioButton("Sub");
-		rdbtnSub.setBounds(115, 141, 55, 23);
-		pnlFields.add(rdbtnSub);
+		rdBtnSub = new JRadioButton("Sub");
+		//TODO: make other buttons be unselected when one is clicked.
+	
+//		rdbtnSub.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				if (rdbtnSub.isSelected())
+//			
+//			}
+//		});
+
+		rdBtnSub.setBounds(115, 141, 55, 23);
+		pnlFields.add(rdBtnSub);
 		
-		JRadioButton rdbtnDub = new JRadioButton("Dub");
-		rdbtnDub.setBounds(172, 141, 55, 23);
-		pnlFields.add(rdbtnDub);
+		rdBtnDub = new JRadioButton("Dub");
+		rdBtnDub.setBounds(172, 141, 55, 23);
+		pnlFields.add(rdBtnDub);
 		
-		JRadioButton rdbtnOther = new JRadioButton("Other");
-		rdbtnOther.setBounds(229, 141, 55, 23);
-		pnlFields.add(rdbtnOther);
+		rdBtnOther = new JRadioButton("Other/TBD");
+		rdBtnOther.setBounds(229, 141, 55, 23);
+		pnlFields.add(rdBtnOther);
 		
-		JCheckBox chckbxFinished = new JCheckBox("Finished");
-		chckbxFinished.setBounds(115, 189, 70, 23);
-		pnlFields.add(chckbxFinished);
+		chckBxFinished = new JCheckBox("Finished");
+		chckBxFinished.setBounds(115, 189, 70, 23);
+		pnlFields.add(chckBxFinished);
 		
-		JCheckBox chckbxDropped = new JCheckBox("Dropped");
-		chckbxDropped.setBounds(187, 189, 70, 23);
-		pnlFields.add(chckbxDropped);
+		chckBxDropped = new JCheckBox("Dropped");
+		chckBxDropped.setBounds(187, 189, 70, 23);
+		pnlFields.add(chckBxDropped);
 		
-		JRadioButton rdbtnSeries = new JRadioButton("Series");
-		rdbtnSeries.setBounds(115, 165, 70, 23);
-		pnlFields.add(rdbtnSeries);
+		rdBtnSeries = new JRadioButton("Series");
+		rdBtnSeries.setBounds(115, 165, 70, 23);
+		pnlFields.add(rdBtnSeries);
 		
-		JRadioButton rdbtnSpecial = new JRadioButton("Special");
-		rdbtnSpecial.setBounds(189, 165, 70, 23);
-		pnlFields.add(rdbtnSpecial);
+		rdBtnSpecial = new JRadioButton("Special");
+		rdBtnSpecial.setBounds(189, 165, 70, 23);
+		pnlFields.add(rdBtnSpecial);
+		
+	}
+	
+	/**
+	 * Called when the user clicks the add button, checks values on the card panel 
+	 * and tries to create an Anime from them.
+	 * @throws IllegalArgumentException if bad values, construction fails, or required data not provided by user
+	 */
+	public void makeNewAnime() {
+		//Declare fields for constructor
+		String title;
+		int year;
+		int count = 0;
+		Type type;
+		Language lan;
+		boolean fin;
+		boolean drop;
+		String director = "";
+		
+		//Check fields are acceptable
+		try {
+
+			//Required fields
+			title = txtFldTitle.getText();
+			year = Integer.parseInt(txtFldYear.getText());
+
+			if (rdBtnSub.isSelected()) {
+				lan = Language.SUB;
+			} else if (rdBtnDub.isSelected()) {
+				lan = Language.DUB;
+			} else if (rdBtnOther.isSelected()) {
+				lan = Language.OTHER;
+			} else {
+				//In case nothing is selected
+				throw new IllegalArgumentException("Language not indicated.");
+			}
+			
+			if (rdBtnSeries.isSelected()) {
+				type = Type.SERIES;
+			} else if (rdBtnSpecial.isSelected()) {
+				type = Type.SPECIAL;
+			} else {
+				//In case neither is selected
+				throw new IllegalArgumentException("Type not indicated.");
+			}
+
+			
+			
+			//Test not required fields if filled out		
+			if (!txtFldCount.getText().isBlank()) {
+				count = Integer.parseInt(txtFldCount.getText());	
+			}
+			
+			fin = chckBxFinished.isSelected();
+			drop = chckBxDropped.isSelected();			
+			if (fin && drop) {
+				throw new IllegalArgumentException("Show cannot be finished and dropped.");
+			}
+			
+			if (!txtFldDirector.getText().isBlank()) {
+				director = txtFldDirector.getText();	
+			}
+			
+			
+			//Create the anime
+			Anime a = new Anime(title, year, count, lan, type, fin, drop, director, "");
+			Manager.getInstance().addAnime(a);
+		} catch (Exception e) {
+			
+			//TODO: ensure correct
+			if (e instanceof NumberFormatException) {
+				throw new IllegalArgumentException("Cannot understant some input.");	
+			} else {
+				throw new IllegalArgumentException(e.getMessage());
+			}
+		}
+		
 		
 	}
 }

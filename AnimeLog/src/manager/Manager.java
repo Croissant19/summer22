@@ -66,6 +66,19 @@ public class Manager {
 		
 	}
 
+	/**
+	 * Adds an anime to the animeList
+	 * @param a Anime to be added
+	 * @throws NullPointerException if a is null
+	 * @throws IllegalArgumentException if a is a copy of any other element
+	 */
+	public void addAnime(Anime a) {
+		//TODO: test adding a duplicate thru GUI
+		animeList.add(a);
+		//TODO: refresh stats, update table
+	}
+	
+	//TODO: remove anime method
 	
 	////////////////////////
 	//Stat retrieval methods
