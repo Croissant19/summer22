@@ -3,6 +3,9 @@ package gui;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import manager.Manager;
+
 import javax.swing.JTextField;
 import java.awt.Font;
 
@@ -131,5 +134,12 @@ public class HomeView extends JPanel {
 	 */
 	public void updateStats() {
 		//TODO:
+		txtA1.setText(Manager.getInstance().getEntryCount());
+		txtA2.setText(Manager.getInstance().getNumSeries());
+		txtA3.setText(Manager.getInstance().getNumSpecial());
+		txtA4.setText(Manager.getInstance().getCountSum());
+		txtA5.setText(Manager.getInstance().getFavoredLanguageAndPercent());
+		txtA6.setText(Manager.getInstance().getPercentFinished());
+		txtA7.setText(Manager.getInstance().getPercentDropped());
 	}
 }

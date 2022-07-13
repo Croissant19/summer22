@@ -75,15 +75,15 @@ public class Manager {
 	 * Returns the number of entries for use as a stat on the HomeView
 	 * @return total number of entries
 	 */
-	public int getEntryCount() {
-		return animeList.size();
+	public String getEntryCount() {
+		return "" + animeList.size();
 	}
 	
 	/**
 	 * Returns the number of entries that are series for use as a stat on the HomeView
 	 * @return total number of series
 	 */	
-	public int getNumSeries() {
+	public String getNumSeries() {
 		int tally = 0;
 		//TODO: VERY IMPORTANT
 		//TODO: make sortedlist iteratable to decrease computation time or switch to arraylist model
@@ -94,14 +94,14 @@ public class Manager {
 			}
 		}
 
-		return tally;
+		return "" + tally;
 	}
 	
 	/**
 	 * Returns the number of entries that are classified as specials for use as a stat on the HomeView
 	 * @return total number of specials
 	 */		
-	public int getNumSpecial() {
+	public String getNumSpecial() {
 		int tally = 0;
 		//TODO: VERY IMPORTANT
 		//TODO: make sortedlist iteratable to decrease computation time or switch to arraylist model
@@ -112,21 +112,21 @@ public class Manager {
 			}
 		}
 
-		return tally;
+		return "" + tally;
 	}
 	
 	/**
 	 * Returns the sum of all counts for use as a stat on the HomeView
 	 * @return sum of all anime counts
 	 */
-	public int getCountSum() {
+	public String getCountSum() {
 		int tally = 0;
 		for (int i = 0; i < animeList.size(); i++) {
 			Anime currAnime = animeList.get(i);
 			tally += currAnime.getCount();
 		}
 
-		return tally;
+		return "" + tally;
 	}
 
 	/**
@@ -159,18 +159,18 @@ public class Manager {
 		String winner;
 		int winnerCt = 0;
 		if (subCt > dubCt) {
-			winner = "Sub";
+			winner = "Sub ";
 			winnerCt = subCt;
 		} else if (dubCt > subCt) {
-			winner = "Dub";
+			winner = "Dub ";
 			winnerCt = dubCt;
 		} else {
-			winner = "Tie";
+			winner = "Tie ";
 		}
 
 		//Get winner percent and finish building string
 		int sumCt = subCt + dubCt + otherCt;
-		int percent = winnerCt / sumCt * 100;
+		int percent = winnerCt * 100 / sumCt;
 		
 		winner += percent + "%";
 		
@@ -196,7 +196,7 @@ public class Manager {
 		}
 		
 		//Get finished percent and build String
-		int percent = finCt / sumCt * 100;
+		int percent = finCt * 100 / sumCt;
 
 		return percent + "%";
 	}
@@ -219,7 +219,7 @@ public class Manager {
 		}
 		
 		//Get finished percent and build String
-		int percent = finCt / sumCt * 100;
+		int percent = finCt * 100 / sumCt;
 
 		return percent + "%";
 	}
