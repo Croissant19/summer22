@@ -16,7 +16,8 @@ import java.awt.Font;
 public class HomeView extends JPanel {
 	
 	/** Default text at top of view, instructing how to use the page, uses html because newline characters cannot be displayed */
-	private static final String DEFAULT_TEXT = "<html>Welcome blahblahblah</html>";
+	private static final String DEFAULT_TEXT = "<html>Welcome! To load a pre-existing file, click the <em>File</em> dropdown"
+			+ " and select <em>Load</em>. Otherwise, click add to begin creating your own anime watch log!</html>";
 	
 	//Stats to answer the lblQX series of JLabels
 	private JTextField txtA1;
@@ -33,9 +34,10 @@ public class HomeView extends JPanel {
 	public HomeView() {
 		setLayout(null);
 		
-		JLabel lblInstructions = new JLabel(DEFAULT_TEXT);
+		JLabel lblInstructions = new JLabel("<html>To load a pre-existing file, click the <em>File</em> dropdown and select <em>Load</em>. Otherwise, click add to begin creating your own anime watch log!</html>");
+		lblInstructions.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblInstructions.setHorizontalAlignment(SwingConstants.CENTER);
-		lblInstructions.setBounds(10, 11, 430, 56);
+		lblInstructions.setBounds(40, 11, 364, 56);
 		add(lblInstructions);
 		
 		JPanel statsPanel = new JPanel();
