@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ListSelectionModel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -100,6 +101,8 @@ public class GUI extends JFrame {
 	public GUI() {
 		initComponents();
 		createEvents();
+		//TODO: remove test procedure
+		testStartUp();
 	}
 	
 	/**
@@ -188,10 +191,9 @@ public class GUI extends JFrame {
 		});
 		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.getTableHeader().setResizingAllowed(false);
-
-		
 		
 		table.getColumnModel().getColumn(0).setPreferredWidth(40);
 		table.getColumnModel().getColumn(1).setPreferredWidth(150);
@@ -321,6 +323,15 @@ public class GUI extends JFrame {
 		
 		//TODO: Investigate jtable models to better current system
 		//problems: text not wrap in case of long title, highlight weird
+	}
+	
+	
+	//////////////////////////////
+	
+	private void testStartUp() {
+		Manager.getInstance().processFile("./test-files/ThreeWorkingImports.txt");
+		updateTable();
+		homeView.updateStats();
 	}
 	
 }
