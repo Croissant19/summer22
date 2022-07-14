@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import manager.Manager;
 
@@ -46,7 +47,7 @@ public class GUI extends JFrame {
 	/** Data headers for the data table */
 	private static final String[] COLUMN_NAMES= {"Year",
             "Title",
-            "Latest episode seen"};
+            "Count"};
 	
 	
 	private JPanel contentPane;
@@ -115,6 +116,7 @@ public class GUI extends JFrame {
 		setContentPane(contentPane);
 		
 		scrollPane = new JScrollPane();
+		scrollPane.setViewportView(table);
 		
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
@@ -175,8 +177,25 @@ public class GUI extends JFrame {
 		
 		JButton btnRemove = new JButton("Remove");
 		toolBar.add(btnRemove);
-		//TODO: add rowData, COLUMN_NAMES
-		table = new JTable();
+
+		//Declare table model and override isCellEditable so that no cells are editable
+		table = new JTable(new DefaultTableModel(null, COLUMN_NAMES) {
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		});
+		
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		table.getTableHeader().setReorderingAllowed(false);
+		table.getTableHeader().setResizingAllowed(false);
+
+		
+		
+		table.getColumnModel().getColumn(0).setPreferredWidth(40);
+		table.getColumnModel().getColumn(1).setPreferredWidth(150);
+		table.getColumnModel().getColumn(2).setPreferredWidth(40);
 		scrollPane.setViewportView(table);
 		contentPane.setLayout(gl_contentPane);
 
@@ -286,12 +305,22 @@ public class GUI extends JFrame {
 	 * Updates the table with information from the user's anime log data
 	 */
 	private void updateTable() {
+		
+		int numRows = Manager.getInstance().getAnimeList().size();
 		Object[][] rowVals = Manager.getInstance().getAllAnimeAsArray();
+
+		DefaultTableModel tm = (DefaultTableModel) table.getModel();
+		tm.setRowCount(0);
+		Object[] row = new Object[3];
+		
+		for (int i = 0; i < numRows; i++) {
+			row = rowVals[i];
+			tm.addRow(row);
+		}
+		
+		
 		//TODO: Investigate jtable models to better current system
-		//problems: cols swappable, resizeable, highlight weird
-		table = new JTable(rowVals, COLUMN_NAMES);
-		table.setDragEnabled(false);
-		scrollPane.setViewportView(table);
+		//problems: text not wrap in case of long title, highlight weird
 	}
 	
 }

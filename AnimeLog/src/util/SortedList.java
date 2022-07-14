@@ -144,6 +144,33 @@ public class SortedList<E extends Comparable<E>> {
 	}
 	
 	/**
+	 * Returns the index of the desired element in the list, -1 if not present
+	 * @param element to be searched for
+	 * @return index of the element in the sorted list
+	 */
+	public int indexOf(E element) {
+		//TODO: TESTTTT
+		int idx = -1;
+
+		if (front != null) {
+			idx = 0;
+			ListNode temp = front;
+			while (!temp.data.equals(element)) {
+				idx++;
+				
+				if (temp.next == null) {
+					//Reached end of list
+					idx = -1;
+				}
+				temp = temp.next;
+			}
+		}
+
+		return idx;
+	}
+	
+	
+	/**
 	 * Returns the element at the given index.
 	 * @param idx index of the element to retrieve
 	 * @return element at the given index

@@ -9,6 +9,8 @@ import javax.swing.SwingConstants;
 import anime.Anime;
 import anime.Anime.Language;
 import anime.Anime.Type;
+import manager.Manager;
+import util.SortedList;
 
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
@@ -205,6 +207,17 @@ public class BrowseView extends JPanel {
 	 */
 	private void createEvents() {
 		
+		//TODO: responds to right and middle clicks too, not good...
+		imgPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				imagePopup();
+			}
+		});
+
+		
+		//Events pertaining to large buttons, edit/save, next, previous
+		//Edit/Save button
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -220,15 +233,22 @@ public class BrowseView extends JPanel {
 			}
 		});
 
+				
 		
-		
-		imgPanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				imagePopup();
+		//Next button
+		btnPrevious.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				displayNext();
 			}
 		});
-		
+
+		//Previous button
+		btnPrevious.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				displayPrev();
+			}
+		});
+
 		
 		//Events for ensuring only one radio button of each type can be selected at once
 		//Language
@@ -372,13 +392,57 @@ public class BrowseView extends JPanel {
 	}
 
 	/**
-	 * Fills the page with information about a selected anime
-	 * @param a Anime to fill fields with
+	 * Fills the page with information about a selected anime based on currentAnime field
 	 */
-	public void loadData(Anime a) {
+	public void loadData() {
 		//TODO:
+		//TODO: handle disable buttons if last/first/only entry
+
+		//Disable next and/or previous buttons if such anime do not exist
+
+		SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
+		int currentIdx = list.indexOf(currentAnime);
+
+		if (currentIdx == list.size() - 1) {
+			btnNext.setEnabled(false);
+		}
+		if (currentIdx == 0) {
+			btnPrevious.setEnabled(false);
+		}
+
 	}
 	
+	/**
+	 * Retrieves following anime in sequence and reloads page data
+	 */
+	private void displayNext() {
+		SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
+		int currentIdx = list.indexOf(currentAnime);
+		currentAnime = list.get(++currentIdx);
+
+		//Disable next button if this is the last anime
+		if (currentIdx == list.size() - 1) {
+			btnNext.setEnabled(false);
+		}
+		loadData();
+	}
+	
+	/**
+	 * Retrieves previous anime in sequence and reloads page data
+	 */
+	private void displayPrev() {
+		SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
+		int currentIdx = list.indexOf(currentAnime);
+		currentAnime = list.get(--currentIdx);
+
+		//Disable previous button if this is the first anime
+		if (currentIdx == 0) {
+			btnPrevious.setEnabled(false);
+		}
+
+		loadData();
+	}
+
 	
 	/**
 	 * Handles process when user clicks on image in BrowseView

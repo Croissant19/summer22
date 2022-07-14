@@ -67,6 +67,14 @@ public class Manager {
 	}
 
 	/**
+	 * Provides the animeList use in other classes
+	 * @return the animeList
+	 */
+	public SortedList<Anime> getAnimeList() {
+		return animeList;
+	}
+
+	/**
 	 * Adds an anime to the animeList
 	 * @param a Anime to be added
 	 * @throws NullPointerException if a is null
