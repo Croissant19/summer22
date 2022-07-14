@@ -78,6 +78,14 @@ public class Manager {
 		//TODO: refresh stats, update table
 	}
 	
+	/**
+	 * Removes a selected anime from the animeList
+	 * @param idx index to remove from
+	 * @throws IndexOutOfBoundsException if the passed index is out of bounds
+	 */
+	public void removeAnime(int idx) {
+		animeList.remove(idx);
+	}
 	//TODO: remove anime method
 	
 	////////////////////////

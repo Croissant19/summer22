@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import anime.Anime;
+import anime.Anime.Language;
+import anime.Anime.Type;
 
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
@@ -29,11 +31,11 @@ import java.awt.event.MouseEvent;
 public class BrowseView extends JPanel {
 
 	private JPanel imgPanel;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField notesField;
+	private JTextField txtFldTitle;
+	private JTextField txtFldYear;
+	private JTextField txtFldCount;
+	private JTextField txtFldDirector;
+	private JTextField txtFldNotes;
 	private JRadioButton rdBtnSub;
 	private JRadioButton rdBtnDub;
 	private JRadioButton rdBtnOther;
@@ -45,6 +47,10 @@ public class BrowseView extends JPanel {
 	private JButton btnNext;
 	private JButton btnPrevious;
 
+	private boolean inEditMode = false;
+	
+	private Anime currentAnime;
+	
 	/**
 	 * Create the panel.
 	 */
@@ -102,51 +108,62 @@ public class BrowseView extends JPanel {
 		lblDirector.setBounds(10, 154, 99, 14);
 		pnlFields.add(lblDirector);
 		
-		textField = new JTextField();
-		textField.setBounds(119, 7, 224, 20);
-		pnlFields.add(textField);
-		textField.setColumns(10);
+		txtFldTitle = new JTextField();
+		txtFldTitle.setEditable(false);
+		txtFldTitle.setBounds(119, 7, 224, 20);
+		pnlFields.add(txtFldTitle);
+		txtFldTitle.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(119, 31, 55, 20);
-		pnlFields.add(textField_1);
+		txtFldYear = new JTextField();
+		txtFldYear.setEditable(false);
+		txtFldYear.setColumns(10);
+		txtFldYear.setBounds(119, 31, 55, 20);
+		pnlFields.add(txtFldYear);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(119, 55, 55, 20);
-		pnlFields.add(textField_2);
+		txtFldCount = new JTextField();
+		txtFldCount.setEditable(false);
+		txtFldCount.setColumns(10);
+		txtFldCount.setBounds(119, 55, 55, 20);
+		pnlFields.add(txtFldCount);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(119, 151, 172, 20);
-		pnlFields.add(textField_3);
+		txtFldDirector = new JTextField();
+		txtFldDirector.setEditable(false);
+		txtFldDirector.setColumns(10);
+		txtFldDirector.setBounds(119, 151, 172, 20);
+		pnlFields.add(txtFldDirector);
 		
 		rdBtnSub = new JRadioButton("Sub");
+		rdBtnSub.setEnabled(false);
 		rdBtnSub.setBounds(115, 78, 55, 23);
 		pnlFields.add(rdBtnSub);
 		
 		rdBtnDub = new JRadioButton("Dub");
+		rdBtnDub.setEnabled(false);
 		rdBtnDub.setBounds(172, 78, 55, 23);
 		pnlFields.add(rdBtnDub);
 		
 		rdBtnOther = new JRadioButton("Other/TBD");
+		rdBtnOther.setEnabled(false);
 		rdBtnOther.setBounds(229, 78, 77, 23);
 		pnlFields.add(rdBtnOther);
 		
 		chckBxFinished = new JCheckBox("Finished");
+		chckBxFinished.setEnabled(false);
 		chckBxFinished.setBounds(115, 126, 70, 23);
 		pnlFields.add(chckBxFinished);
 		
 		chckBxDropped = new JCheckBox("Dropped");
+		chckBxDropped.setEnabled(false);
 		chckBxDropped.setBounds(187, 126, 70, 23);
 		pnlFields.add(chckBxDropped);
 		
 		rdBtnSeries = new JRadioButton("Series");
+		rdBtnSeries.setEnabled(false);
 		rdBtnSeries.setBounds(115, 102, 70, 23);
 		pnlFields.add(rdBtnSeries);
 		
 		rdBtnSpecial = new JRadioButton("Special");
+		rdBtnSpecial.setEnabled(false);
 		rdBtnSpecial.setBounds(189, 102, 70, 23);
 		pnlFields.add(rdBtnSpecial);
 		
@@ -164,10 +181,11 @@ public class BrowseView extends JPanel {
 		lblIcon.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/resources/addImgPoster.png")).getImage().getScaledInstance(imgPanel.getWidth(), imgPanel.getHeight(), Image.SCALE_SMOOTH)));
 		imgPanel.add(lblIcon);
 		
-		notesField = new JTextField();
-		notesField.setBounds(10, 205, 274, 103);
-		pnlFields.add(notesField);
-		notesField.setColumns(10);
+		txtFldNotes = new JTextField();
+		txtFldNotes.setEditable(false);
+		txtFldNotes.setBounds(10, 205, 274, 103);
+		pnlFields.add(txtFldNotes);
+		txtFldNotes.setColumns(10);
 		
 		JLabel lblNotes = new JLabel("Notes:");
 		lblNotes.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -182,7 +200,28 @@ public class BrowseView extends JPanel {
 		createEvents();
 	}
 
+	/**
+	 * Creates events for components inside the card panel, so that fields can be edited/saved and interactables behave correctly
+	 */
 	private void createEvents() {
+		
+		btnEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//Manage inputs in edit mode
+				if (inEditMode) {
+					if (changeOccured()) {
+						//TODO: code to update or save changes
+					}
+					
+				}
+				
+				changeMode();
+			}
+		});
+
+		
+		
 		imgPanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -240,14 +279,104 @@ public class BrowseView extends JPanel {
 		});
 	}
 	
-	
-	
+	/**
+	 * Indicates if a change occurred while the user was in edit mode
+	 * @return boolean indicator if a value has changed since enabling the field components
+	 * @throws IllegalArgumentException if a type or language isn't selected
+	 */
+	private boolean changeOccured() {
+		//Transform int fields into Strings comparable to what is in the text fields
+		String oldYear = "" + currentAnime.getYear();
+		String oldCount = "" + currentAnime.getCount();
+		
+		//TODO: handle when mandatory fields blank
+		//Return statements to compare each field until either a contrast is found or all match
+		return !currentAnime.getTitle().equals(txtFldTitle.getText()) 
+				|| !oldYear.equals(txtFldYear.getText())
+				|| !oldCount.equals(txtFldCount.getText())
+				|| !currentAnime.getLanguage().equals(getSelectedLanguage())
+				|| !currentAnime.getType().equals(getSelectedType())
+				|| currentAnime.isFinished() != chckBxFinished.isSelected()
+				|| currentAnime.isDropped() != chckBxDropped.isSelected()
+				|| !currentAnime.getDirector().equals(txtFldDirector.getText())
+				|| !currentAnime.getNotes().equals(txtFldNotes.getText());
+	}
+
+	/**
+	 * Indicates which type classification the user selected among the relevant JRadioButtons
+	 * @return String indicator as to what type is currently selected
+	 * @throws IllegalArgumentException if no type is indicated
+	 */
+	private String getSelectedType() {
+		String type;
+		if (rdBtnSeries.isSelected()) {
+			type = Type.SERIES.formattedName;
+		} else if (rdBtnSpecial.isSelected()) {
+			type = Type.SPECIAL.formattedName;
+		} else {
+			//In case neither is selected
+			throw new IllegalArgumentException("Type not indicated.");
+		}
+		return type;
+	}
+
+	/**
+	 * Indicates which language the user selected among the relevant JRadioButtons
+	 * @return String indicator as to what language is currently selected
+	 * @throws IllegalArgumentException if no language is indicated
+	 */
+	private String getSelectedLanguage() {
+		String lan;
+		
+		if (rdBtnSub.isSelected()) {
+			lan = Language.SUB.formattedName;
+		} else if (rdBtnDub.isSelected()) {
+			lan = Language.DUB.formattedName;
+		} else if (rdBtnOther.isSelected()) {
+			lan = Language.OTHER.formattedName;
+		} else {
+			//In case nothing is selected
+			throw new IllegalArgumentException("Language not indicated.");
+		}
+		
+		return lan;
+	}
+
+	/**
+	 * Toggles text fields and buttons abilities to be interacted with by the user, so that info can or cannot be edited
+	 */
+	private void changeMode() {
+
+		//Toggle booleans for editable-ness
+		txtFldTitle.setEditable(!txtFldTitle.isEditable());
+		txtFldYear.setEditable(!txtFldYear.isEditable());
+		txtFldCount.setEditable(!txtFldCount.isEditable());
+		txtFldDirector.setEditable(!txtFldDirector.isEditable());
+		txtFldNotes.setEditable(!txtFldNotes.isEditable());
+		rdBtnSub.setEnabled(!rdBtnSub.isEnabled());
+		rdBtnDub.setEnabled(!rdBtnDub.isEnabled());
+		rdBtnOther.setEnabled(!rdBtnOther.isEnabled());
+		rdBtnSpecial.setEnabled(!rdBtnSpecial.isEnabled());
+		rdBtnSeries.setEnabled(!rdBtnSeries.isEnabled());
+		chckBxFinished.setEnabled(!chckBxFinished.isEnabled());
+		chckBxDropped.setEnabled(!chckBxDropped.isEnabled());
+
+		this.inEditMode = !inEditMode;
+
+		//Change the text on the button
+		if (btnEdit.getText().equals("Edit")) {
+			btnEdit.setText("Save");
+		} else {
+			btnEdit.setText("Edit");
+		}
+	}
+
 	/**
 	 * Fills the page with information about a selected anime
 	 * @param a Anime to fill fields with
 	 */
 	public void loadData(Anime a) {
-		
+		//TODO:
 	}
 	
 	
