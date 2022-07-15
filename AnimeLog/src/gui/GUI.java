@@ -156,15 +156,24 @@ public class GUI extends JFrame {
 		toolBar.add(fileOptions);
 		
 		btnHome = new JButton("Home");
+		btnHome.setRequestFocusEnabled(false);
 		toolBar.add(btnHome);
 		
 		btnAdd = new JButton("Add");
+		btnAdd.setRequestFocusEnabled(false);
 		toolBar.add(btnAdd);
 		
 		btnEdit = new JButton("Edit");
+		btnEdit.setRequestFocusEnabled(false);
 		toolBar.add(btnEdit);
+
+		//Disable home button to indicate that is where you start
+		toggleToolbarButtons(btnHome);
+		//TODO: fix auto selection/ highlight when a button is disabled
+
 		
 		JButton btnRemove = new JButton("Remove");
+		btnRemove.setRequestFocusEnabled(false);
 		toolBar.add(btnRemove);
 
 		//Declare table model and override isCellEditable so that no cells are editable
@@ -240,7 +249,7 @@ public class GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cl = (CardLayout)cardPanel.getLayout();
 				cl.show(cardPanel, "homeView");
-
+				toggleToolbarButtons(btnHome);
 			}
 		});
 
@@ -250,6 +259,7 @@ public class GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cl = (CardLayout)cardPanel.getLayout();
 				cl.show(cardPanel, "addView");
+				toggleToolbarButtons(btnAdd);
 
 			}
 		});
@@ -262,6 +272,19 @@ public class GUI extends JFrame {
 			}
 		});
 
+	}
+
+	/**
+	 * Re-enables all toolbar buttons and selectively disables the most recently selected one
+	 * @param selected button linking to the card the user is currently on
+	 */
+	private void toggleToolbarButtons(JButton selected) {
+		//Enable all buttons
+		btnHome.setEnabled(true);
+		btnAdd.setEnabled(true);
+		btnEdit.setEnabled(true);
+		//Disable the selected button
+		selected.setEnabled(false);
 	}
 
 	/**
@@ -305,6 +328,7 @@ public class GUI extends JFrame {
 			row = rowVals[i];
 			tm.addRow(row);
 		}
+		//TODO: sort by options, filter
 		
 		
 		//TODO: Investigate jtable models to better current system
