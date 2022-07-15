@@ -70,6 +70,23 @@ class SortedListTest {
 
 	}
 	
+	/**
+	 * Tests the iterable interface by using a for-each loop and ensuring fields are passed as desired
+	 */
+	@Test
+	void testIterator() {
+		list.add("A");
+		list.add("B");
+		list.add("C");
+		list.add("D");
+		list.add("E");
 
+		String expString = "";
+		for (String s : list) {
+			expString += s + " ";
+		}
+	
+		assertEquals("A B C D E ", expString);
+	}
 
 }

@@ -229,7 +229,6 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 			this.data = data;
 			this.next = next;
 		}
-		
 	}
 
 	/**
@@ -238,7 +237,6 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 	 */
 	@Override
 	public Iterator<E> iterator() {
-		// TODO Auto-generated method stub
 		return new SortedListIterator();
 	}
 
@@ -253,7 +251,7 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 	private class SortedListIterator implements Iterator<E>{
 
 		/** ListNode the pointer is in front of, referenced with next() method */
-		ListNode current;
+		private ListNode current;
 		
 		/**
 		 * Initializes pointer to first element of the list
