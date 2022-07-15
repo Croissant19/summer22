@@ -114,9 +114,6 @@ public class Manager {
 	 */	
 	public String getNumSeries() {
 		int tally = 0;
-		//TODO: VERY IMPORTANT
-		//TODO: make sortedlist iteratable to decrease computation time or switch to arraylist model
-
 		//Increment each time an anime on the list is Type Series
 		for (Anime a : animeList) {
 			if (a.getType().equals(Type.SERIES.formattedName)) {
@@ -134,8 +131,6 @@ public class Manager {
 	 */		
 	public String getNumSpecial() {
 		int tally = 0;
-		//TODO: VERY IMPORTANT
-		//TODO: make sortedlist iteratable to decrease computation time or switch to arraylist model
 		//Increment each time an anime on the list is Type Special
 		for (Anime a : animeList) {
 			if (a.getType().equals(Type.SPECIAL.formattedName)) {
@@ -250,7 +245,5 @@ public class Manager {
 
 		return percent + "%";
 	}
-	//TODO: test!!!
-	//TODO: can we combine the above stat methods? def need an iterator!
-	
+	//TODO: test!!!	
 }

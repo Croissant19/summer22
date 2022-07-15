@@ -3,6 +3,7 @@ package gui;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import anime.Anime;
@@ -43,13 +44,16 @@ public class NewAnimeView extends JPanel {
 	private JCheckBox chckBxFinished;
 	private JCheckBox chckBxDropped;
 
+	private JButton btnSave;
+	private JLabel lblTopInfo;
+
 	/**
 	 * Create the panel.
 	 */
 	public NewAnimeView() {
 		setLayout(null);
 		
-		JButton btnSave = new JButton("Add");
+		btnSave = new JButton("Add");
 		btnSave.setBounds(253, 341, 89, 23);
 		add(btnSave);
 		
@@ -62,9 +66,9 @@ public class NewAnimeView extends JPanel {
 		add(pnlFields);
 		pnlFields.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel(DEFAULT_TEXT, SwingConstants.CENTER);
-		lblNewLabel.setBounds(10, 11, 385, 52);
-		pnlFields.add(lblNewLabel);
+		lblTopInfo = new JLabel(DEFAULT_TEXT, SwingConstants.CENTER);
+		lblTopInfo.setBounds(10, 11, 385, 52);
+		pnlFields.add(lblTopInfo);
 
 		
 		JLabel lblTitle = new JLabel("Title:");
@@ -167,6 +171,21 @@ public class NewAnimeView extends JPanel {
 	
 	private void createEvents() {
 
+		//Bottom button	
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Try to construct the anime, catching exceptions is something is amiss
+				try {
+					makeNewAnime();
+					clearFields();
+				} catch (Exception e1) {
+					//Show user a prompt indicating the issue
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				}
+			}
+		});
+
+		
 		//Events for ensuring only one radio button of each type can be selected at once
 		//Language
 		rdBtnSub.addActionListener(new ActionListener() {
@@ -219,6 +238,24 @@ public class NewAnimeView extends JPanel {
 	
 	}
 	
+	/**
+	 * Resets the fields to blank after an Anime is successfully added
+	 */
+	private void clearFields() {
+		//TODO: TEST
+		txtFldTitle.setText("");;
+		txtFldYear.setText("");;
+		txtFldCount.setText("");;
+		txtFldDirector.setText("");;
+		rdBtnSub.setSelected(false);
+		rdBtnDub.setSelected(false);
+		rdBtnOther.setSelected(false);
+		rdBtnSeries.setSelected(false);
+		rdBtnSpecial.setSelected(false);
+		chckBxFinished.setSelected(false);
+		chckBxDropped.setSelected(false);
+	}
+
 	/**
 	 * Called when the user clicks the add button, checks values on the card panel 
 	 * and tries to create an Anime from them.
@@ -292,7 +329,11 @@ public class NewAnimeView extends JPanel {
 				throw new IllegalArgumentException(e.getMessage());
 			}
 		}
-		
-		
+
+		//TODO: TESTTT
+		//By here, was successful so can adjust top text to indicate so.
+		//TODO: make toptext reset after leaving 
+		secondaryText = title + " was created successfully. Feel free to add another!";
+		lblTopInfo.setText(secondaryText);
 	}
 }

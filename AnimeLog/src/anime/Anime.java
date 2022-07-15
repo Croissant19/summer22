@@ -152,8 +152,6 @@ public class Anime implements Comparable<Anime> {
 		setNotes(notes);
 	}
 		
-
-	//TODO add other constructor for when user creates entry w/ less details, like a watch list
 	
 	/**
 	 * Compared two anime for sorting.

@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -10,13 +9,8 @@ import javax.swing.table.DefaultTableModel;
 
 import manager.Manager;
 
-import javax.swing.AbstractButton;
-import javax.swing.Box;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.JFormattedTextField;
-import javax.swing.JTextPane;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Toolkit;
@@ -25,21 +19,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
-import javax.swing.JTextField;
 import javax.swing.JButton;
-import java.awt.Font;
 import javax.swing.JToolBar;
-import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JComboBox;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.awt.CardLayout;
-import java.awt.Component;
-
 import javax.swing.UIManager;
 import java.awt.Dimension;
 
@@ -57,7 +44,6 @@ public class GUI extends JFrame {
 
 
 	private JComboBox<String> fileOptions;
-	private JTextField textField;
 
 	private JButton btnHome;
 	private JButton btnAdd;
