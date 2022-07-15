@@ -1,5 +1,7 @@
 package util;
 
+import java.util.Iterator;
+
 /**
  * List for storing objects in a sorted order,
  * modeled after a LinkedList.
@@ -8,7 +10,7 @@ package util;
  *
  * @param <E> type of data to be stored in the list
  */
-public class SortedList<E extends Comparable<E>> {
+public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 
 	/** Number of elements in the list */
 	private int size;
@@ -201,12 +203,12 @@ public class SortedList<E extends Comparable<E>> {
 	 * ListNode class representing an element in the list.
 	 * There will be several of these referencing one another in a chain to form the list
 	 */
-	public class ListNode {
+	private class ListNode {
 		/** Information stored in the ListNode */
 		public E data;
 		
 		/** Pointer to the following ListNode in the sequence */
-		public ListNode next;
+		private ListNode next;
 		
 		/**
 		 * Constructor for the list node, 
@@ -230,5 +232,57 @@ public class SortedList<E extends Comparable<E>> {
 		
 	}
 
+	/**
+	 * Creates an iterator to go over each element of the list for for-each loops
+	 * @return Iterator for SortedLists
+	 */
+	@Override
+	public Iterator<E> iterator() {
+		// TODO Auto-generated method stub
+		return new SortedListIterator();
+	}
+
+	/**
+	 * Describes an iterator class for SortedLists
+	 * 
+	 * @author Hunter Pruitt
+	 * references: 
+	 * https://www.geeksforgeeks.org/java-implementing-iterator-and-iterable-interface/
+	 * https://stackoverflow.com/questions/7140866/cannot-convert-from-nodee-to-nodee
+	 */
+	private class SortedListIterator implements Iterator<E>{
+
+		/** ListNode the pointer is in front of, referenced with next() method */
+		ListNode current;
+		
+		/**
+		 * Initializes pointer to first element of the list
+		 */
+		private SortedListIterator() {
+			current = front;
+		}
+
+		/**
+		 * Indicates if there is a next element in the list.
+		 * During construction, imagine starting just before the first element.
+		 * @returns boolean indicator as to if there is a next element
+		 */
+		@Override
+		public boolean hasNext() {
+			return current != null;
+		}
+
+		/**
+		 * Sets current to the next element and returns the data from where it was pointing to.
+		 * @return data held in a sorted list node
+		 */
+		@Override
+		public E next() {
+			E data = current.data;
+			current = current.next;
+			return data;
+		}
+		
+	}
 	
 }

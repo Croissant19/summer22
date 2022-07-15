@@ -116,12 +116,14 @@ public class Manager {
 		int tally = 0;
 		//TODO: VERY IMPORTANT
 		//TODO: make sortedlist iteratable to decrease computation time or switch to arraylist model
+
 		//Increment each time an anime on the list is Type Series
-		for (int i = 0; i < animeList.size(); i++) {
-			if (animeList.get(i).getType().equals(Type.SERIES.formattedName)) {
+		for (Anime a : animeList) {
+			if (a.getType().equals(Type.SERIES.formattedName)) {
 				tally++;
 			}
 		}
+		
 
 		return "" + tally;
 	}
@@ -135,8 +137,8 @@ public class Manager {
 		//TODO: VERY IMPORTANT
 		//TODO: make sortedlist iteratable to decrease computation time or switch to arraylist model
 		//Increment each time an anime on the list is Type Special
-		for (int i = 0; i < animeList.size(); i++) {
-			if (animeList.get(i).getType().equals(Type.SPECIAL.formattedName)) {
+		for (Anime a : animeList) {
+			if (a.getType().equals(Type.SPECIAL.formattedName)) {
 				tally++;
 			}
 		}
@@ -150,9 +152,8 @@ public class Manager {
 	 */
 	public String getCountSum() {
 		int tally = 0;
-		for (int i = 0; i < animeList.size(); i++) {
-			Anime currAnime = animeList.get(i);
-			tally += currAnime.getCount();
+		for (Anime a : animeList) {
+			tally += a.getCount();
 		}
 
 		return "" + tally;
@@ -166,10 +167,8 @@ public class Manager {
 		int subCt = 0, dubCt = 0, otherCt = 0;
 		
 		//Tally counts for each language classification
-		for (int i = 0; i < animeList.size(); i++) {
-			Anime currAnime = animeList.get(i);
-
-			switch (Language.parseLang(currAnime.getLanguage())) {
+		for (Anime a : animeList) {
+			switch (Language.parseLang(a.getLanguage())) {
 			
 			case SUB: 
 				subCt++;
@@ -215,10 +214,10 @@ public class Manager {
 	public String getPercentFinished() {
 		int sumCt = 0;
 		int finCt = 0;
+		
 		//Iterate through each anime and tally the desired flag
-		for (int i = 0; i < animeList.size(); i++) {
-			Anime currAnime = animeList.get(i);
-			if (currAnime.isFinished()) {
+		for (Anime a : animeList) {
+			if (a.isFinished()) {
 				finCt++;
 			}
 			sumCt++;
@@ -239,9 +238,8 @@ public class Manager {
 		int sumCt = 0;
 		int finCt = 0;
 		//Iterate through each anime and tally the desired flag
-		for (int i = 0; i < animeList.size(); i++) {
-			Anime currAnime = animeList.get(i);
-			if (currAnime.isDropped()) {
+		for (Anime a : animeList) {
+			if (a.isDropped()) {
 				finCt++;
 			}
 			sumCt++;
