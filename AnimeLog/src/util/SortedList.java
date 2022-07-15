@@ -151,9 +151,8 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 	 * @return index of the element in the sorted list
 	 */
 	public int indexOf(E element) {
-		//TODO: TESTTTT
 		int idx = -1;
-
+		
 		if (front != null) {
 			idx = 0;
 			ListNode temp = front;
@@ -163,9 +162,13 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 				if (temp.next == null) {
 					//Reached end of list
 					idx = -1;
+					break;
 				}
 				temp = temp.next;
 			}
+		} else {
+			//Set index to -1 if list is empty
+			idx = -1;
 		}
 
 		return idx;

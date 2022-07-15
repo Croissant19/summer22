@@ -89,4 +89,35 @@ class SortedListTest {
 		assertEquals("A B C D E ", expString);
 	}
 
+	
+	
+	/**
+	 * Tests that indexOf returns correct index
+	 */
+	@Test
+	void testIndexOf() {
+		//Test on empty list
+		assertEquals(-1, list.indexOf("A"));
+
+		list.add("A");
+		list.add("M");
+		list.add("Z");
+		list.add("B");
+		list.add("Y");
+
+		//Test in general
+		assertEquals(0, list.indexOf("A"));
+		assertEquals(1, list.indexOf("B"));
+		assertEquals(2, list.indexOf("M"));
+		assertEquals(3, list.indexOf("Y"));
+		assertEquals(4, list.indexOf("Z"));
+		assertEquals(-1, list.indexOf("!"));
+
+		//Test after removal
+		list.remove(3);
+		assertEquals(3, list.indexOf("Z"));
+		
+		list.remove(0);
+		assertEquals(0, list.indexOf("B"));	
+	}
 }
