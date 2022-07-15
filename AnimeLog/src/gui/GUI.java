@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import manager.Manager;
@@ -47,7 +49,8 @@ public class GUI extends JFrame {
 
 	private JButton btnHome;
 	private JButton btnAdd;
-	private JButton btnEdit;
+	//TODO: browse button starting at index 0?
+	//TODO: settings button for graph sort by? graph colors?
 	
 	private HomeView homeView = new HomeView();
 	private BrowseView browseView = new BrowseView();
@@ -163,10 +166,6 @@ public class GUI extends JFrame {
 		btnAdd.setRequestFocusEnabled(false);
 		toolBar.add(btnAdd);
 		
-		btnEdit = new JButton("Edit");
-		btnEdit.setRequestFocusEnabled(false);
-		toolBar.add(btnEdit);
-
 		//Disable home button to indicate that is where you start
 		toggleToolbarButtons(btnHome);
 		//TODO: fix auto selection/ highlight when a button is disabled
@@ -247,8 +246,7 @@ public class GUI extends JFrame {
 		//Add new Anime button on toolbar
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout cl = (CardLayout)cardPanel.getLayout();
-				cl.show(cardPanel, "homeView");
+	        	setCard("homeView");
 				toggleToolbarButtons(btnHome);
 			}
 		});
@@ -257,34 +255,50 @@ public class GUI extends JFrame {
 		//Add new Anime button on toolbar
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout cl = (CardLayout)cardPanel.getLayout();
-				cl.show(cardPanel, "addView");
+	        	setCard("addView");
 				toggleToolbarButtons(btnAdd);
 
 			}
 		});
 
-		//Edit button for editing the selected Anime
-		btnEdit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				CardLayout cl = (CardLayout)cardPanel.getLayout();
-				cl.show(cardPanel, "browseView");
-			}
-		});
 
+		//Table Events
+		//TODO: should row stay selected when taken to browse view? if so needs to change with next and prev buttons there too
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+	        public void valueChanged(ListSelectionEvent event) {
+	        	//Get index and pass corresponding anime to BrowseView
+	        	int idx = table.getSelectedRow();
+	        	browseView.setCurrentAnime(Manager.getInstance().getAnimeList().get(idx));
+	        	
+	        	//Change card
+	        	toggleToolbarButtons(null);
+	        	setCard("browseView");
+
+	        }
+	    });
+		
+		
+		
+	}
+
+	private void setCard(String view) {
+    	CardLayout cl = (CardLayout) cardPanel.getLayout();
+    	cl.show(cardPanel, view);		
 	}
 
 	/**
-	 * Re-enables all toolbar buttons and selectively disables the most recently selected one
+	 * Re-enables all toolbar buttons and selectively disables the most recently selected one.
+	 * You can enable all buttons by passing null
 	 * @param selected button linking to the card the user is currently on
 	 */
 	private void toggleToolbarButtons(JButton selected) {
 		//Enable all buttons
 		btnHome.setEnabled(true);
 		btnAdd.setEnabled(true);
-		btnEdit.setEnabled(true);
 		//Disable the selected button
-		selected.setEnabled(false);
+		if (selected != null) {
+			selected.setEnabled(false);	
+		}
 	}
 
 	/**

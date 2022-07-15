@@ -300,6 +300,20 @@ public class BrowseView extends JPanel {
 	}
 	
 	/**
+	 * 
+	 * @param a anime to load
+	 * @throws NullPointerException is passed a null Anime
+	 */
+	public void setCurrentAnime(Anime a) {
+		if (a == null) {
+			throw new NullPointerException("Somehow selected null anime");
+		}
+		this.currentAnime = a;
+		loadData();
+	}
+	
+	
+	/**
 	 * Indicates if a change occurred while the user was in edit mode
 	 * @return boolean indicator if a value has changed since enabling the field components
 	 * @throws IllegalArgumentException if a type or language isn't selected
@@ -339,7 +353,40 @@ public class BrowseView extends JPanel {
 		}
 		return type;
 	}
+	
+	/**
+	 * Selects the correct JRadioButton depending on what type is passed
+	 * @param type String indicator of an anime type classification
+	 * @throws IllegalArgumentException if type is not an accepted Type
+	 */
+	private void setSelectedType(String type) {
+		if (type.equals(Type.SERIES.formattedName)) {
+			rdBtnSeries.setSelected(true);
+		} else if (type.equals(Type.SPECIAL.formattedName)) {
+			rdBtnSpecial.setSelected(true);
+		} else {
+			throw new IllegalArgumentException("Invalid type");
+		}
+	}
 
+
+	/**
+	 * Selects the correct JRadioButton depending on what language is passed
+	 * @param lan String indicator of an anime language classification
+	 * @throws IllegalArgumentException if lan is not an accepted Language */
+	private void setSelectedLanguage (String lan) {
+		if (lan.equals(Language.SUB.formattedName)) {
+			rdBtnSub.setSelected(true);
+		} else if (lan.equals(Language.DUB.formattedName)) {
+			rdBtnDub.setSelected(true);
+		} else if (lan.equals(Language.OTHER.formattedName)) {
+			rdBtnOther.setSelected(true);
+		} else {
+			throw new IllegalArgumentException("Invalid language");
+		}
+	}
+
+	
 	/**
 	 * Indicates which language the user selected among the relevant JRadioButtons
 	 * @return String indicator as to what language is currently selected
@@ -394,10 +441,30 @@ public class BrowseView extends JPanel {
 	/**
 	 * Fills the page with information about a selected anime based on currentAnime field
 	 */
-	public void loadData() {
+	private void loadData() {
 		//TODO:
 		//TODO: handle disable buttons if last/first/only entry
+		//Empty current data first to be safe
+		clearFields();
+		
+		
+		//Load anime data
+		txtFldTitle.setText(currentAnime.getTitle());
+		txtFldYear.setText("" + currentAnime.getYear());
+		txtFldCount.setText("" + currentAnime.getCount());
+		setSelectedType(currentAnime.getType());
+		setSelectedLanguage(currentAnime.getLanguage());
+		if (currentAnime.isFinished()) {
+			chckBxFinished.setSelected(true);
+		} else if (currentAnime.isDropped()) {
+			chckBxDropped.setSelected(true);
+		}
+		
+		txtFldDirector.setText(currentAnime.getDirector());
+		//TODO: notes can't handle newline chars
+		txtFldNotes.setText(currentAnime.getNotes());
 
+		
 		//Disable next and/or previous buttons if such anime do not exist
 
 		SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
@@ -411,7 +478,25 @@ public class BrowseView extends JPanel {
 		}
 
 	}
-	
+
+	/**
+	 * Resets the fields to blank after an Anime is successfully added
+	 */
+	private void clearFields() {
+		txtFldTitle.setText("");;
+		txtFldYear.setText("");;
+		txtFldCount.setText("");;
+		txtFldDirector.setText("");;
+		rdBtnSub.setSelected(false);
+		rdBtnDub.setSelected(false);
+		rdBtnOther.setSelected(false);
+		rdBtnSeries.setSelected(false);
+		rdBtnSpecial.setSelected(false);
+		chckBxFinished.setSelected(false);
+		chckBxDropped.setSelected(false);
+		txtFldNotes.setText("");
+	}
+
 	/**
 	 * Retrieves following anime in sequence and reloads page data
 	 */
@@ -419,7 +504,7 @@ public class BrowseView extends JPanel {
 		SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
 		int currentIdx = list.indexOf(currentAnime);
 		currentAnime = list.get(++currentIdx);
-
+		//TODO: redundant right?
 		//Disable next button if this is the last anime
 		if (currentIdx == list.size() - 1) {
 			btnNext.setEnabled(false);
@@ -434,7 +519,7 @@ public class BrowseView extends JPanel {
 		SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
 		int currentIdx = list.indexOf(currentAnime);
 		currentAnime = list.get(--currentIdx);
-
+		//TODO: redundant right?
 		//Disable previous button if this is the first anime
 		if (currentIdx == 0) {
 			btnPrevious.setEnabled(false);
