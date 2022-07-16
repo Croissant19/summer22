@@ -31,6 +31,8 @@ import java.io.File;
 import java.awt.CardLayout;
 import javax.swing.UIManager;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class GUI extends JFrame {
 
@@ -248,6 +250,7 @@ public class GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 	        	setCard("homeView");
 				toggleToolbarButtons(btnHome);
+				table.clearSelection();
 			}
 		});
 
@@ -257,7 +260,7 @@ public class GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 	        	setCard("addView");
 				toggleToolbarButtons(btnAdd);
-
+				table.clearSelection();
 			}
 		});
 
@@ -268,8 +271,10 @@ public class GUI extends JFrame {
 	        public void valueChanged(ListSelectionEvent event) {
 	        	//Get index and pass corresponding anime to BrowseView
 	        	int idx = table.getSelectedRow();
-	        	browseView.setCurrentAnime(Manager.getInstance().getAnimeList().get(idx));
-	        	
+	        	//idx is -1 when table row is deselected
+	        	if (idx != -1) {
+		        	browseView.setCurrentAnime(Manager.getInstance().getAnimeList().get(idx));	
+	        	}	        	
 	        	//Change card
 	        	toggleToolbarButtons(null);
 	        	setCard("browseView");
@@ -308,7 +313,7 @@ public class GUI extends JFrame {
 	 * @throws IllegalStateException if user does not select a file
 	 */
 	private String getFilename(boolean load) {
-		//TODO: note: "./" sets to currect working directory, is necessary? works good blank too...
+		//TODO: note: "./" sets to current working directory, is necessary? works good blank too...
 		JFileChooser fc = new JFileChooser("./");
 		int returnVal;
 		//Show user prompts
