@@ -14,6 +14,7 @@ import util.SortedList;
 
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 import javax.swing.JCheckBox;
 import java.awt.Font;
 import java.awt.Image;
@@ -31,13 +32,14 @@ import java.awt.event.MouseEvent;
  */
 public class BrowseView extends JPanel {
 
+	private static final String WARNING_MESSAGE = "You have unsaved changes. Are you sure you want to leave?";
 	private GUI mainGUI;
 	private JPanel imgPanel;
 	private JTextField txtFldTitle;
 	private JTextField txtFldYear;
 	private JTextField txtFldCount;
 	private JTextField txtFldDirector;
-	private JTextField txtFldNotes;
+	private JTextArea txtAreaNotes;
 	private JRadioButton rdBtnSub;
 	private JRadioButton rdBtnDub;
 	private JRadioButton rdBtnOther;
@@ -187,11 +189,11 @@ public class BrowseView extends JPanel {
 		lblIcon.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/resources/addImgPoster.png")).getImage().getScaledInstance(imgPanel.getWidth(), imgPanel.getHeight(), Image.SCALE_SMOOTH)));
 		imgPanel.add(lblIcon);
 		
-		txtFldNotes = new JTextField();
-		txtFldNotes.setEditable(false);
-		txtFldNotes.setBounds(10, 205, 274, 103);
-		pnlFields.add(txtFldNotes);
-		txtFldNotes.setColumns(10);
+		txtAreaNotes = new JTextArea();
+		txtAreaNotes.setEditable(false);
+		txtAreaNotes.setBounds(10, 205, 274, 103);
+		pnlFields.add(txtAreaNotes);
+		txtAreaNotes.setColumns(10);
 		
 		JLabel lblNotes = new JLabel("Notes:");
 		lblNotes.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -229,6 +231,16 @@ public class BrowseView extends JPanel {
 				if (inEditMode) {
 					if (changeOccured()) {
 						//TODO: code to update or save changes
+						//Ensure change is acceptable
+//						Anime updatedAnime = new Anime();
+						//TODO: borrow or refactor NewAnimeView.makeNewAnime() for this
+						
+						//Regenerate the table
+						
+						Manager manager = Manager.getInstance();
+						manager.removeAnime(manager.getAnimeList().indexOf(currentAnime));
+						//currentAnime = updatedAnime;
+						manager.addAnime(currentAnime);
 					}
 					
 				}
@@ -326,7 +338,6 @@ public class BrowseView extends JPanel {
 		//Transform int fields into Strings comparable to what is in the text fields
 		String oldYear = "" + currentAnime.getYear();
 		String oldCount = "" + currentAnime.getCount();
-		
 		//TODO: handle when mandatory fields blank
 		//Return statements to compare each field until either a contrast is found or all match
 		return !currentAnime.getTitle().equals(txtFldTitle.getText()) 
@@ -337,7 +348,8 @@ public class BrowseView extends JPanel {
 				|| currentAnime.isFinished() != chckBxFinished.isSelected()
 				|| currentAnime.isDropped() != chckBxDropped.isSelected()
 				|| !currentAnime.getDirector().equals(txtFldDirector.getText())
-				|| !currentAnime.getNotes().equals(txtFldNotes.getText());
+				|| !currentAnime.getNotes().equals(txtAreaNotes.getText());
+
 	}
 
 	/**
@@ -423,7 +435,7 @@ public class BrowseView extends JPanel {
 		txtFldYear.setEditable(!txtFldYear.isEditable());
 		txtFldCount.setEditable(!txtFldCount.isEditable());
 		txtFldDirector.setEditable(!txtFldDirector.isEditable());
-		txtFldNotes.setEditable(!txtFldNotes.isEditable());
+		txtAreaNotes.setEditable(!txtAreaNotes.isEditable());
 		rdBtnSub.setEnabled(!rdBtnSub.isEnabled());
 		rdBtnDub.setEnabled(!rdBtnDub.isEnabled());
 		rdBtnOther.setEnabled(!rdBtnOther.isEnabled());
@@ -435,7 +447,7 @@ public class BrowseView extends JPanel {
 		this.inEditMode = !inEditMode;
 
 		//Change the text on the button
-		if (btnEdit.getText().equals("Edit")) {
+		if (inEditMode) {
 			btnEdit.setText("Save");
 		} else {
 			btnEdit.setText("Edit");
@@ -446,11 +458,10 @@ public class BrowseView extends JPanel {
 	 * Fills the page with information about a selected anime based on currentAnime field
 	 */
 	private void loadData() {
-		//TODO:
+		//TODO: next and previous keep text boxes editable, save prompt?
 		//TODO: handle disable buttons if last/first/only entry
 		//Empty current data first to be safe
 		clearFields();
-		
 		
 		//Load anime data
 		txtFldTitle.setText(currentAnime.getTitle());
@@ -466,7 +477,7 @@ public class BrowseView extends JPanel {
 		
 		txtFldDirector.setText(currentAnime.getDirector());
 		//TODO: notes can't handle newline chars
-		txtFldNotes.setText(currentAnime.getNotes());
+		txtAreaNotes.setText(currentAnime.getNotes());
 
 		
 		//Disable next and/or previous buttons if such anime do not exist
@@ -494,14 +505,27 @@ public class BrowseView extends JPanel {
 		rdBtnSpecial.setSelected(false);
 		chckBxFinished.setSelected(false);
 		chckBxDropped.setSelected(false);
-		txtFldNotes.setText("");
+		txtAreaNotes.setText("");
 	}
 
 	/**
 	 * Retrieves following anime in sequence and reloads page data
 	 */
 	private void displayNext() {
+		//Ensure it's okay to continue
+		if (inEditMode && changeOccured()) {
+			//Show a warning if there is danger of unsaved changes
+			int proceed = JOptionPane.showConfirmDialog(this, WARNING_MESSAGE);
+			//If user wants to proceed, do so
+			//Otherwise stop the operation
+			if (proceed == JOptionPane.YES_OPTION) {
+				changeMode();				
+			} else {
+				return;
+			}
+		}
 		
+		//Handle the data change
 		SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
 		int idx = list.indexOf(currentAnime) + 1;
 		mainGUI.setTableSelected(idx);
@@ -511,6 +535,20 @@ public class BrowseView extends JPanel {
 	 * Retrieves previous anime in sequence and reloads page data
 	 */
 	private void displayPrev() {
+		//Ensure it's okay to continue
+		if (inEditMode && changeOccured()) {
+			//Show a warning if there is danger of unsaved changes
+			int proceed = JOptionPane.showConfirmDialog(this, WARNING_MESSAGE);
+			//If user wants to proceed, do so
+			//Otherwise stop the operation
+			if (proceed == JOptionPane.YES_OPTION) {
+				changeMode();				
+			} else {
+				return;
+			}
+		}
+		
+		//Handle the data change
 		SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
 		int idx = list.indexOf(currentAnime) - 1;
 		mainGUI.setTableSelected(idx);
@@ -525,4 +563,8 @@ public class BrowseView extends JPanel {
 		//TODO: JFrame for image work
 		JOptionPane.showMessageDialog(null, "");
 	}
+
+
+
+
 }

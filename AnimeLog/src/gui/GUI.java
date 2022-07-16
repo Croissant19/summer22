@@ -31,8 +31,6 @@ import java.io.File;
 import java.awt.CardLayout;
 import javax.swing.UIManager;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class GUI extends JFrame {
 
@@ -265,7 +263,6 @@ public class GUI extends JFrame {
 
 
 		//Table Events
-		//TODO: should row stay selected when taken to browse view? if so needs to change with next and prev buttons there too
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
 	        	//Get index and pass corresponding anime to BrowseView
@@ -355,7 +352,7 @@ public class GUI extends JFrame {
 		
 		
 		//TODO: Investigate jtable models to better current system
-		//problems: text not wrap in case of long title, highlight weird
+		//problems: text not wrap in case of long title
 	}
 	
 	/**

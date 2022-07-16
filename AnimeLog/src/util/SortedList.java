@@ -2,6 +2,8 @@ package util;
 
 import java.util.Iterator;
 
+import anime.Anime;
+
 /**
  * List for storing objects in a sorted order,
  * modeled after a LinkedList.
@@ -193,6 +195,8 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 
 		return temp.data;
 	}
+	
+
 
 	/**
 	 * Returns the number of elements in the list.

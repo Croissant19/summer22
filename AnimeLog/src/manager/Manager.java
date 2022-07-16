@@ -86,6 +86,7 @@ public class Manager {
 		//TODO: refresh stats, update table
 	}
 	
+	
 	/**
 	 * Removes a selected anime from the animeList
 	 * @param idx index to remove from
