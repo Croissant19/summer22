@@ -55,7 +55,7 @@ public class GUI extends JFrame {
 	//TODO: settings button for graph sort by? graph colors?
 	
 	private HomeView homeView = new HomeView();
-	private BrowseView browseView = new BrowseView();
+	private BrowseView browseView = new BrowseView(this);
 	private NewAnimeView newAnimeView = new NewAnimeView();
 
 
@@ -170,9 +170,8 @@ public class GUI extends JFrame {
 		
 		//Disable home button to indicate that is where you start
 		toggleToolbarButtons(btnHome);
-		//TODO: fix auto selection/ highlight when a button is disabled
 
-		
+
 		JButton btnRemove = new JButton("Remove");
 		btnRemove.setRequestFocusEnabled(false);
 		toolBar.add(btnRemove);
@@ -286,6 +285,11 @@ public class GUI extends JFrame {
 		
 	}
 
+	
+	/**
+	 * Sets the view of the card panel to a requested page
+	 * @param view identifying text unique to the desired view
+	 */
 	private void setCard(String view) {
     	CardLayout cl = (CardLayout) cardPanel.getLayout();
     	cl.show(cardPanel, view);		
@@ -354,6 +358,14 @@ public class GUI extends JFrame {
 		//problems: text not wrap in case of long title, highlight weird
 	}
 	
+	/**
+	 * Used to set the selected table row from BrowseView, so that Next and Previous buttons work
+	 * @param idx index of the table to select
+	 */
+	public void setTableSelected(int idx) {
+    	table.setRowSelectionInterval(idx, idx);		
+	}
+
 	
 	//////////////////////////////
 	

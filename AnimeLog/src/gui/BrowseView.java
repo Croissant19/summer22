@@ -19,7 +19,6 @@ import java.awt.Font;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
-import javax.swing.BoxLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,6 +31,7 @@ import java.awt.event.MouseEvent;
  */
 public class BrowseView extends JPanel {
 
+	private GUI mainGUI;
 	private JPanel imgPanel;
 	private JTextField txtFldTitle;
 	private JTextField txtFldYear;
@@ -55,8 +55,12 @@ public class BrowseView extends JPanel {
 	
 	/**
 	 * Create the panel.
+	 * @param gui pointer to main part of the GUI so that this card which is inside it can access it's public methods
 	 */
-	public BrowseView() {
+	public BrowseView(GUI gui) {
+		//Attach reference to main GUI class
+		mainGUI = gui;
+
 		setLayout(null);
 		
 		btnNext = new JButton("Next");
@@ -236,7 +240,7 @@ public class BrowseView extends JPanel {
 				
 		
 		//Next button
-		btnPrevious.addActionListener(new ActionListener() {
+		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				displayNext();
 			}
@@ -470,12 +474,8 @@ public class BrowseView extends JPanel {
 		SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
 		int currentIdx = list.indexOf(currentAnime);
 
-		if (currentIdx == list.size() - 1) {
-			btnNext.setEnabled(false);
-		}
-		if (currentIdx == 0) {
-			btnPrevious.setEnabled(false);
-		}
+		btnNext.setEnabled(currentIdx < list.size() - 1);
+		btnPrevious.setEnabled(currentIdx > 0);
 
 	}
 
@@ -501,31 +501,19 @@ public class BrowseView extends JPanel {
 	 * Retrieves following anime in sequence and reloads page data
 	 */
 	private void displayNext() {
+		
 		SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
-		int currentIdx = list.indexOf(currentAnime);
-		currentAnime = list.get(++currentIdx);
-		//TODO: redundant right?
-		//Disable next button if this is the last anime
-		if (currentIdx == list.size() - 1) {
-			btnNext.setEnabled(false);
+		int idx = list.indexOf(currentAnime) + 1;
+		mainGUI.setTableSelected(idx);
 		}
-		loadData();
-	}
 	
 	/**
 	 * Retrieves previous anime in sequence and reloads page data
 	 */
 	private void displayPrev() {
 		SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
-		int currentIdx = list.indexOf(currentAnime);
-		currentAnime = list.get(--currentIdx);
-		//TODO: redundant right?
-		//Disable previous button if this is the first anime
-		if (currentIdx == 0) {
-			btnPrevious.setEnabled(false);
-		}
-
-		loadData();
+		int idx = list.indexOf(currentAnime) - 1;
+		mainGUI.setTableSelected(idx);
 	}
 
 	
