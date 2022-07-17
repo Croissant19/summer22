@@ -5,6 +5,7 @@ import java.io.File;
 import anime.Anime;
 import anime.Anime.Language;
 import anime.Anime.Type;
+import gui.GUI;
 import io.AnimeIO;
 import util.SortedList;
 
@@ -20,7 +21,7 @@ public class Manager {
 	
 	/** Collection of user anime */
 	private SortedList<Anime> animeList;
-	
+		
 	/** 
 	 * Retrieves the manager for method calls
 	 * @return the Singleton instance of the Manager
@@ -83,6 +84,7 @@ public class Manager {
 	public void addAnime(Anime a) {
 		//TODO: test adding a duplicate thru GUI
 		animeList.add(a);
+		
 		//TODO: refresh stats, update table
 	}
 	

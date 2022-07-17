@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import anime.Anime.Language;
 import anime.Anime.Type;
+import util.SortedList;
 
 /**
  * Tests the Anime class
@@ -84,7 +85,7 @@ class AnimeTest {
 	 * Tests the compareTo methods for anime
 	 */
 	@Test
-	void testComareTo() {
+	void testCompareTo() {
 		assertTrue(GURREN.compareTo(FMA03) > 0);
 		assertTrue(FMA09.compareTo(GURREN) < 0);
 		assertTrue(FMA03.compareTo(FMA09) < 0);
@@ -92,6 +93,26 @@ class AnimeTest {
 		assertTrue(GURREN.compareTo(GURREN) == 0);
 	}
 
+	/**
+	 * Tests the compareTo methods for anime using SortedList
+	 */
+	@Test
+	void testCompareToSortedList() {
+		SortedList<Anime> list = new SortedList<Anime>();
+		list.add(FMA09);
+		list.add(FMA03);
+		list.add(GURREN);
+		
+		Anime a = new Anime("a", 2003, 51, 
+				Language.SUB, Type.SERIES, false, true, "Seiji Mizushima", "");
+		
+		assertEquals(FMA03, list.get(0));
+		assertEquals(FMA09, list.get(1));
+		assertEquals(GURREN, list.get(2));
+
+		list.add(a);
+		assertEquals(0, list.indexOf(a));
+	}
 
 	/**
 	 * Tests toString and equals methods for Anime objects

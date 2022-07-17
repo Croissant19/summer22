@@ -230,17 +230,23 @@ public class BrowseView extends JPanel {
 				//Manage inputs in edit mode
 				if (inEditMode) {
 					if (changeOccured()) {
-						//TODO: code to update or save changes
-						//Ensure change is acceptable
-//						Anime updatedAnime = new Anime();
-						//TODO: borrow or refactor NewAnimeView.makeNewAnime() for this
-						
-						//Regenerate the table
-						
-						Manager manager = Manager.getInstance();
-						manager.removeAnime(manager.getAnimeList().indexOf(currentAnime));
-						//currentAnime = updatedAnime;
-						manager.addAnime(currentAnime);
+						//TODO: probably should combine makeNeAnime from here and NewAnimeView into one method...!
+						try {				
+							//Try to construct new Anime
+							Anime updatedAnime = makeNewAnime();
+
+							//Update and regenerate data
+							Manager manager = Manager.getInstance();
+							manager.removeAnime(manager.getAnimeList().indexOf(currentAnime));
+							manager.addAnime(updatedAnime);
+							mainGUI.updateData();
+							setCurrentAnime(updatedAnime);
+
+						} catch (Exception e1) {
+							//Show warning dialog if necessary
+							JOptionPane.showMessageDialog(null, e1.getMessage());
+							return;
+						}
 					}
 					
 				}
@@ -314,7 +320,8 @@ public class BrowseView extends JPanel {
 			}
 		});
 	}
-	
+
+
 	/**
 	 * 
 	 * @param a anime to load
@@ -476,7 +483,6 @@ public class BrowseView extends JPanel {
 		}
 		
 		txtFldDirector.setText(currentAnime.getDirector());
-		//TODO: notes can't handle newline chars
 		txtAreaNotes.setText(currentAnime.getNotes());
 
 		
@@ -564,6 +570,89 @@ public class BrowseView extends JPanel {
 		JOptionPane.showMessageDialog(null, "");
 	}
 
+	/**
+	 * Uses the components in BrowseView to synthesize a new Anime, letting you know if something is wrong.
+	 * @return Anime with updated information as a new Anime object
+	 * @throws IllegalArgumentException if bad values, construction fails, or required data not provided by user
+	 */
+	private Anime makeNewAnime() {
+		//Declare fields for constructor
+		String title;
+		int year;
+		int count = 0;
+		Type type;
+		Language lan;
+		boolean fin;
+		boolean drop;
+		String director = "";
+		String notes = "";
+		
+		//Check fields are acceptable
+		try {
+
+			//Required fields
+			title = txtFldTitle.getText();
+			if (title.isBlank()) {
+				throw new IllegalArgumentException("Title not indicated.");
+			}
+			if (txtFldYear.getText().isBlank()) {
+				throw new IllegalArgumentException("Year not indicated.");
+			}
+			year = Integer.parseInt(txtFldYear.getText());
+
+			if (rdBtnSub.isSelected()) {
+				lan = Language.SUB;
+			} else if (rdBtnDub.isSelected()) {
+				lan = Language.DUB;
+			} else if (rdBtnOther.isSelected()) {
+				lan = Language.OTHER;
+			} else {
+				//In case nothing is selected
+				throw new IllegalArgumentException("Language not indicated.");
+			}
+			
+			if (rdBtnSeries.isSelected()) {
+				type = Type.SERIES;
+			} else if (rdBtnSpecial.isSelected()) {
+				type = Type.SPECIAL;
+			} else {
+				//In case neither is selected
+				throw new IllegalArgumentException("Type not indicated.");
+			}
+
+			
+			
+			//Test not required fields if filled out		
+			if (!txtFldCount.getText().isBlank()) {
+				count = Integer.parseInt(txtFldCount.getText());	
+			}
+			
+			fin = chckBxFinished.isSelected();
+			drop = chckBxDropped.isSelected();	
+
+			if (fin && drop) {
+				throw new IllegalArgumentException("Show cannot be finished and dropped.");
+			}
+			if (!txtFldDirector.getText().isBlank()) {
+				director = txtFldDirector.getText();	
+			}
+			if (!txtAreaNotes.getText().isBlank()) {
+				notes = txtAreaNotes.getText();	
+			}
+			
+			
+			//Create the anime
+			return new Anime(title, year, count, lan, type, fin, drop, director, notes);
+		} catch (Exception e) {
+			
+			//TODO: ensure correct
+			if (e instanceof NumberFormatException) {
+				throw new IllegalArgumentException("Cannot understant some numerical input.");	
+			} else {
+				throw new IllegalArgumentException(e.getMessage());
+			}
+		}
+	}
 
 
 

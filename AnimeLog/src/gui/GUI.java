@@ -333,6 +333,14 @@ public class GUI extends JFrame {
 	}
 	
 	/**
+	 * Updates the table and statistics on the home view
+	 */
+	public void updateData() {
+		updateTable();
+		homeView.updateStats();
+	}
+	
+	/**
 	 * Updates the table with information from the user's anime log data
 	 */
 	private void updateTable() {
