@@ -163,7 +163,7 @@ public class Manager {
 	 */
 	public String getFavoredLanguageAndPercent() {
 		int subCt = 0, dubCt = 0, otherCt = 0;
-		
+		boolean tie = false;
 		//Tally counts for each language classification
 		for (Anime a : animeList) {
 			switch (Language.parseLang(a.getLanguage())) {
@@ -175,30 +175,39 @@ public class Manager {
 				dubCt++;
 				break;
 			case OTHER: 
-				otherCt++;
+				//Only count other if some episodes have been watched
+				//That way other can't win if the list if full of unwatched tbds
+				if (a.getCount() > 0) {
+					otherCt++;	
+				}
 				break;	
 			}
 				
 		}
-		//TODO: handle ties
 		//Determine winning count
 		String winner;
 		int winnerCt = 0;
-		if (subCt > dubCt) {
+		if (subCt > dubCt && subCt > otherCt) {
 			winner = "Sub ";
 			winnerCt = subCt;
-		} else if (dubCt > subCt) {
+		} else if (dubCt > subCt && dubCt > otherCt) {
 			winner = "Dub ";
 			winnerCt = dubCt;
+		} else if (otherCt > subCt && otherCt > dubCt){
+			winner = "Other ";
+			winnerCt = otherCt;
 		} else {
-			winner = "Tie ";
+			tie = true;
+			winner = "Tie";
 		}
 
-		//Get winner percent and finish building string
-		int sumCt = subCt + dubCt + otherCt;
-		int percent = winnerCt * 100 / sumCt;
-		
-		winner += percent + "%";
+		//Get winner percent and finish building string if not a tie
+		if (!tie) {
+			int sumCt = subCt + dubCt + otherCt;
+			int percent = winnerCt * 100 / sumCt;
+			
+			winner += percent + "%";			
+		}
 		
 		return winner;	
 	}
