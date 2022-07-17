@@ -245,9 +245,9 @@ public class GUI extends JFrame {
 		//Add new Anime button on toolbar
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-	        	setCard("homeView");
-				toggleToolbarButtons(btnHome);
 				table.clearSelection();
+				setCard("homeView");
+				toggleToolbarButtons(btnHome);
 			}
 		});
 
@@ -255,9 +255,9 @@ public class GUI extends JFrame {
 		//Add new Anime button on toolbar
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-	        	setCard("addView");
-				toggleToolbarButtons(btnAdd);
 				table.clearSelection();
+				setCard("addView");
+				toggleToolbarButtons(btnAdd);
 			}
 		});
 
