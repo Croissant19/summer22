@@ -158,6 +158,7 @@ public class Anime implements Comparable<Anime> {
 	 * Using alphabetical order (and year if both titles match), this method returns
 	 * negative if this anime precedes the other, 0 if both have the same year and title, 
 	 * and positve if this anime follows the other in sorted order
+	 * Sorting is not case-sensitive and numbers/symbols come before letters
 	 * 
 	 * @param a anime to be compared to
 	 * @return numerical indicator of where this anime should be sorted in compairison to another anime
@@ -165,8 +166,8 @@ public class Anime implements Comparable<Anime> {
 	@Override
 	public int compareTo(Anime a) {
 		//Get and compare titles
-		String thisTitle = this.title;
-		String otherTitle = a.getTitle();
+		String thisTitle = this.title.toLowerCase();
+		String otherTitle = a.getTitle().toLowerCase();
 		if (!thisTitle.equals(otherTitle)) {
 			return thisTitle.compareTo(otherTitle);
 		} else { //Compare years

@@ -106,12 +106,27 @@ class AnimeTest {
 		Anime a = new Anime("a", 2003, 51, 
 				Language.SUB, Type.SERIES, false, true, "Seiji Mizushima", "");
 		
+		Anime num = new Anime("0", 2003, 51, 
+				Language.SUB, Type.SERIES, false, true, "Seiji Mizushima", "");
+		
+		Anime symbol = new Anime("%", 2003, 51, 
+				Language.SUB, Type.SERIES, false, true, "Seiji Mizushima", "");
+
+		
+		
 		assertEquals(FMA03, list.get(0));
 		assertEquals(FMA09, list.get(1));
 		assertEquals(GURREN, list.get(2));
-
+		//Ensures adding is correct regardless of case
 		list.add(a);
 		assertEquals(0, list.indexOf(a));
+		
+		//Ensures numbers and other symbols are added before letters
+		list.add(num);
+		assertEquals(0, list.indexOf(num));
+		list.add(symbol);
+		assertEquals(0, list.indexOf(symbol));
+		
 	}
 
 	/**
