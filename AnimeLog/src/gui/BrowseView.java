@@ -229,28 +229,27 @@ public class BrowseView extends JPanel {
 				
 				//Manage inputs in edit mode
 				if (inEditMode) {
-					if (changeOccured()) {
-						//TODO: probably should combine makeNeAnime from here and NewAnimeView into one method...!
 						try {				
-							//Try to construct new Anime
-							Anime updatedAnime = makeNewAnime();
-
-							//Update and regenerate data
-							Manager manager = Manager.getInstance();
-							manager.removeAnime(manager.getAnimeList().indexOf(currentAnime));
-							manager.addAnime(updatedAnime);
-							mainGUI.updateData();
-							setCurrentAnime(updatedAnime);
-
+							if (changeOccurred()) {	
+								//Try to construct new Anime
+								//TODO: probably should combine makeNeAnime from here and NewAnimeView into one method...!
+								Anime updatedAnime = makeNewAnime();
+	
+								//Update and regenerate data
+								Manager manager = Manager.getInstance();
+								manager.removeAnime(manager.getAnimeList().indexOf(currentAnime));
+								manager.addAnime(updatedAnime);
+								mainGUI.updateData();
+								setCurrentAnime(updatedAnime);
+							}
 						} catch (Exception e1) {
 							//Show warning dialog if necessary
 							JOptionPane.showMessageDialog(null, e1.getMessage());
 							return;
 						}
-					}
 					
 				}
-				
+				//Regardless of mode, if make it this far, change to other mode
 				changeMode();
 			}
 		});
@@ -338,24 +337,31 @@ public class BrowseView extends JPanel {
 	
 	/**
 	 * Indicates if a change occurred while the user was in edit mode
+	 * If an IllegalArgumentException is thrown (when a type or language isn't selected) false is returned.
 	 * @return boolean indicator if a value has changed since enabling the field components
-	 * @throws IllegalArgumentException if a type or language isn't selected
 	 */
-	private boolean changeOccured() {
+	private boolean changeOccurred() {
 		//Transform int fields into Strings comparable to what is in the text fields
 		String oldYear = "" + currentAnime.getYear();
 		String oldCount = "" + currentAnime.getCount();
 		//TODO: handle when mandatory fields blank
 		//Return statements to compare each field until either a contrast is found or all match
-		return !currentAnime.getTitle().equals(txtFldTitle.getText()) 
-				|| !oldYear.equals(txtFldYear.getText())
-				|| !oldCount.equals(txtFldCount.getText())
-				|| !currentAnime.getLanguage().equals(getSelectedLanguage())
-				|| !currentAnime.getType().equals(getSelectedType())
-				|| currentAnime.isFinished() != chckBxFinished.isSelected()
-				|| currentAnime.isDropped() != chckBxDropped.isSelected()
-				|| !currentAnime.getDirector().equals(txtFldDirector.getText())
-				|| !currentAnime.getNotes().equals(txtAreaNotes.getText());
+		try {
+			return !currentAnime.getTitle().equals(txtFldTitle.getText()) 
+					|| !oldYear.equals(txtFldYear.getText())
+					|| !oldCount.equals(txtFldCount.getText())
+					|| !currentAnime.getLanguage().equals(getSelectedLanguage())
+					|| !currentAnime.getType().equals(getSelectedType())
+					|| currentAnime.isFinished() != chckBxFinished.isSelected()
+					|| currentAnime.isDropped() != chckBxDropped.isSelected()
+					|| !currentAnime.getDirector().equals(txtFldDirector.getText())
+					|| !currentAnime.getNotes().equals(txtAreaNotes.getText());
+			
+		} catch (IllegalArgumentException e) {
+			//If something is wrong (likely the radio buttons) where things were previously right,
+			//it is another indicator that a change has occurred
+			return true;
+		}
 
 	}
 
@@ -519,7 +525,8 @@ public class BrowseView extends JPanel {
 	 */
 	private void displayNext() {
 		//Ensure it's okay to continue
-		if (inEditMode && changeOccured()) {
+
+		if (inEditMode && changeOccurred()) {
 			//Show a warning if there is danger of unsaved changes
 			int proceed = JOptionPane.showConfirmDialog(this, WARNING_MESSAGE);
 			//If user wants to proceed, do so
@@ -542,7 +549,7 @@ public class BrowseView extends JPanel {
 	 */
 	private void displayPrev() {
 		//Ensure it's okay to continue
-		if (inEditMode && changeOccured()) {
+		if (inEditMode && changeOccurred()) {
 			//Show a warning if there is danger of unsaved changes
 			int proceed = JOptionPane.showConfirmDialog(this, WARNING_MESSAGE);
 			//If user wants to proceed, do so
@@ -647,7 +654,7 @@ public class BrowseView extends JPanel {
 			
 			//TODO: ensure correct
 			if (e instanceof NumberFormatException) {
-				throw new IllegalArgumentException("Cannot understant some numerical input.");	
+				throw new IllegalArgumentException("Cannot understand some numerical input.");	
 			} else {
 				throw new IllegalArgumentException(e.getMessage());
 			}
