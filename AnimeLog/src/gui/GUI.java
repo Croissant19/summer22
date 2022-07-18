@@ -168,6 +168,7 @@ public class GUI extends JFrame {
 		toolBar.add(btnHome);
 		
 		btnBrowse = new JButton("Browse");
+		btnBrowse.setRequestFocusEnabled(false);
 		toolBar.add(btnBrowse);
 		
 		btnAdd = new JButton("Add");
@@ -305,7 +306,7 @@ public class GUI extends JFrame {
 		        	browseView.setCurrentAnime(Manager.getInstance().getAnimeList().get(idx));	
 	        	}	        	
 	        	//Change card
-	        	toggleToolbarButtons(null);
+	        	toggleToolbarButtons(btnBrowse);
 	        	setCard("browseView");
 
 	        }
@@ -333,7 +334,9 @@ public class GUI extends JFrame {
 	private void toggleToolbarButtons(JButton selected) {
 		//Enable all buttons
 		btnHome.setEnabled(true);
+		btnBrowse.setEnabled(true);
 		btnAdd.setEnabled(true);
+
 		//Disable the selected button
 		if (selected != null) {
 			selected.setEnabled(false);	
