@@ -38,6 +38,9 @@ public class GUI extends JFrame {
 	private static final String[] COLUMN_NAMES= {"Year",
             "Title",
             "Count"};
+
+	/** Warning in case user tries to start browsing without any anime added */
+	private static final String BROWSE_WARNING = "To start browsing, you need to add at least one anime in your list.";
 	
 	
 	private JPanel contentPane;
@@ -48,7 +51,9 @@ public class GUI extends JFrame {
 	private JComboBox<String> fileOptions;
 
 	private JButton btnHome;
+	private JButton btnBrowse;
 	private JButton btnAdd;
+	private JButton btnRemove;
 	//TODO: browse button starting at index 0?
 	//TODO: settings button for graph sort by? graph colors?
 	
@@ -162,6 +167,9 @@ public class GUI extends JFrame {
 		btnHome.setRequestFocusEnabled(false);
 		toolBar.add(btnHome);
 		
+		btnBrowse = new JButton("Browse");
+		toolBar.add(btnBrowse);
+		
 		btnAdd = new JButton("Add");
 		btnAdd.setRequestFocusEnabled(false);
 		toolBar.add(btnAdd);
@@ -170,7 +178,7 @@ public class GUI extends JFrame {
 		toggleToolbarButtons(btnHome);
 
 
-		JButton btnRemove = new JButton("Remove");
+		btnRemove = new JButton("Remove");
 		btnRemove.setRequestFocusEnabled(false);
 		toolBar.add(btnRemove);
 
@@ -252,7 +260,7 @@ public class GUI extends JFrame {
 			}
 		});
 
-		//Add new Anime button on toolbar
+		//Add functionality to Home button
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				table.clearSelection();
@@ -261,8 +269,23 @@ public class GUI extends JFrame {
 			}
 		});
 
+		//Add functionality to Browse button
+		btnBrowse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//If list is empty issue a warning that at least one anime needs to be added for this to work.
+				if (Manager.getInstance().getAnimeList() == null ||
+						Manager.getInstance().getAnimeList().size() == 0) {
+					JOptionPane.showMessageDialog(rootPane, BROWSE_WARNING);
+					return;
+				}
+				
+				//Enter browse view at index 0
+				//This method will trigger the action listener which handles the card change and such
+				setTableSelected(0);
+			}
+		});
 		
-		//Add new Anime button on toolbar
+		//Add functionality to Add button
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				table.clearSelection();
@@ -389,5 +412,4 @@ public class GUI extends JFrame {
 		updateTable();
 		homeView.updateStats();
 	}
-	
 }
