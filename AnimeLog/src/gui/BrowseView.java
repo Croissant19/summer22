@@ -244,7 +244,8 @@ public class BrowseView extends JPanel {
 							}
 						} catch (Exception e1) {
 							//Show warning dialog if necessary
-							JOptionPane.showMessageDialog(null, e1.getMessage());
+							//TODO: test that dialog is centered
+							JOptionPane.showMessageDialog(getRootPane(), e1.getMessage());
 							return;
 						}
 					
@@ -528,7 +529,8 @@ public class BrowseView extends JPanel {
 
 		if (inEditMode && changeOccurred()) {
 			//Show a warning if there is danger of unsaved changes
-			int proceed = JOptionPane.showConfirmDialog(this, WARNING_MESSAGE);
+			//TODO: test that dialog is centered
+			int proceed = JOptionPane.showConfirmDialog(getRootPane(), WARNING_MESSAGE);
 			//If user wants to proceed, do so
 			//Otherwise stop the operation
 			if (proceed == JOptionPane.YES_OPTION) {
@@ -551,7 +553,8 @@ public class BrowseView extends JPanel {
 		//Ensure it's okay to continue
 		if (inEditMode && changeOccurred()) {
 			//Show a warning if there is danger of unsaved changes
-			int proceed = JOptionPane.showConfirmDialog(this, WARNING_MESSAGE);
+			//TODO: test that dialog is centered
+			int proceed = JOptionPane.showConfirmDialog(getRootPane(), WARNING_MESSAGE);
 			//If user wants to proceed, do so
 			//Otherwise stop the operation
 			if (proceed == JOptionPane.YES_OPTION) {
@@ -574,7 +577,8 @@ public class BrowseView extends JPanel {
 	private void imagePopup() {
 		// TODO Auto-generated method stub
 		//TODO: JFrame for image work
-		JOptionPane.showMessageDialog(null, "");
+		//TODO: test that dialog is centered
+		JOptionPane.showMessageDialog(getRootPane(), "");
 	}
 
 	/**

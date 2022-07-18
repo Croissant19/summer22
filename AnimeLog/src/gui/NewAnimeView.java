@@ -180,7 +180,8 @@ public class NewAnimeView extends JPanel {
 					clearFields();
 				} catch (Exception e1) {
 					//Show user a prompt indicating the issue
-					JOptionPane.showMessageDialog(null, e1.getMessage());
+					//TODO: Test that dialog is centered
+					JOptionPane.showMessageDialog(getRootPane(), e1.getMessage());
 				}
 			}
 		});

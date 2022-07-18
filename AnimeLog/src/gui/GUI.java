@@ -41,6 +41,9 @@ public class GUI extends JFrame {
 
 	/** Warning in case user tries to start browsing without any anime added */
 	private static final String BROWSE_WARNING = "To start browsing, you need to add at least one anime in your list.";
+
+	/** Warning that an anime needs to be selected to remove it */
+	private static final String REMOVE_WARNING = "You must select an anime to remove it.";
 	
 	
 	private JPanel contentPane;
@@ -222,7 +225,7 @@ public class GUI extends JFrame {
 							updateTable();
 							homeView.updateStats();
 						} catch (IllegalArgumentException iae) {
-							JOptionPane.showMessageDialog(null, iae.getMessage());
+							JOptionPane.showMessageDialog(rootPane, iae.getMessage());
 						} catch (IllegalStateException ise) {
 							//Do nothing
 						}
@@ -237,7 +240,7 @@ public class GUI extends JFrame {
 							
 							//If file exists ask if ok to overwrite?
 							if (file.exists()) {
-								int ans = JOptionPane.showConfirmDialog(null, file.getName() + " already exists. Is it okay to overwrite it?");
+								int ans = JOptionPane.showConfirmDialog(rootPane, file.getName() + " already exists. Is it okay to overwrite it?");
 								if (ans != JOptionPane.YES_OPTION) {
 									fileOptions.setSelectedIndex(0);
 									return;
@@ -247,7 +250,7 @@ public class GUI extends JFrame {
 							
 							Manager.getInstance().saveFile(file);
 						} catch (IllegalArgumentException iae) {
-							JOptionPane.showMessageDialog(null, iae.getMessage());
+							JOptionPane.showMessageDialog(rootPane, iae.getMessage());
 						} catch (IllegalStateException ise) {
 							//Do nothing
 						}
@@ -295,6 +298,23 @@ public class GUI extends JFrame {
 			}
 		});
 
+		//Add functionality to Remove button
+		btnRemove.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selected = table.getSelectedRow();
+				if (selected == -1) {
+					JOptionPane.showMessageDialog(rootPane, REMOVE_WARNING);
+					return;
+				} else {
+					//Remove the indicated element from Manager's master copy of the list
+					Manager.getInstance().removeAnime(selected);
+					//Reload data
+					updateData();
+				}
+			}
+		});
+
+		
 
 		//Table Events
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
