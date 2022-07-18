@@ -135,6 +135,7 @@ public class HomeView extends JPanel {
 	 * Updates the statistics on the HomeView after loading a file or editing the anime list stored in Manager
 	 */
 	public void updateStats() {
+		//TODO: default stats if removed entire list a la browse-remove repeat repeat repeat...
 		txtA1.setText(Manager.getInstance().getEntryCount());
 		txtA2.setText(Manager.getInstance().getNumSeries());
 		txtA3.setText(Manager.getInstance().getNumSpecial());

@@ -323,16 +323,23 @@ public class BrowseView extends JPanel {
 
 
 	/**
-	 * 
+	 * Sets the current anime to an anime on the list or null if changing view from browse view
 	 * @param a anime to load
-	 * @throws NullPointerException is passed a null Anime
 	 */
 	public void setCurrentAnime(Anime a) {
-		if (a == null) {
-			throw new NullPointerException("Somehow selected null anime");
-		}
 		this.currentAnime = a;
-		loadData();
+		if (a != null) {
+			loadData();
+		}
+
+	}
+	
+	/**
+	 * Returns the current Anime. Used by the main gui to reselect proper table rows if user tries to leave unsaved changes
+	 * @return anime which is currently displayed in this view
+	 */
+	public Anime getCurrentAnime() {
+		return currentAnime;
 	}
 	
 	
@@ -521,53 +528,69 @@ public class BrowseView extends JPanel {
 		txtAreaNotes.setText("");
 	}
 
+	
+	/**
+	 * Shows the user a warning JOptionDialog if they are trying to leave unsaved changes.
+	 * Depending on user action and circumstance, the method caller is 
+	 * informed if it is okay to proceed with the leave operation
+	 * Public so that it can be called when components in main GUI are clicked.
+	 * 
+	 * @return boolean indicator of if it's ok to handle the leave operation, 
+	 * such as if a user wants to change views or look at another anime
+	 */
+	public boolean canLeave() {
+		boolean leave = true;
+		//TODO: add can leave scenario for close?
+
+		if (inEditMode && changeOccurred()) {
+			//Show a warning if there is danger of unsaved changes
+			int proceed = JOptionPane.showConfirmDialog(getRootPane(), WARNING_MESSAGE);
+			//If user wants to proceed, do so
+			//Otherwise stop the operation
+			if (proceed == JOptionPane.YES_OPTION) {
+				changeMode();
+				leave = true;
+			} else {
+				leave = false;
+			}
+		}
+
+		return leave;
+	}
+
+	
+	
 	/**
 	 * Retrieves following anime in sequence and reloads page data
 	 */
 	private void displayNext() {
 		//Ensure it's okay to continue
+		if (canLeave()) {
+			//Handle the data change
+			SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
+			int idx = list.indexOf(currentAnime) + 1;
+			mainGUI.setTableSelected(idx);	
+		} else {
+			return;
+		}
 
-		if (inEditMode && changeOccurred()) {
-			//Show a warning if there is danger of unsaved changes
-			//TODO: test that dialog is centered
-			int proceed = JOptionPane.showConfirmDialog(getRootPane(), WARNING_MESSAGE);
-			//If user wants to proceed, do so
-			//Otherwise stop the operation
-			if (proceed == JOptionPane.YES_OPTION) {
-				changeMode();				
-			} else {
-				return;
-			}
-		}
-		
-		//Handle the data change
-		SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
-		int idx = list.indexOf(currentAnime) + 1;
-		mainGUI.setTableSelected(idx);
-		}
+	}
+	
 	
 	/**
 	 * Retrieves previous anime in sequence and reloads page data
 	 */
 	private void displayPrev() {
 		//Ensure it's okay to continue
-		if (inEditMode && changeOccurred()) {
-			//Show a warning if there is danger of unsaved changes
-			//TODO: test that dialog is centered
-			int proceed = JOptionPane.showConfirmDialog(getRootPane(), WARNING_MESSAGE);
-			//If user wants to proceed, do so
-			//Otherwise stop the operation
-			if (proceed == JOptionPane.YES_OPTION) {
-				changeMode();				
-			} else {
-				return;
-			}
+		if (canLeave()) {
+			//Handle the data change
+			SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
+			int idx = list.indexOf(currentAnime) - 1;
+			mainGUI.setTableSelected(idx);	
+		} else {
+			return;
 		}
 		
-		//Handle the data change
-		SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
-		int idx = list.indexOf(currentAnime) - 1;
-		mainGUI.setTableSelected(idx);
 	}
 
 	

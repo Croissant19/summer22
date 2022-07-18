@@ -235,6 +235,11 @@ public class GUI extends JFrame {
 						
 						
 					} else if (fileOptions.getSelectedItem().equals("Save")) {
+						//In case user is in browse mode and has unsaved changes
+						if (!browseView.canLeave()) {
+							fileOptions.setSelectedIndex(0);
+							return;
+						}
 						try {
 							File file = new File(getFilename(false) + ".txt");
 							
@@ -267,9 +272,18 @@ public class GUI extends JFrame {
 		//Add functionality to Home button
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				table.clearSelection();
-				setCard("homeView");
-				toggleToolbarButtons(btnHome);
+	        	//In case user is editing in browse mode
+				if (browseView.canLeave()) {
+
+					table.clearSelection();
+					setCard("homeView");
+					toggleToolbarButtons(btnHome);
+
+					browseView.setCurrentAnime(null);
+				} else {
+					return;
+				}
+				
 			}
 		});
 
@@ -292,15 +306,24 @@ public class GUI extends JFrame {
 		//Add functionality to Add button
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				table.clearSelection();
-				setCard("addView");
-				toggleToolbarButtons(btnAdd);
+	        	//In case user is editing in browse mode
+				if (browseView.canLeave()) {
+
+					table.clearSelection();
+					setCard("addView");
+					toggleToolbarButtons(btnAdd);
+					browseView.setCurrentAnime(null);
+				} else {
+					return;
+				}
+				
 			}
 		});
 
 		//Add functionality to Remove button
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				int selected = table.getSelectedRow();
 				if (selected == -1) {
 					JOptionPane.showMessageDialog(rootPane, REMOVE_WARNING);
@@ -309,7 +332,9 @@ public class GUI extends JFrame {
 					//Remove the indicated element from Manager's master copy of the list
 					Manager.getInstance().removeAnime(selected);
 					//Reload data
+					toggleToolbarButtons(btnHome);
 					updateData();
+					setCard("homeView");
 				}
 			}
 		});
@@ -319,16 +344,31 @@ public class GUI extends JFrame {
 		//Table Events
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
-	        	//Get index and pass corresponding anime to BrowseView
-	        	int idx = table.getSelectedRow();
-	        	//idx is -1 when table row is deselected
-	        	if (idx != -1) {
-		        	browseView.setCurrentAnime(Manager.getInstance().getAnimeList().get(idx));	
-	        	}	        	
-	        	//Change card
-	        	toggleToolbarButtons(btnBrowse);
-	        	setCard("browseView");
 
+	        	//Do nothing if selecting anime that is already being viewed
+	        	//May seem pointless, but protects against recursion when program has to counter user selection
+	        	//in situations where user accidently leaves unsaved data and decides to return in the warning prompt
+	        	int browseIdx = Manager.getInstance().getAnimeList().indexOf(browseView.getCurrentAnime());
+	        	if (browseView.getCurrentAnime() != null && table.getSelectedRow() == browseIdx) {
+	        		return;
+	        	}
+	        	
+	        	//In case user is editing in browse mode
+	        	if (browseView.canLeave()) {
+		        	//Get index and pass corresponding anime to BrowseView
+		        	int idx = table.getSelectedRow();
+		        	//idx is -1 when table row is deselected
+		        	if (idx != -1) {
+			        	browseView.setCurrentAnime(Manager.getInstance().getAnimeList().get(idx));	
+		        	}	        	
+		        	//Change card
+		        	toggleToolbarButtons(btnBrowse);
+		        	setCard("browseView");
+	
+	        	} else {
+	        		setTableSelected(browseIdx);
+	        		return;
+	        	}
 	        }
 	    });
 		
