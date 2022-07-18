@@ -223,10 +223,20 @@ public class GUI extends JFrame {
 						
 						
 					} else if (fileOptions.getSelectedItem().equals("Save")) {
-
 						try {
-							filename = getFilename(false);
-							Manager.getInstance().saveFile(filename);
+							File file = new File(getFilename(false) + ".txt");
+							
+							//If file exists ask if ok to overwrite?
+							if (file.exists()) {
+								int ans = JOptionPane.showConfirmDialog(null, file.getName() + " already exists. Is it okay to overwrite it?");
+								if (ans != JOptionPane.YES_OPTION) {
+									fileOptions.setSelectedIndex(0);
+									return;
+								}
+							}
+
+							
+							Manager.getInstance().saveFile(file);
 						} catch (IllegalArgumentException iae) {
 							JOptionPane.showMessageDialog(null, iae.getMessage());
 						} catch (IllegalStateException ise) {

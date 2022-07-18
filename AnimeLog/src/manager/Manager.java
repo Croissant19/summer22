@@ -59,10 +59,10 @@ public class Manager {
 
 	/**
 	 * Saves data to a file location specified by the user in JFileChooser
-	 * @param filename location to save data at
+	 * @param file to save data in
 	 */
-	public void saveFile(String filename) {
-		AnimeIO.writeData(animeList, new File(filename));
+	public void saveFile(File file) {		
+		AnimeIO.writeData(animeList, file);
 		// TODO: warning to prevent overwriting existing file?
 		
 	}
@@ -83,6 +83,7 @@ public class Manager {
 	 */
 	public void addAnime(Anime a) {
 		//TODO: test adding a duplicate thru GUI
+		//TODO: If dupe "This entry already exists. Anime are considered the same if they share the same title and year"
 		animeList.add(a);
 		
 		//TODO: refresh stats, update table
@@ -175,6 +176,7 @@ public class Manager {
 				dubCt++;
 				break;
 			case OTHER: 
+				//TODO: test
 				//Only count other if some episodes have been watched
 				//That way other can't win if the list if full of unwatched tbds
 				if (a.getCount() > 0) {
