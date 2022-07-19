@@ -70,9 +70,7 @@ public class Manager {
 	 * @param file to save data in
 	 */
 	public void saveFile(File file) {		
-		AnimeIO.writeData(animeList, file);
-		// TODO: warning to prevent overwriting existing file?
-		
+		AnimeIO.writeData(animeList, file);		
 	}
 
 	/**
@@ -93,8 +91,6 @@ public class Manager {
 		//TODO: test adding a duplicate thru GUI
 		//TODO: If dupe "This entry already exists. Anime are considered the same if they share the same title and year"
 		animeList.add(a);
-		
-		//TODO: refresh stats, update table
 	}
 	
 	
@@ -106,7 +102,6 @@ public class Manager {
 	public void removeAnime(int idx) {
 		animeList.remove(idx);
 	}
-	//TODO: remove anime method
 	
 	////////////////////////
 	//Stat retrieval methods
@@ -184,9 +179,8 @@ public class Manager {
 				dubCt++;
 				break;
 			case OTHER: 
-				//TODO: test
 				//Only count other if some episodes have been watched
-				//That way other can't win if the list if full of unwatched tbds
+				//That way other can't win if the list if full of unwatched TBDs
 				if (a.getCount() > 0) {
 					otherCt++;	
 				}
@@ -267,5 +261,4 @@ public class Manager {
 
 		return percent + "%";
 	}
-	//TODO: test!!!	
 }

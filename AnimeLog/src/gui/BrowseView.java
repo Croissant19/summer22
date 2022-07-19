@@ -119,8 +119,9 @@ public class BrowseView extends JPanel {
 		txtFldTitle = new JTextField();
 		txtFldTitle.setEditable(false);
 		txtFldTitle.setBounds(119, 7, 224, 20);
-		pnlFields.add(txtFldTitle);
 		txtFldTitle.setColumns(10);
+		pnlFields.add(txtFldTitle);
+
 		
 		txtFldYear = new JTextField();
 		txtFldYear.setEditable(false);

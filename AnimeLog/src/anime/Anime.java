@@ -85,7 +85,6 @@ public class Anime implements Comparable<Anime> {
 			}
 		}
 	}
-	//TODO: feature so that when language is other, have a field to elaborate
 
 	/** Title of the anime */
 	private String title;
