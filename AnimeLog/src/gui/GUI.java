@@ -43,8 +43,11 @@ public class GUI extends JFrame {
 	/** Warning in case user tries to start browsing without any anime added */
 	private static final String BROWSE_WARNING = "To start browsing, you need to add at least one anime in your list.";
 
-	/** Warning that an anime needs to be selected to remove it */
-	private static final String REMOVE_WARNING = "You must select an anime to remove it.";
+	/** Notice that an anime needs to be selected to remove it */
+	private static final String REMOVE_INTRUCTIONS = null;
+	
+	/** Warning asking if user is sure they want to remove the anime*/
+	private static final String REMOVE_WARNING = "Are you sure you want to remove this anime?";
 	
 	
 	private JPanel contentPane;
@@ -329,16 +332,26 @@ public class GUI extends JFrame {
 				
 				int selected = table.getSelectedRow();
 				if (selected == -1) {
-					JOptionPane.showMessageDialog(rootPane, REMOVE_WARNING);
+					JOptionPane.showMessageDialog(rootPane, REMOVE_INTRUCTIONS);
 					return;
 				} else {
-					//Remove the indicated element from Manager's master copy of the list
-					Manager.getInstance().removeAnime(selected);
-					//Reload data
-					toggleToolbarButtons(btnHome);
-					updateData();
-					setCard("homeView");
+
+					//Ask user if they are sure they want to remove the anime
+					int ans = JOptionPane.showConfirmDialog(rootPane, REMOVE_WARNING);
+					if (ans != JOptionPane.YES_OPTION) {
+						//If not yes, stop operation
+						return;
+					} else {  //Otherwise
+						//Remove the indicated element from Manager's master copy of the list
+						Manager.getInstance().removeAnime(selected);
+						//Reload data
+						toggleToolbarButtons(btnHome);
+						updateData();
+						setCard("homeView");
+						
+					}
 				}
+
 			}
 		});
 
