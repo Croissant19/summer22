@@ -37,7 +37,7 @@ public class HomeView extends JPanel {
 		JLabel lblInstructions = new JLabel(DEFAULT_TEXT);
 		lblInstructions.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblInstructions.setHorizontalAlignment(SwingConstants.CENTER);
-		lblInstructions.setBounds(40, 11, 364, 56);
+		lblInstructions.setBounds(43, 11, 364, 56);
 		add(lblInstructions);
 		
 		JPanel statsPanel = new JPanel();
@@ -51,47 +51,10 @@ public class HomeView extends JPanel {
 		statsPanel.add(lblQ1);
 		
 		txtA1 = new JTextField();
-		txtA1.setText("0");
 		txtA1.setEditable(false);
 		txtA1.setBounds(137, 23, 61, 20);
 		statsPanel.add(txtA1);
 		txtA1.setColumns(10);
-		
-		JLabel lblQ4 = new JLabel("Episode Count:");
-		lblQ4.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblQ4.setBounds(10, 152, 117, 20);
-		statsPanel.add(lblQ4);
-		
-		txtA4 = new JTextField();
-		txtA4.setText("0");
-		txtA4.setEditable(false);
-		txtA4.setColumns(10);
-		txtA4.setBounds(137, 152, 61, 20);
-		statsPanel.add(txtA4);
-		
-		JLabel lblQ6 = new JLabel("Percent Finished:");
-		lblQ6.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblQ6.setBounds(211, 66, 117, 20);
-		statsPanel.add(lblQ6);
-		
-		txtA6 = new JTextField();
-		txtA6.setText("0%");
-		txtA6.setEditable(false);
-		txtA6.setColumns(10);
-		txtA6.setBounds(338, 66, 61, 20);
-		statsPanel.add(txtA6);
-		
-		txtA7 = new JTextField();
-		txtA7.setText("0%");
-		txtA7.setEditable(false);
-		txtA7.setColumns(10);
-		txtA7.setBounds(338, 109, 61, 20);
-		statsPanel.add(txtA7);
-		
-		JLabel lblQ7 = new JLabel("Percent Dropped:");
-		lblQ7.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblQ7.setBounds(211, 109, 117, 20);
-		statsPanel.add(lblQ7);
 		
 		JLabel lblQ2 = new JLabel("Number Series:");
 		lblQ2.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -99,7 +62,6 @@ public class HomeView extends JPanel {
 		statsPanel.add(lblQ2);
 		
 		txtA2 = new JTextField();
-		txtA2.setText("0");
 		txtA2.setEditable(false);
 		txtA2.setColumns(10);
 		txtA2.setBounds(137, 66, 61, 20);
@@ -111,11 +73,21 @@ public class HomeView extends JPanel {
 		statsPanel.add(lblQ3);
 		
 		txtA3 = new JTextField();
-		txtA3.setText("0");
 		txtA3.setEditable(false);
 		txtA3.setColumns(10);
 		txtA3.setBounds(137, 109, 61, 20);
 		statsPanel.add(txtA3);
+		
+		JLabel lblQ4 = new JLabel("Episode Count:");
+		lblQ4.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblQ4.setBounds(10, 152, 117, 20);
+		statsPanel.add(lblQ4);
+		
+		txtA4 = new JTextField();
+		txtA4.setEditable(false);
+		txtA4.setColumns(10);
+		txtA4.setBounds(137, 152, 61, 20);
+		statsPanel.add(txtA4);
 		
 		JLabel lblQ5 = new JLabel("Favored Language:");
 		lblQ5.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -123,25 +95,61 @@ public class HomeView extends JPanel {
 		statsPanel.add(lblQ5);
 		
 		txtA5 = new JTextField();
-		txtA5.setText("? (%)");
 		txtA5.setEditable(false);
 		txtA5.setColumns(10);
 		txtA5.setBounds(338, 23, 61, 20);
 		statsPanel.add(txtA5);
+
+		JLabel lblQ6 = new JLabel("Percent Finished:");
+		lblQ6.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblQ6.setBounds(211, 66, 117, 20);
+		statsPanel.add(lblQ6);
 		
+		txtA6 = new JTextField();
+		txtA6.setEditable(false);
+		txtA6.setColumns(10);
+		txtA6.setBounds(338, 66, 61, 20);
+		statsPanel.add(txtA6);
+		
+		txtA7 = new JTextField();
+		txtA7.setEditable(false);
+		txtA7.setColumns(10);
+		txtA7.setBounds(338, 109, 61, 20);
+		statsPanel.add(txtA7);
+		
+		JLabel lblQ7 = new JLabel("Percent Dropped:");
+		lblQ7.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblQ7.setBounds(211, 109, 117, 20);
+		statsPanel.add(lblQ7);
+		
+		
+		updateStats();
 	}
 	
 	/**
 	 * Updates the statistics on the HomeView after loading a file or editing the anime list stored in Manager
 	 */
 	public void updateStats() {
-		//TODO: default stats if removed entire list a la browse-remove repeat repeat repeat...
-		txtA1.setText(Manager.getInstance().getEntryCount());
-		txtA2.setText(Manager.getInstance().getNumSeries());
-		txtA3.setText(Manager.getInstance().getNumSpecial());
-		txtA4.setText(Manager.getInstance().getCountSum());
-		txtA5.setText(Manager.getInstance().getFavoredLanguageAndPercent());
-		txtA6.setText(Manager.getInstance().getPercentFinished());
-		txtA7.setText(Manager.getInstance().getPercentDropped());
+		//If list is empty, cannot calculate stats so use defaults
+		if (Manager.getInstance().getAnimeList() == null ||
+				Manager.getInstance().getAnimeList().size() == 0) {
+			txtA1.setText("0");
+			txtA2.setText("0");
+			txtA3.setText("0");
+			txtA4.setText("0");
+			txtA5.setText("N/A");
+			txtA6.setText("N/A");
+			txtA7.setText("N/A");
+		} else {
+			//Otherwise calculate the stats as one typically would
+			txtA1.setText(Manager.getInstance().getEntryCount());
+			txtA2.setText(Manager.getInstance().getNumSeries());
+			txtA3.setText(Manager.getInstance().getNumSpecial());
+			txtA4.setText(Manager.getInstance().getCountSum());
+			txtA5.setText(Manager.getInstance().getFavoredLanguageAndPercent());
+			txtA6.setText(Manager.getInstance().getPercentFinished());
+			txtA7.setText(Manager.getInstance().getPercentDropped());			
+		}
+
 	}
 }
