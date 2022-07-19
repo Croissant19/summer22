@@ -44,7 +44,7 @@ public class GUI extends JFrame {
 	private static final String BROWSE_WARNING = "To start browsing, you need to add at least one anime in your list.";
 
 	/** Notice that an anime needs to be selected to remove it */
-	private static final String REMOVE_INTRUCTIONS = null;
+	private static final String REMOVE_INTRUCTIONS = "You must select an anime to remove it.";
 	
 	/** Warning asking if user is sure they want to remove the anime*/
 	private static final String REMOVE_WARNING = "Are you sure you want to remove this anime?";
