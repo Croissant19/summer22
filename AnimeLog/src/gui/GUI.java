@@ -231,7 +231,9 @@ public class GUI extends JFrame {
 						}
 						
 						//Reset selection of dropdown and update as necessary
-						fileOptions.setSelectedIndex(0);						
+						fileOptions.setSelectedIndex(0);
+						setCard("homeView");
+						toggleToolbarButtons(btnHome);
 						
 						
 					} else if (fileOptions.getSelectedItem().equals("Save")) {
