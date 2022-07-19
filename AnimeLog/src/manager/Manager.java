@@ -22,6 +22,14 @@ public class Manager {
 	/** Collection of user anime */
 	private SortedList<Anime> animeList;
 		
+	
+	/**
+	 * Initializes the Manager object, and creates the animeList so that it is not null
+	 */
+	private Manager() {
+		animeList = new SortedList<Anime>();
+	}
+
 	/** 
 	 * Retrieves the manager for method calls
 	 * @return the Singleton instance of the Manager

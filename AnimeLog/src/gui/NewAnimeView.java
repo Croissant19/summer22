@@ -30,6 +30,8 @@ public class NewAnimeView extends JPanel {
 	/** Text that appears in the box if an anime has already been added since opening this view */
 	private String secondaryText;
 	
+	private GUI mainGUI;
+	
 	private JTextField txtFldTitle;
 	private JTextField txtFldYear;
 	private JTextField txtFldCount;
@@ -49,8 +51,11 @@ public class NewAnimeView extends JPanel {
 
 	/**
 	 * Create the panel.
+	 * @param gui pointer to main gui so that data can be updated
 	 */
-	public NewAnimeView() {
+	public NewAnimeView(GUI gui) {
+		mainGUI = gui;
+
 		setLayout(null);
 		
 		btnSave = new JButton("Add");
@@ -132,7 +137,6 @@ public class NewAnimeView extends JPanel {
 		pnlFields.add(txtFldDirector);
 		
 		rdBtnSub = new JRadioButton("Sub");
-		//TODO: make other buttons be unselected when one is clicked.
 	
 
 		rdBtnSub.setBounds(115, 141, 55, 23);
@@ -176,7 +180,6 @@ public class NewAnimeView extends JPanel {
 					clearFields();
 				} catch (Exception e1) {
 					//Show user a prompt indicating the issue
-					//TODO: Test that dialog is centered
 					JOptionPane.showMessageDialog(getRootPane(), e1.getMessage());
 				}
 			}
@@ -239,7 +242,6 @@ public class NewAnimeView extends JPanel {
 	 * Resets the fields to blank after an Anime is successfully added
 	 */
 	private void clearFields() {
-		//TODO: TEST
 		txtFldTitle.setText("");;
 		txtFldYear.setText("");;
 		txtFldCount.setText("");;
@@ -317,6 +319,7 @@ public class NewAnimeView extends JPanel {
 			//Create the anime
 			Anime a = new Anime(title, year, count, lan, type, fin, drop, director, "");
 			Manager.getInstance().addAnime(a);
+			mainGUI.updateData();
 		} catch (Exception e) {
 			
 			//TODO: ensure correct

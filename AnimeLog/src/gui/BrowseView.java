@@ -244,7 +244,6 @@ public class BrowseView extends JPanel {
 							}
 						} catch (Exception e1) {
 							//Show warning dialog if necessary
-							//TODO: test that dialog is centered
 							JOptionPane.showMessageDialog(getRootPane(), e1.getMessage());
 							return;
 						}
@@ -352,7 +351,6 @@ public class BrowseView extends JPanel {
 		//Transform int fields into Strings comparable to what is in the text fields
 		String oldYear = "" + currentAnime.getYear();
 		String oldCount = "" + currentAnime.getCount();
-		//TODO: handle when mandatory fields blank
 		//Return statements to compare each field until either a contrast is found or all match
 		try {
 			return !currentAnime.getTitle().equals(txtFldTitle.getText()) 
@@ -479,8 +477,6 @@ public class BrowseView extends JPanel {
 	 * Fills the page with information about a selected anime based on currentAnime field
 	 */
 	private void loadData() {
-		//TODO: next and previous keep text boxes editable, save prompt?
-		//TODO: handle disable buttons if last/first/only entry
 		//Empty current data first to be safe
 		clearFields();
 		
@@ -600,7 +596,6 @@ public class BrowseView extends JPanel {
 	private void imagePopup() {
 		// TODO Auto-generated method stub
 		//TODO: JFrame for image work
-		//TODO: test that dialog is centered
 		JOptionPane.showMessageDialog(getRootPane(), "");
 	}
 

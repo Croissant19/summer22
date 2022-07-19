@@ -62,7 +62,7 @@ public class GUI extends JFrame {
 	
 	private HomeView homeView = new HomeView();
 	private BrowseView browseView = new BrowseView(this);
-	private NewAnimeView newAnimeView = new NewAnimeView();
+	private NewAnimeView newAnimeView = new NewAnimeView(this);
 
 
 	private JScrollPane scrollPane;
