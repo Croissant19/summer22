@@ -8,13 +8,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import manager.Manager;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Toolkit;
@@ -31,7 +29,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.io.File;
 import java.awt.CardLayout;
-import java.awt.Component;
 
 import javax.swing.UIManager;
 import java.awt.Dimension;
@@ -197,33 +194,7 @@ public class GUI extends JFrame {
 		       return false;
 		    }
 		});
-		
-		/**
-		 * Inner class defining a TableCellRenderer so that text can be wrapped.
-		 * This is used in the table's second column in case a title is too long to fit in the cell space allocated
-		 * 
-		 * @see Refer to 
-		 * <a href = "https://community.oracle.com/tech/developers/discussion/1362611/jtable-wrapping-text-in-a-cell">
-		 * JTable - Wrapping text in a cell.</a>
-		 */
-		class TextWrapCellRenderer extends JTextArea implements TableCellRenderer {
-		     public TextWrapCellRenderer() {
-		         setLineWrap(true);
-		         setWrapStyleWord(true);
-		      }
-
-		     public Component getTableCellRendererComponent(JTable table, Object
-		             value, boolean isSelected, boolean hasFocus, int row, int column) {
-		         setText((String) value);//or something in value, like value.getNote()...
-		         setSize(table.getColumnModel().getColumn(column).getWidth(),
-		                 getPreferredSize().height);
-		         if (table.getRowHeight(row) != getPreferredSize().height) {
-		                 table.setRowHeight(row, getPreferredSize().height);
-		         }
-		         return this;
-		     }
-		  }
-		
+				
 		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -233,7 +204,6 @@ public class GUI extends JFrame {
 		table.getColumnModel().getColumn(0).setPreferredWidth(40);
 		table.getColumnModel().getColumn(1).setPreferredWidth(150);
 		table.getColumnModel().getColumn(2).setPreferredWidth(40);
-		table.getColumnModel().getColumn(1).setCellRenderer(new TextWrapCellRenderer());
 		scrollPane.setViewportView(table);
 		contentPane.setLayout(gl_contentPane);
 
@@ -488,11 +458,7 @@ public class GUI extends JFrame {
 			tm.addRow(row);
 		}
 		//TODO: sort by options, filter
-		//TODO: credits? could be cool...
-		
-		
-		//TODO: Investigate jtable models to better current system
-		//problems: text not wrap in case of long title
+		//TODO: credits? could be cool...		
 	}
 	
 	/**

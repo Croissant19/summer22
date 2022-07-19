@@ -107,7 +107,6 @@ public class Anime implements Comparable<Anime> {
 	/** Indicates if the user has decided to stop watching the show */
 	private boolean dropped;
 	
-	//TODO: maybe make directors into an array
 	/** Director credits on the show */
 	private String director;
 	
@@ -115,7 +114,6 @@ public class Anime implements Comparable<Anime> {
 	private String notes;
 	
 	//TODO: add image data when get closer to GUI implementation
-	//TODO: year, season field?
 	
 	
 	////////////
@@ -251,7 +249,6 @@ public class Anime implements Comparable<Anime> {
 	 */
 	public void setLanguage(Language language) {
 		this.language = language;
-		//TODO: If add details for other edit this
 	}
 
 	/**

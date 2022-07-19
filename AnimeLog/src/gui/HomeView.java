@@ -130,26 +130,13 @@ public class HomeView extends JPanel {
 	 * Updates the statistics on the HomeView after loading a file or editing the anime list stored in Manager
 	 */
 	public void updateStats() {
-		//If list is empty, cannot calculate stats so use defaults
-		if (Manager.getInstance().getAnimeList() == null ||
-				Manager.getInstance().getAnimeList().size() == 0) {
-			txtA1.setText("0");
-			txtA2.setText("0");
-			txtA3.setText("0");
-			txtA4.setText("0");
-			txtA5.setText("N/A");
-			txtA6.setText("N/A");
-			txtA7.setText("N/A");
-		} else {
-			//Otherwise calculate the stats as one typically would
-			txtA1.setText(Manager.getInstance().getEntryCount());
-			txtA2.setText(Manager.getInstance().getNumSeries());
-			txtA3.setText(Manager.getInstance().getNumSpecial());
-			txtA4.setText(Manager.getInstance().getCountSum());
-			txtA5.setText(Manager.getInstance().getFavoredLanguageAndPercent());
-			txtA6.setText(Manager.getInstance().getPercentFinished());
-			txtA7.setText(Manager.getInstance().getPercentDropped());			
-		}
-
+		//Otherwise calculate the stats as one typically would
+		txtA1.setText(Manager.getInstance().getEntryCount());
+		txtA2.setText(Manager.getInstance().getNumSeries());
+		txtA3.setText(Manager.getInstance().getNumSpecial());
+		txtA4.setText(Manager.getInstance().getCountSum());
+		txtA5.setText(Manager.getInstance().getFavoredLanguageAndPercent());
+		txtA6.setText(Manager.getInstance().getPercentFinished());
+		txtA7.setText(Manager.getInstance().getPercentDropped());
 	}
 }

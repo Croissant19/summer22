@@ -5,7 +5,6 @@ import java.io.File;
 import anime.Anime;
 import anime.Anime.Language;
 import anime.Anime.Type;
-import gui.GUI;
 import io.AnimeIO;
 import util.SortedList;
 
@@ -48,7 +47,9 @@ public class Manager {
 	
 	
 	/**
-	 * Grabs title, year, and count for each anime for display on the GUI.
+	 * Grabs title, year, and count for each anime for display on the GUI. 
+	 * Return is type Object[][] so that ints and Strings are both displayed in the table together.
+	 * It could be type String[][], but ultimately doesn't matter.
 	 * @return 2D array of anime data for display on the GUI
 	 */
 	public Object[][] getAllAnimeAsArray()	{
@@ -163,9 +164,15 @@ public class Manager {
 
 	/**
 	 * Computes the most used language type by entry (not count) and the percent for display 
-	 * @return most used language and its percent as a String for the GUI
+	 * @return most used language and its percent as a String for the GUI, "N/A" if list is empty
 	 */
 	public String getFavoredLanguageAndPercent() {
+		//If list is empty, return placeholder value
+		if (animeList == null || animeList.size() == 0) {
+			return "N/A";
+		}
+
+		
 		int subCt = 0, dubCt = 0, otherCt = 0;
 		boolean tie = false;
 		//Tally counts for each language classification
@@ -220,9 +227,14 @@ public class Manager {
 	/**
 	 * Provides a string representation of the user's percent of finished anime,
 	 * followed by the percent sign (%)
-	 * @return percent of total anime finished
+	 * @return percent of total anime finished, "N/A" if list is empty
 	 */
 	public String getPercentFinished() {
+		//If list is empty, return placeholder value
+		if (animeList == null || animeList.size() == 0) {
+			return "N/A";
+		}
+		
 		int sumCt = 0;
 		int finCt = 0;
 		
@@ -243,9 +255,14 @@ public class Manager {
 	/**
 	 * Provides a string representation of the user's percent of dropped anime,
 	 * followed by the percent sign (%)
-	 * @return percent of total anime dropped
+	 * @return percent of total anime dropped, "N/A" if list is empty
 	 */
 	public String getPercentDropped() {
+		//If list is empty, return placeholder value
+		if (animeList == null || animeList.size() == 0) {
+			return "N/A";
+		}
+		
 		int sumCt = 0;
 		int finCt = 0;
 		//Iterate through each anime and tally the desired flag
