@@ -332,8 +332,15 @@ public class NewAnimeView extends JPanel {
 
 		//TODO: TESTTT
 		//By here, was successful so can adjust top text to indicate so.
-		//TODO: make toptext reset after leaving 
 		secondaryText = title + " was created successfully. Feel free to add another!";
 		lblTopInfo.setText(secondaryText);
+	}
+
+	/**
+	 * Resets the instruction text at the top of the panel to the default.
+	 * Called with every card change but ineffective unless text was changed by successfully adding a new Anime
+	 */
+	public void resetInstructions() {
+		lblTopInfo.setText(DEFAULT_TEXT);
 	}
 }

@@ -99,7 +99,7 @@ public class GUI extends JFrame {
 		initComponents();
 		createEvents();
 		//TODO: remove test procedure
-		//testStartUp();
+		testStartUp();
 	}
 	
 	/**
@@ -385,7 +385,9 @@ public class GUI extends JFrame {
 	 */
 	private void setCard(String view) {
     	CardLayout cl = (CardLayout) cardPanel.getLayout();
-    	cl.show(cardPanel, view);		
+    	cl.show(cardPanel, view);
+    	// In case the user is leaving the NewAnimeView after adding an anime, reset the top text instructions.
+    	newAnimeView.resetInstructions();
 	}
 
 	/**
@@ -455,6 +457,7 @@ public class GUI extends JFrame {
 			tm.addRow(row);
 		}
 		//TODO: sort by options, filter
+		//TODO: credits? could be cool...
 		
 		
 		//TODO: Investigate jtable models to better current system
