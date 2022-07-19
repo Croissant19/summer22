@@ -113,6 +113,9 @@ public class Anime implements Comparable<Anime> {
 	/** Optional notes for the user to attach to this entry */
 	private String notes;
 	
+	/** Indicates whether this entry has an associated image */
+	private boolean hasImage;
+	
 	//TODO: add image data when get closer to GUI implementation
 	
 	
@@ -342,6 +345,30 @@ public class Anime implements Comparable<Anime> {
 	}
 
 	/**
+	 * Sets the hasImage field to a boolean parameter
+	 * @param img true if the anime has an image component in the program resources
+	 */
+	public void setHasImage(boolean img) {
+		this.hasImage = img;
+	}
+	
+	/**
+	 * Generates string name for images unique to this Anime. 
+	 * Images saved with this anime will be set to this generated filename, 
+	 * and accessed through it when a user loads their data
+	 * @return filename for image compatible with the GUI
+	 */
+	public String getImageFileName() {
+		//TODO: TEST
+		//TODO: handle disallowed chars
+		String file = title.toLowerCase().replace(" ", "");
+		file += "_" + year;
+		//file += ".png"???
+		//TODO: file extension
+		return file;
+	}
+	
+	/**
 	 * Generates a String representation of an anime for use in file io
 	 * @return String representation of fields
 	 */
@@ -373,7 +400,7 @@ public class Anime implements Comparable<Anime> {
 		//Checks that obj is an anime and if titles and years match
 		if (obj instanceof Anime) {
 			Anime a = (Anime)obj;
-			return this.title.equals(a.getTitle()) && this.year == a.getYear();
+			return this.title.toLowerCase().equals(a.getTitle().toLowerCase()) && this.year == a.getYear();
 		} else {
 			return false;
 		}

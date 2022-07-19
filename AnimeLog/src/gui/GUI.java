@@ -470,7 +470,7 @@ public class GUI extends JFrame {
 			row = rowVals[i];
 			tm.addRow(row);
 		}
-		//TODO: sort by options, filter
+		//TODO: sort by options, filter, color for sub/dub or special/series
 		//TODO: credits? could be cool...		
 	}
 	
