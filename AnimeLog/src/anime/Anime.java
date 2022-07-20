@@ -384,7 +384,7 @@ public class Anime implements Comparable<Anime> {
 	public String toString() {
 		String s = title + ",_" + year + ",_" + count + ",_" + language.formattedName 
 				+ ",_" + type.formattedName + ",_" + finished + ",_" + dropped + ",_" 
-				+ director + ",_" + notes;
+				+ director + ",_" + hasImage + ",_" + notes;
 
 		return s;
 	}

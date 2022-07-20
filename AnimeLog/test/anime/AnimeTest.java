@@ -161,10 +161,10 @@ class AnimeTest {
 				"Makoto Shinkai",false, "");
 		
 		//Test toString
-		assertEquals("Gurren Lagann,_2007,_26,_Sub,_Series,_true,_false,_Hiroyuki Imaishi,_Very good op!",
+		assertEquals("Gurren Lagann,_2007,_26,_Sub,_Series,_true,_false,_Hiroyuki Imaishi,_false,_Very good op!",
 				a.toString());
 		
-		assertEquals("Your Name,_2017,_1,_Sub,_Special,_true,_false,_Makoto Shinkai,_",
+		assertEquals("Your Name,_2017,_1,_Sub,_Special,_true,_false,_Makoto Shinkai,_false,_",
 				b.toString());
 	
 		//Test equals

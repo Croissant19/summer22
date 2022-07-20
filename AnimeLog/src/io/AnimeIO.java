@@ -124,6 +124,7 @@ public class AnimeIO {
 		boolean finished = Boolean.parseBoolean(in.next());
 		boolean dropped = Boolean.parseBoolean(in.next());
 		String director = in.next().trim();
+		boolean hasImg = Boolean.parseBoolean(in.next());
 		String notes = in.next().trim();
 		if (in.hasNext()) {
 			in.close();
@@ -133,7 +134,7 @@ public class AnimeIO {
 		
 		//Construct Anime and return
 		Anime a = new Anime(title, year, count, lang, type, finished, 
-				dropped, director, notes);
+				dropped, director, hasImg, notes);
 		return a;
 	}
 	
