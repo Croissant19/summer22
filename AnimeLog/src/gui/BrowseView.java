@@ -672,7 +672,7 @@ public class BrowseView extends JPanel {
 			
 			
 			//Create the anime
-			return new Anime(title, year, count, lan, type, fin, drop, director, notes);
+			return new Anime(title, year, count, lan, type, fin, drop, director, currentAnime.hasImage(), notes);
 		} catch (Exception e) {
 			
 			//TODO: ensure correct

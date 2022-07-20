@@ -115,9 +115,7 @@ public class Anime implements Comparable<Anime> {
 	
 	/** Indicates whether this entry has an associated image */
 	private boolean hasImage;
-	
-	//TODO: add image data when get closer to GUI implementation
-	
+		
 	
 	////////////
 	//METHODS
@@ -134,11 +132,12 @@ public class Anime implements Comparable<Anime> {
 	 * @param finished if the user finished watching
 	 * @param dropped if the user stopped watching
 	 * @param director 
+	 * @param img indicates if the anime has an image associated with it
 	 * @param notes personal notes about the entry
 	 * @throws IllegalArgumentException if passed bad parameters
 	 */
 	public Anime(String title, int year, int count, Language lan, Type type, boolean finished, 
-			boolean dropped, String director, String notes) {
+			boolean dropped, String director, boolean img, String notes) {
 
 		//Delegate checks to setters
 		setTitle(title);
@@ -149,6 +148,7 @@ public class Anime implements Comparable<Anime> {
 		setFinished(finished);
 		setDropped(dropped);
 		setDirector(director);
+		setHasImage(img);
 		setNotes(notes);
 	}
 		
@@ -344,6 +344,14 @@ public class Anime implements Comparable<Anime> {
 		this.notes = notes;
 	}
 
+	/**
+	 * Indicates if the Anime has an associated image in program resources
+	 * @return boolean indicator of if Anime has image
+	 */
+	public boolean hasImage() {
+		return hasImage;
+	}
+	
 	/**
 	 * Sets the hasImage field to a boolean parameter
 	 * @param img true if the anime has an image component in the program resources
