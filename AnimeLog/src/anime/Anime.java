@@ -367,13 +367,12 @@ public class Anime implements Comparable<Anime> {
 	 * @return filename for image compatible with the GUI
 	 */
 	public String getImageFileName() {
-		//TODO: TEST
 		//TODO: handle disallowed chars
-		String file = title.toLowerCase().replace(" ", "");
-		file += "_" + year;
-		//file += ".png"???
+		String filename = title.toLowerCase().replace(" ", "");
+		filename += "_" + year;
+		//filename += ".png"???
 		//TODO: file extension
-		return file;
+		return filename;
 	}
 	
 	/**

@@ -35,6 +35,7 @@ public class BrowseView extends JPanel {
 	private static final String WARNING_MESSAGE = "You have unsaved changes. Are you sure you want to leave?";
 	private GUI mainGUI;
 	private JPanel imgPanel;
+	private JLabel lblImage;
 	private JTextField txtFldTitle;
 	private JTextField txtFldYear;
 	private JTextField txtFldCount;
@@ -183,12 +184,12 @@ public class BrowseView extends JPanel {
 
 
 		
-		JLabel lblIcon = new JLabel("");
+		lblImage = new JLabel("");
 		//TODO: attribute image icon from
 		//flaticon.com/premium-icon/new_4131729?term=add%20image&page=1&position=52&page=1&position=52&related_id=4131729&origin=style#
 //		lblIcon.setIcon(new ImageIcon(BrowseView.class.getResource("/resources/addImgIcon_128.png")));
-		lblIcon.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/resources/addImgPoster.png")).getImage().getScaledInstance(imgPanel.getWidth(), imgPanel.getHeight(), Image.SCALE_SMOOTH)));
-		imgPanel.add(lblIcon);
+		lblImage.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/resources/addImgPoster.png")).getImage().getScaledInstance(imgPanel.getWidth(), imgPanel.getHeight(), Image.SCALE_SMOOTH)));
+		imgPanel.add(lblImage);
 		
 		txtAreaNotes = new JTextArea();
 		txtAreaNotes.setEditable(false);
@@ -493,6 +494,11 @@ public class BrowseView extends JPanel {
 			chckBxDropped.setSelected(true);
 		}
 		
+		if (currentAnime.hasImage()) {
+			loadImage();
+			//TODO: add image reset code if needed?
+		}
+		
 		txtFldDirector.setText(currentAnime.getDirector());
 		txtAreaNotes.setText(currentAnime.getNotes());
 
@@ -505,6 +511,17 @@ public class BrowseView extends JPanel {
 		btnNext.setEnabled(currentIdx < list.size() - 1);
 		btnPrevious.setEnabled(currentIdx > 0);
 
+	}
+
+	private void loadImage() {
+		String imageFile = currentAnime.getImageFileName();
+		
+		//lblImage.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/resources/addImgPoster.png")).getImage().getScaledInstance(imgPanel.getWidth(), imgPanel.getHeight(), Image.SCALE_SMOOTH)));
+		lblImage.setIcon(new ImageIcon(new ImageIcon(getClass().getResource(imageFile)).getImage().getScaledInstance(imgPanel.getWidth(), imgPanel.getHeight(), Image.SCALE_SMOOTH)));
+
+		
+		// TODO Auto-generated method stub
+		
 	}
 
 	/**
@@ -523,6 +540,7 @@ public class BrowseView extends JPanel {
 		chckBxFinished.setSelected(false);
 		chckBxDropped.setSelected(false);
 		txtAreaNotes.setText("");
+		lblImage.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/resources/addImgPoster.png")).getImage().getScaledInstance(imgPanel.getWidth(), imgPanel.getHeight(), Image.SCALE_SMOOTH)));
 	}
 
 	

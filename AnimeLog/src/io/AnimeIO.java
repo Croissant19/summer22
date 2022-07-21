@@ -12,8 +12,8 @@ import util.SortedList;
 
 /**
  * Input Output class for Anime objects. 
- * Works with Anime.toString() to write data into .txt files
- * Bad files 
+ * Works with Anime.toString() to write data into .txt files.
+ * Employed by the Manager class to load data from .txt files.
  * @author Hunter Pruitt
  *
  */

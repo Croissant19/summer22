@@ -317,7 +317,7 @@ public class NewAnimeView extends JPanel {
 			
 			
 			//Create the anime
-			Anime a = new Anime(title, year, count, lan, type, fin, drop, director, "");
+			Anime a = new Anime(title, year, count, lan, type, fin, drop, director, false, "");
 			Manager.getInstance().addAnime(a);
 			mainGUI.updateData();
 		} catch (Exception e) {
