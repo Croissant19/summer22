@@ -1,5 +1,7 @@
 package anime;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Objects;
 
 /**
@@ -364,14 +366,21 @@ public class Anime implements Comparable<Anime> {
 	 * Generates string name for images unique to this Anime. 
 	 * Images saved with this anime will be set to this generated filename, 
 	 * and accessed through it when a user loads their data
-	 * @return filename for image compatible with the GUI
+	 * 
+	 * URLEncoder idea from <a href = https://stackoverflow.com/questions/15075890/replacing-illegal-character-in-filename> this StackOverflow page</a>
+	 * 
+	 * @return filename for image compatible with the GUI, null if no corresponding image file
+	 * If UnsupportedEncodingException is thrown, image fileName is set to null
 	 */
 	public String getImageFileName() {
-		//TODO: handle disallowed chars
-		String filename = title.toLowerCase().replace(" ", "");
-		filename += "_" + year;
-		//filename += ".png"???
-		//TODO: file extension
+		//Encode filename to for compatibility with HTML which will handle disallowed chars
+		String filename;
+		try {
+			filename = URLEncoder.encode(title, "UTF-8") + "_" + year;
+			filename += ".png";
+		} catch (UnsupportedEncodingException e) {
+			filename = null;
+		}
 		return filename;
 	}
 	

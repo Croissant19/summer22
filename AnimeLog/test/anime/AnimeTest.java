@@ -140,12 +140,12 @@ class AnimeTest {
 		a.setHasImage(true);
 		assertTrue(a.hasImage());
 
-		assertEquals("gurrenlagann_2007", a.getImageFileName());
+		assertEquals("Gurren+Lagann_2007.png", a.getImageFileName());
 	
 		a = new Anime("Fullmetal Alchemist", 2003, 51, 
 				Language.SUB, Type.SERIES, false, true, "Seiji Mizushima", false, "");
 		
-		assertEquals("fullmetalalchemist_2003", a.getImageFileName());
+		assertEquals("Fullmetal+Alchemist_2003.png", a.getImageFileName());
 	}
 	
 	
