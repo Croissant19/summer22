@@ -70,6 +70,64 @@ public class Manager {
 		return list;
 	}
 
+	//TODO: javadoc
+	private Anime[] bubbleSort(SortedList<Anime> list) {
+	
+		return null;
+	}	
+
+	
+	
+	//TODO: javadoc
+	public Object[][] getAllAnimeAsArrayYearSort() {
+		Object[][] list = new Object[animeList.size()][3];
+		
+		////////////
+		//or
+		//Get sorted list
+		Anime[] sortedList = bubbleSort(animeList);
+		//Transform list into 2D array
+		//////////////
+		sortedList = new Anime[animeList.size()];
+		for (Anime a : animeList) {
+			//Add first anime to beginning
+			if (sortedList[0] == null) {
+				sortedList[0] = a;
+			} else {
+				//Otherwise add anime where it belongs on the list
+				int i = 0;
+				while (sortedList[i].sortsBeforeYearFocus(a) ) {
+					
+					i++;
+				}
+				Anime swap = sortedList[i];
+				sortedList[i] = a;
+				sortedList[++i] = swap;
+			
+			
+			}
+			
+			
+			
+			//Place anime where it needs to go 
+		}
+		
+		//Transform sortedList into 2D array
+		
+		
+		//Compare data and sort into new list via selection sort.
+//		for (Anime a : animeList) {
+//			
+//		}
+
+		
+
+		
+		return null;
+		
+	}
+	
+	
 	/**
 	 * Saves data to a file location specified by the user in JFileChooser
 	 * @param file to save data in

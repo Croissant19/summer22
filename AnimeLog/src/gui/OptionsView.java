@@ -38,14 +38,15 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Defines the GUI components for viewing anime
+ * Defines the GUI components for changing program settings
  * @author Hunter Pruitt
  */
 public class OptionsView extends JPanel {
 
-	private static final String WARNING_MESSAGE = "You have unsaved changes. Are you sure you want to leave?";
 	private GUI mainGUI;
 	private JButton btnApply;
+	
+	//TODO: in anime io have setting data as an optional preceding delimiter
 	
 	/**
 	 * Create the panel.

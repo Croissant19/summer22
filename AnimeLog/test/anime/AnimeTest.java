@@ -94,6 +94,19 @@ class AnimeTest {
 	}
 
 	/**
+	 * Tests the sortsBeforeYearFocus() method for anime
+	 */
+	@Test
+	void testSortsBeforeYearFocus() {
+		assertFalse(GURREN.sortsBeforeYearFocus(FMA03));
+		assertFalse(FMA09.sortsBeforeYearFocus(GURREN));
+		assertTrue(FMA03.sortsBeforeYearFocus(FMA09));
+		assertFalse(FMA09.sortsBeforeYearFocus(FMA03));
+		assertThrows(IllegalArgumentException.class, ()-> GURREN.sortsBeforeYearFocus(GURREN));
+	}
+	
+	
+	/**
 	 * Tests the compareTo methods for anime using SortedList
 	 */
 	@Test

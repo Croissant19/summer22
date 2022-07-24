@@ -172,6 +172,34 @@ public class Anime implements Comparable<Anime> {
 		}
 	}
 	
+	/**
+	 * Alternate sorting based method. Indicates if this anime precedes the anime parameter 
+	 * based on year comparison and then alphabetical precedence
+	 * @param a Anime to be compared against
+	 * @return boolean indicator of if this anime comes before the parameter anime
+	 * @throws IllegalArgumentException if passed an anime identical to this
+	 */
+	public boolean sortsBeforeYearFocus(Anime a) {
+		//TODO: Test
+		//If anime are equal, throw an exception
+		//Cannot have duplicate anime in the program
+		if (this.equals(a)) {
+			throw new IllegalArgumentException("Cannot compare duplicate anime.");
+		}
+		
+		if (this.getYear() != a.getYear()) {
+			//If years do not match
+			return this.getYear() < a.getYear();
+
+		} else {
+			//If years do match, check alphabetical precedence
+			String thisTitle = this.getTitle().toLowerCase();
+			String otherTitle = a.getTitle().toLowerCase();
+
+			return thisTitle.compareTo(otherTitle) > 0 ;
+		}
+	}
+	
 	
 	/**
 	 * Returns the title for display on the GUI
