@@ -1,7 +1,5 @@
 package anime;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Objects;
 
 /**
@@ -114,10 +112,7 @@ public class Anime implements Comparable<Anime> {
 	
 	/** Optional notes for the user to attach to this entry */
 	private String notes;
-	
-	/** Indicates whether this entry has an associated image */
-	private boolean hasImage;
-		
+			
 	
 	////////////
 	//METHODS
@@ -134,12 +129,11 @@ public class Anime implements Comparable<Anime> {
 	 * @param finished if the user finished watching
 	 * @param dropped if the user stopped watching
 	 * @param director 
-	 * @param img indicates if the anime has an image associated with it
 	 * @param notes personal notes about the entry
 	 * @throws IllegalArgumentException if passed bad parameters
 	 */
 	public Anime(String title, int year, int count, Language lan, Type type, boolean finished, 
-			boolean dropped, String director, boolean img, String notes) {
+			boolean dropped, String director, String notes) {
 
 		//Delegate checks to setters
 		setTitle(title);
@@ -150,7 +144,6 @@ public class Anime implements Comparable<Anime> {
 		setFinished(finished);
 		setDropped(dropped);
 		setDirector(director);
-		setHasImage(img);
 		setNotes(notes);
 	}
 		
@@ -346,44 +339,7 @@ public class Anime implements Comparable<Anime> {
 		this.notes = notes;
 	}
 
-	/**
-	 * Indicates if the Anime has an associated image in program resources
-	 * @return boolean indicator of if Anime has image
-	 */
-	public boolean hasImage() {
-		return hasImage;
-	}
-	
-	/**
-	 * Sets the hasImage field to a boolean parameter
-	 * @param img true if the anime has an image component in the program resources
-	 */
-	public void setHasImage(boolean img) {
-		this.hasImage = img;
-	}
-	
-	/**
-	 * Generates string name for images unique to this Anime. 
-	 * Images saved with this anime will be set to this generated filename, 
-	 * and accessed through it when a user loads their data
-	 * 
-	 * URLEncoder idea from <a href = https://stackoverflow.com/questions/15075890/replacing-illegal-character-in-filename> this StackOverflow page</a>
-	 * 
-	 * @return filename for image compatible with the GUI, null if no corresponding image file
-	 * If UnsupportedEncodingException is thrown, image fileName is set to null
-	 */
-	public String getImageFileName() {
-		//Encode filename to for compatibility with HTML which will handle disallowed chars
-		String filename;
-		try {
-			filename = URLEncoder.encode(title, "UTF-8") + "_" + year;
-			filename += ".png";
-		} catch (UnsupportedEncodingException e) {
-			filename = null;
-		}
-		return filename;
-	}
-	
+		
 	/**
 	 * Generates a String representation of an anime for use in file io
 	 * @return String representation of fields
@@ -392,7 +348,7 @@ public class Anime implements Comparable<Anime> {
 	public String toString() {
 		String s = title + ",_" + year + ",_" + count + ",_" + language.formattedName 
 				+ ",_" + type.formattedName + ",_" + finished + ",_" + dropped + ",_" 
-				+ director + ",_" + hasImage + ",_" + notes;
+				+ director + ",_" + notes;
 
 		return s;
 	}

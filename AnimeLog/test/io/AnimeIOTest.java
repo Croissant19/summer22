@@ -158,11 +158,11 @@ class AnimeIOTest {
 	void testExport() {
 		//Create and add the expected anime
 		Anime a = new Anime("Gurren Lagann", 2007, 26, Language.SUB, Type.SERIES, true, false, 
-				"Hiroyuki Imaishi", false,"Very good op!");
+				"Hiroyuki Imaishi", "Very good op!");
 		Anime b = new Anime("One Piece", 1999, 100, Language.DUB, Type.SERIES, false, false, 
-				"multiple", false, "Watching with brother");
+				"multiple", "Watching with brother");
 		Anime c = new Anime("Naruto", 2002, 0, Language.OTHER, Type.SPECIAL, false, true, 
-				"", false, "W\nO\nA\nH");
+				"", "W\nO\nA\nH");
 		
 		list.add(a);
 		list.add(b);

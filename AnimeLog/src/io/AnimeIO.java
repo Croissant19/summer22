@@ -19,6 +19,8 @@ import util.SortedList;
  */
 public class AnimeIO {
 
+	//TODO: FIX README in test-files
+	
 	/**
 	 * Writes data from files into a plaintext file compatible with the program's file reader
 	 * @param list sorted list of Anime to be saved
@@ -73,7 +75,6 @@ public class AnimeIO {
 		}
 		fileReader.close();
 
-		//TODO: Later use the delimit type as an indicator of anime vs manga type data?
 		//Check that the file type is correct
 		if (contents.substring(0, 3).equals("<|>")) {
 			//Remove the initial delimiter after verifying in the if conditional
@@ -125,7 +126,6 @@ public class AnimeIO {
 		boolean finished = Boolean.parseBoolean(in.next());
 		boolean dropped = Boolean.parseBoolean(in.next());
 		String director = in.next().trim();
-		boolean hasImg = Boolean.parseBoolean(in.next());
 		String notes = in.next().trim();
 		if (in.hasNext()) {
 			in.close();
@@ -135,7 +135,7 @@ public class AnimeIO {
 		
 		//Construct Anime and return
 		Anime a = new Anime(title, year, count, lang, type, finished, 
-				dropped, director, hasImg, notes);
+				dropped, director, notes);
 		return a;
 	}
 	

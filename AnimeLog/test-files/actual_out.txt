@@ -1,6 +1,6 @@
-<|>Gurren Lagann,_2007,_26,_Sub,_Series,_true,_false,_Hiroyuki Imaishi,_false,_Very good op!
-<|>Naruto,_2002,_0,_Other,_Special,_false,_true,_,_false,_W
+<|>Gurren Lagann,_2007,_26,_Sub,_Series,_true,_false,_Hiroyuki Imaishi,_Very good op!
+<|>Naruto,_2002,_0,_Other,_Special,_false,_true,_,_W
 O
 A
 H
-<|>One Piece,_1999,_100,_Dub,_Series,_false,_false,_multiple,_false,_Watching with brother
+<|>One Piece,_1999,_100,_Dub,_Series,_false,_false,_multiple,_Watching with brother

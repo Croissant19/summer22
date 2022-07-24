@@ -276,6 +276,10 @@ public class NewAnimeView extends JPanel {
 
 			//Required fields
 			title = txtFldTitle.getText();
+			if (txtFldTitle.getText().isBlank()) {
+				throw new IllegalArgumentException("Entry must have a title.");
+			}
+			
 			year = Integer.parseInt(txtFldYear.getText());
 
 			if (rdBtnSub.isSelected()) {
@@ -317,20 +321,18 @@ public class NewAnimeView extends JPanel {
 			
 			
 			//Create the anime
-			Anime a = new Anime(title, year, count, lan, type, fin, drop, director, false, "");
+			Anime a = new Anime(title, year, count, lan, type, fin, drop, director, "");
 			Manager.getInstance().addAnime(a);
 			mainGUI.updateData();
 		} catch (Exception e) {
 			
-			//TODO: ensure correct
 			if (e instanceof NumberFormatException) {
-				throw new IllegalArgumentException("Cannot understant some input.");	
+				throw new IllegalArgumentException("Cannot understand some numerical input.");	
 			} else {
 				throw new IllegalArgumentException(e.getMessage());
 			}
 		}
 
-		//TODO: TESTTT
 		//By here, was successful so can adjust top text to indicate so.
 		secondaryText = title + " was created successfully. Feel free to add another!";
 		lblTopInfo.setText(secondaryText);

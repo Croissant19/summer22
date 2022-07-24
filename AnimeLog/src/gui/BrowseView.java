@@ -45,8 +45,6 @@ public class BrowseView extends JPanel {
 
 	private static final String WARNING_MESSAGE = "You have unsaved changes. Are you sure you want to leave?";
 	private GUI mainGUI;
-	private JPanel imgPanel;
-	private JLabel lblImage;
 	private JTextField txtFldTitle;
 	private JTextField txtFldYear;
 	private JTextField txtFldCount;
@@ -80,6 +78,10 @@ public class BrowseView extends JPanel {
 		btnNext = new JButton("Next");
 		btnNext.setBounds(295, 341, 89, 23);
 		add(btnNext);
+		
+		btnEdit = new JButton("Edit");
+		btnEdit.setBounds(167, 341, 89, 23);
+		add(btnEdit);
 		
 		btnPrevious = new JButton("Previous");
 		btnPrevious.setBounds(39, 341, 89, 23);
@@ -188,23 +190,9 @@ public class BrowseView extends JPanel {
 		rdBtnSpecial.setBounds(189, 102, 70, 23);
 		pnlFields.add(rdBtnSpecial);
 		
-		imgPanel = new JPanel();
-		imgPanel.setBounds(296, 176, 99, 132);
-		pnlFields.add(imgPanel);
-		imgPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-
-		
-		lblImage = new JLabel("");
-		//TODO: attribute image icon from
-		//flaticon.com/premium-icon/new_4131729?term=add%20image&page=1&position=52&page=1&position=52&related_id=4131729&origin=style#
-//		lblIcon.setIcon(new ImageIcon(BrowseView.class.getResource("/resources/addImgIcon_128.png")));
-		lblImage.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/resources/addImgPoster.png")).getImage().getScaledInstance(imgPanel.getWidth(), imgPanel.getHeight(), Image.SCALE_SMOOTH)));
-		imgPanel.add(lblImage);
-		
 		txtAreaNotes = new JTextArea();
 		txtAreaNotes.setEditable(false);
-		txtAreaNotes.setBounds(10, 205, 274, 103);
+		txtAreaNotes.setBounds(10, 205, 385, 103);
 		pnlFields.add(txtAreaNotes);
 		txtAreaNotes.setColumns(10);
 		
@@ -212,10 +200,6 @@ public class BrowseView extends JPanel {
 		lblNotes.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblNotes.setBounds(10, 190, 70, 14);
 		pnlFields.add(lblNotes);
-		
-		btnEdit = new JButton("Edit");
-		btnEdit.setBounds(167, 341, 89, 23);
-		add(btnEdit);
 
 		
 		createEvents();
@@ -225,15 +209,6 @@ public class BrowseView extends JPanel {
 	 * Creates events for components inside the card panel, so that fields can be edited/saved and interactables behave correctly
 	 */
 	private void createEvents() {
-		
-		//TODO: responds to right and middle clicks too, not good...
-		imgPanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				imagePopup();
-			}
-		});
-
 		
 		//Events pertaining to large buttons, edit/save, next, previous
 		//Edit/Save button
@@ -245,7 +220,6 @@ public class BrowseView extends JPanel {
 						try {				
 							if (changeOccurred()) {	
 								//Try to construct new Anime
-								//TODO: probably should combine makeNewAnime from here and NewAnimeView into one method...!
 								Anime updatedAnime = makeNewAnime();
 	
 								//Update and regenerate data
@@ -500,10 +474,6 @@ public class BrowseView extends JPanel {
 			chckBxDropped.setSelected(true);
 		}
 		
-		if (currentAnime.hasImage()) {
-			loadImage();
-			//TODO: add image reset code if needed?
-		}
 		
 		txtFldDirector.setText(currentAnime.getDirector());
 		txtAreaNotes.setText(currentAnime.getNotes());
@@ -519,28 +489,6 @@ public class BrowseView extends JPanel {
 
 	}
 
-	/**
-	 * Loads the small instance of the image in the BrowseView
-	 */
-	private void loadImage() {
-		String imageFile = currentAnime.getImageFileName();
-		
-		//lblImage.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/resources/addImgPoster.png")).getImage().getScaledInstance(imgPanel.getWidth(), imgPanel.getHeight(), Image.SCALE_SMOOTH)));
-		lblImage.setIcon(new ImageIcon(new ImageIcon(getClass().getResource(imageFile)).getImage().getScaledInstance(imgPanel.getWidth(), imgPanel.getHeight(), Image.SCALE_SMOOTH)));
-
-		
-		
-	}
-
-	/**
-	 * Works with the Manager to add the image to the program database, after converting it to a .png if necessary.
-	 * @param image provided by user to be associated with the currentAnime on display
-	 */
-	private void addImage(File image) {
-		Manager.getInstance().ensurePNG(image);
-		Manager.getInstance().archiveImage(image);
-		currentAnime.setHasImage(true);
-	}
 	
 	/**
 	 * Resets the fields to blank after an Anime is successfully added
@@ -558,7 +506,6 @@ public class BrowseView extends JPanel {
 		chckBxFinished.setSelected(false);
 		chckBxDropped.setSelected(false);
 		txtAreaNotes.setText("");
-		lblImage.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("/resources/addImgPoster.png")).getImage().getScaledInstance(imgPanel.getWidth(), imgPanel.getHeight(), Image.SCALE_SMOOTH)));
 	}
 
 	
@@ -591,7 +538,6 @@ public class BrowseView extends JPanel {
 		return leave;
 	}
 
-	
 	
 	/**
 	 * Retrieves following anime in sequence and reloads page data
@@ -627,13 +573,6 @@ public class BrowseView extends JPanel {
 	}
 
 	
-	/**
-	 * Handles process when user clicks on image in BrowseView
-	 */
-	private void imagePopup() {
-		JFrame imagePopup = new ImagePopupView();
-		imagePopup.setVisible(true);
-	}
 
 	/**
 	 * Uses the components in BrowseView to synthesize a new Anime, letting you know if something is wrong.
@@ -658,10 +597,10 @@ public class BrowseView extends JPanel {
 			//Required fields
 			title = txtFldTitle.getText();
 			if (title.isBlank()) {
-				throw new IllegalArgumentException("Title not indicated.");
+				throw new IllegalArgumentException("Entry must have a title.");
 			}
 			if (txtFldYear.getText().isBlank()) {
-				throw new IllegalArgumentException("Year not indicated.");
+				throw new IllegalArgumentException("Entry must have a year.");
 			}
 			year = Integer.parseInt(txtFldYear.getText());
 
@@ -707,10 +646,9 @@ public class BrowseView extends JPanel {
 			
 			
 			//Create the anime
-			return new Anime(title, year, count, lan, type, fin, drop, director, currentAnime.hasImage(), notes);
+			return new Anime(title, year, count, lan, type, fin, drop, director, notes);
 		} catch (Exception e) {
-			
-			//TODO: ensure correct
+
 			if (e instanceof NumberFormatException) {
 				throw new IllegalArgumentException("Cannot understand some numerical input.");	
 			} else {
@@ -718,125 +656,5 @@ public class BrowseView extends JPanel {
 			}
 		}
 	}
-
-
-	/**
-	 * View appearing when image is selected from the BrowseView
-	 * @author Hunter Pruitt
-	 *
-	 */
-	private class ImagePopupView extends JFrame {
-
-		private JPanel contentPane;
-		
-		private JButton btnReset;
-		
-		private JButton btnAddImg;
-		
-		private JLabel imgLabel;
-
-		/**
-		 * Create the frame and components
-		 */
-		public ImagePopupView() {
-			setResizable(false);
-			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			setBounds(100, 100, 450, 300);
-			contentPane = new JPanel();
-			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-			setContentPane(contentPane);
-			contentPane.setLayout(new BorderLayout(0, 0));
-			
-			JPanel buttonPanel = new JPanel();
-			contentPane.add(buttonPanel, BorderLayout.SOUTH);
-			
-			btnReset = new JButton("Reset");
-			buttonPanel.add(btnReset);
-			
-			Component horizontalStrut = Box.createHorizontalStrut(40);
-			buttonPanel.add(horizontalStrut);
-			
-			btnAddImg = new JButton("Add Image");
-			buttonPanel.add(btnAddImg);
-			
-			JPanel imgPanel = new JPanel();
-			imgPanel.setSize(100, 300);
-			contentPane.add(imgPanel, BorderLayout.CENTER);
-			
-			imgLabel = new JLabel();
-			loadPopupImage();
-			imgPanel.add(imgLabel);
-
-			addButtonEvents();
-		}
-
-		private void loadPopupImage() {
-			//Get image file, either default or preset one
-			String imageFile;
-			if (currentAnime.hasImage()) {
-				imageFile = currentAnime.getImageFileName();
-			} else {
-				imageFile = "src/resources/addImgPoster.png";
-			}
-			
-			//Get image from filename
-			ImageIcon imgIcon;
-			try {
-				File f = new File(imageFile);
-				Image i = ImageIO.read(f);
-
-				//Configure image
-				//TODO: Change rescale to keep image ratio but also abide by a standard, fixed width
-				i.getScaledInstance(imgPanel.getWidth(), imgPanel.getHeight(), Image.SCALE_SMOOTH);
-				
-				//Add image to ImageIcon to add to JLabel
-				imgIcon = new ImageIcon(i);
-
-			} catch (IOException e) {
-				//Throw exception if reading file fails
-				throw new IllegalArgumentException("Can not display image file.");
-			}
-		
-			imgLabel.setIcon(imgIcon);
-			
-		}
-
-		
-		
-		/**
-		 * Adds functionality to the buttons in the ImagePopupView
-		 */
-		private void addButtonEvents() {
-			//Reset button
-			btnReset.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-
-					int answer = JOptionPane.showConfirmDialog(btnEdit, "Are you sure you want to reset the image to it's default?");
-
-					if (answer == JOptionPane.YES_OPTION) {
-						//Reset the image to the default
-						currentAnime.setHasImage(false);
-						loadPopupImage();
-					}
-					
-				}
-
-			});
-
-			//Add button
-			btnAddImg.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					//TODO: use JFileChooser here to get user image
-					
-					loadPopupImage();
-				}
-
-			});
-
-			
-		}
-
-	}
-	
 
 }
