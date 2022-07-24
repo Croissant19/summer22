@@ -109,6 +109,7 @@ public class AnimeIO {
 	 * Processes a String containing information to construct an Anime object
 	 * @param blurb
 	 * @return Anime with imported user data
+	 * @throws IllegalArgumentException if there is too much information
 	 */
 	private static Anime processAnime(String blurb) {
 		

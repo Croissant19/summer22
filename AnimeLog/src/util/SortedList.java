@@ -2,8 +2,6 @@ package util;
 
 import java.util.Iterator;
 
-import anime.Anime;
-
 /**
  * List for storing objects in a sorted order,
  * modeled after a LinkedList.

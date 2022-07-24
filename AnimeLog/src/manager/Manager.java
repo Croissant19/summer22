@@ -1,6 +1,10 @@
 package manager;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import anime.Anime;
 import anime.Anime.Language;
@@ -73,7 +77,48 @@ public class Manager {
 	public void saveFile(File file) {		
 		AnimeIO.writeData(animeList, file);		
 	}
+	
+	/**
+	 * Takes an image file an transforms it into a .png if it is compatible
+	 * @param image for the method to ensure is a PNG
+	 * @throws IllegalArgumentException if the passed file is not of type JPEG or PNG
+	 * or if an error occurs when trying to transform the file into a PNG
+	 */
+	public void ensurePNG(File image) {
+		String name = image.getName();
 
+		//Get extension
+		String[] splitName = name.split(".");
+		String extension = splitName[splitName.length];
+
+		//TODO: does the split include the dot?, likely source of errors
+		if (extension.equals("jpg") || extension.equals("jpeg")) {
+
+			//Convert to png
+			try {
+				//Add image to buffered image
+				BufferedImage bufferedImg = ImageIO.read(image);
+
+				//Write it to a file as a png
+				ImageIO.write(bufferedImg, "png", image);
+
+			} catch (IOException e) {
+				//Error occurred during overwrite process
+				throw new IllegalArgumentException("Error occured during file saving process");
+			}
+
+			
+		} else if (!extension.equals("png")) {
+			//If the file type is not already a png, throw an exception
+			throw new IllegalArgumentException("Invalid file type passed. Image must be either PNG or JPEG.");
+		}
+	}
+
+	public void archiveImage(File image) {
+		
+	}
+	
+	
 	/**
 	 * Provides the animeList use in other classes
 	 * @return the animeList

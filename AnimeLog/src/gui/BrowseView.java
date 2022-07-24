@@ -5,6 +5,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 import anime.Anime;
 import anime.Anime.Language;
@@ -16,15 +17,25 @@ import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+
 import java.awt.Font;
 import java.awt.Image;
 
+import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Defines the GUI components for viewing anime
@@ -234,7 +245,7 @@ public class BrowseView extends JPanel {
 						try {				
 							if (changeOccurred()) {	
 								//Try to construct new Anime
-								//TODO: probably should combine makeNeAnime from here and NewAnimeView into one method...!
+								//TODO: probably should combine makeNewAnime from here and NewAnimeView into one method...!
 								Anime updatedAnime = makeNewAnime();
 	
 								//Update and regenerate data
@@ -281,7 +292,6 @@ public class BrowseView extends JPanel {
 					rdBtnDub.setSelected(false);
 					rdBtnOther.setSelected(false);
 				}
-			
 			}
 		});
 		rdBtnDub.addActionListener(new ActionListener() {
@@ -290,7 +300,6 @@ public class BrowseView extends JPanel {
 					rdBtnSub.setSelected(false);
 					rdBtnOther.setSelected(false);
 				}
-			
 			}
 		});
 		rdBtnOther.addActionListener(new ActionListener() {
@@ -299,7 +308,6 @@ public class BrowseView extends JPanel {
 					rdBtnSub.setSelected(false);
 					rdBtnDub.setSelected(false);
 				}
-			
 			}
 		});
 
@@ -309,7 +317,6 @@ public class BrowseView extends JPanel {
 				if (rdBtnSeries.isSelected()) {
 					rdBtnSpecial.setSelected(false);
 				}
-			
 			}
 		});
 		rdBtnSpecial.addActionListener(new ActionListener() {
@@ -317,7 +324,6 @@ public class BrowseView extends JPanel {
 				if (rdBtnSpecial.isSelected()) {
 					rdBtnSeries.setSelected(false);
 				}
-			
 			}
 		});
 	}
@@ -513,6 +519,9 @@ public class BrowseView extends JPanel {
 
 	}
 
+	/**
+	 * Loads the small instance of the image in the BrowseView
+	 */
 	private void loadImage() {
 		String imageFile = currentAnime.getImageFileName();
 		
@@ -520,18 +529,27 @@ public class BrowseView extends JPanel {
 		lblImage.setIcon(new ImageIcon(new ImageIcon(getClass().getResource(imageFile)).getImage().getScaledInstance(imgPanel.getWidth(), imgPanel.getHeight(), Image.SCALE_SMOOTH)));
 
 		
-		// TODO Auto-generated method stub
 		
 	}
 
 	/**
+	 * Works with the Manager to add the image to the program database, after converting it to a .png if necessary.
+	 * @param image provided by user to be associated with the currentAnime on display
+	 */
+	private void addImage(File image) {
+		Manager.getInstance().ensurePNG(image);
+		Manager.getInstance().archiveImage(image);
+		currentAnime.setHasImage(true);
+	}
+	
+	/**
 	 * Resets the fields to blank after an Anime is successfully added
 	 */
 	private void clearFields() {
-		txtFldTitle.setText("");;
-		txtFldYear.setText("");;
-		txtFldCount.setText("");;
-		txtFldDirector.setText("");;
+		txtFldTitle.setText("");
+		txtFldYear.setText("");
+		txtFldCount.setText("");
+		txtFldDirector.setText("");
 		rdBtnSub.setSelected(false);
 		rdBtnDub.setSelected(false);
 		rdBtnOther.setSelected(false);
@@ -613,9 +631,8 @@ public class BrowseView extends JPanel {
 	 * Handles process when user clicks on image in BrowseView
 	 */
 	private void imagePopup() {
-		// TODO Auto-generated method stub
-		//TODO: JFrame for image work
-		JOptionPane.showMessageDialog(getRootPane(), "");
+		JFrame imagePopup = new ImagePopupView();
+		imagePopup.setVisible(true);
 	}
 
 	/**
@@ -703,5 +720,123 @@ public class BrowseView extends JPanel {
 	}
 
 
+	/**
+	 * View appearing when image is selected from the BrowseView
+	 * @author Hunter Pruitt
+	 *
+	 */
+	private class ImagePopupView extends JFrame {
+
+		private JPanel contentPane;
+		
+		private JButton btnReset;
+		
+		private JButton btnAddImg;
+		
+		private JLabel imgLabel;
+
+		/**
+		 * Create the frame and components
+		 */
+		public ImagePopupView() {
+			setResizable(false);
+			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			setBounds(100, 100, 450, 300);
+			contentPane = new JPanel();
+			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+			setContentPane(contentPane);
+			contentPane.setLayout(new BorderLayout(0, 0));
+			
+			JPanel buttonPanel = new JPanel();
+			contentPane.add(buttonPanel, BorderLayout.SOUTH);
+			
+			btnReset = new JButton("Reset");
+			buttonPanel.add(btnReset);
+			
+			Component horizontalStrut = Box.createHorizontalStrut(40);
+			buttonPanel.add(horizontalStrut);
+			
+			btnAddImg = new JButton("Add Image");
+			buttonPanel.add(btnAddImg);
+			
+			JPanel imgPanel = new JPanel();
+			imgPanel.setSize(100, 300);
+			contentPane.add(imgPanel, BorderLayout.CENTER);
+			
+			imgLabel = new JLabel();
+			loadPopupImage();
+			imgPanel.add(imgLabel);
+
+			addButtonEvents();
+		}
+
+		private void loadPopupImage() {
+			//Get image file, either default or preset one
+			String imageFile;
+			if (currentAnime.hasImage()) {
+				imageFile = currentAnime.getImageFileName();
+			} else {
+				imageFile = "src/resources/addImgPoster.png";
+			}
+			
+			//Get image from filename
+			ImageIcon imgIcon;
+			try {
+				File f = new File(imageFile);
+				Image i = ImageIO.read(f);
+
+				//Configure image
+				//TODO: Change rescale to keep image ratio but also abide by a standard, fixed width
+				i.getScaledInstance(imgPanel.getWidth(), imgPanel.getHeight(), Image.SCALE_SMOOTH);
+				
+				//Add image to ImageIcon to add to JLabel
+				imgIcon = new ImageIcon(i);
+
+			} catch (IOException e) {
+				//Throw exception if reading file fails
+				throw new IllegalArgumentException("Can not display image file.");
+			}
+		
+			imgLabel.setIcon(imgIcon);
+			
+		}
+
+		
+		
+		/**
+		 * Adds functionality to the buttons in the ImagePopupView
+		 */
+		private void addButtonEvents() {
+			//Reset button
+			btnReset.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+
+					int answer = JOptionPane.showConfirmDialog(btnEdit, "Are you sure you want to reset the image to it's default?");
+
+					if (answer == JOptionPane.YES_OPTION) {
+						//Reset the image to the default
+						currentAnime.setHasImage(false);
+						loadPopupImage();
+					}
+					
+				}
+
+			});
+
+			//Add button
+			btnAddImg.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					//TODO: use JFileChooser here to get user image
+					
+					loadPopupImage();
+				}
+
+			});
+
+			
+		}
+
+	}
+	
 
 }

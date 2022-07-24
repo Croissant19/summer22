@@ -242,10 +242,10 @@ public class NewAnimeView extends JPanel {
 	 * Resets the fields to blank after an Anime is successfully added
 	 */
 	private void clearFields() {
-		txtFldTitle.setText("");;
-		txtFldYear.setText("");;
-		txtFldCount.setText("");;
-		txtFldDirector.setText("");;
+		txtFldTitle.setText("");
+		txtFldYear.setText("");
+		txtFldCount.setText("");
+		txtFldDirector.setText("");
 		rdBtnSub.setSelected(false);
 		rdBtnDub.setSelected(false);
 		rdBtnOther.setSelected(false);
