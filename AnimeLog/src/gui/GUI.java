@@ -61,12 +61,13 @@ public class GUI extends JFrame {
 	private JButton btnBrowse;
 	private JButton btnAdd;
 	private JButton btnRemove;
+	private JButton btnOptions;
 	//TODO: settings button for graph sort by? graph colors?
 	
 	private HomeView homeView = new HomeView();
 	private BrowseView browseView = new BrowseView(this);
 	private NewAnimeView newAnimeView = new NewAnimeView(this);
-
+	private OptionsView optionsView = new OptionsView(this);
 
 	private JScrollPane scrollPane;
 	
@@ -158,6 +159,7 @@ public class GUI extends JFrame {
 		cardPanel.add(homeView, "homeView");
 		cardPanel.add(newAnimeView, "addView");
 		cardPanel.add(browseView, "browseView");
+		cardPanel.add(optionsView, "optionsView");
 
 		fileOptions = new JComboBox<String>();
 
@@ -180,15 +182,18 @@ public class GUI extends JFrame {
 		btnAdd = new JButton("Add");
 		btnAdd.setRequestFocusEnabled(false);
 		toolBar.add(btnAdd);
-		
-		//Disable home button to indicate that is where you start
-		toggleToolbarButtons(btnHome);
-
 
 		btnRemove = new JButton("Remove");
 		btnRemove.setRequestFocusEnabled(false);
 		toolBar.add(btnRemove);
+		
+		btnOptions = new JButton("Options");
+		toolBar.add(btnOptions);
 
+		//Disable home button to indicate that is where you start
+		toggleToolbarButtons(btnHome);
+		
+		
 		//Declare table model and override isCellEditable so that no cells are editable
 		table = new JTable(new DefaultTableModel(null, COLUMN_NAMES) {
 		    @Override
@@ -355,6 +360,21 @@ public class GUI extends JFrame {
 			}
 		});
 
+		//Add functionality to Options button
+		btnOptions.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (browseView.canLeave()) {
+					table.clearSelection();
+					setCard("optionsView");
+					toggleToolbarButtons(btnOptions);
+					browseView.setCurrentAnime(null);
+					
+				} else {
+					return;
+				}
+			}
+		});
+
 		
 
 		//Table Events
@@ -414,7 +434,7 @@ public class GUI extends JFrame {
 		btnHome.setEnabled(true);
 		btnBrowse.setEnabled(true);
 		btnAdd.setEnabled(true);
-
+		btnOptions.setEnabled(true);
 		//Disable the selected button
 		if (selected != null) {
 			selected.setEnabled(false);	

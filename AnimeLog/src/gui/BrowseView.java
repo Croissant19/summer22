@@ -533,6 +533,9 @@ public class BrowseView extends JPanel {
 			} else {
 				leave = false;
 			}
+		} else if (inEditMode) {
+			//Leave edit mode if user tries to leave but there were no changes
+			changeMode();
 		}
 
 		return leave;
