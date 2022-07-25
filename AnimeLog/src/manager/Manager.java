@@ -48,83 +48,101 @@ public class Manager {
 	public void processFile(String filename) {
 		animeList = AnimeIO.readFile(filename);
 	}
-	
-	
+
+
 	/**
 	 * Grabs title, year, and count for each anime for display on the GUI. 
 	 * Return is type Object[][] so that ints and Strings are both displayed in the table together.
 	 * It could be type String[][], but ultimately doesn't matter.
+	 * 
+	 * The sorting for this method is sort by alphabetical titles, 
+	 * and then in the case of overlap, refer to debut years
+	 * 
 	 * @return 2D array of anime data for display on the GUI
 	 */
-	public Object[][] getAllAnimeAsArray()	{
+	public Object[][] getAllAnimeAsArrayTitleBased()	{
 		Object[][] list = new Object[animeList.size()][3];
 		
 		//Get wanted data for each anime
-		for (int i = 0; i < animeList.size(); i++) {
-			Anime currAnime = animeList.get(i);
-			list[i][0] = currAnime.getYear();
-			list[i][1] = currAnime.getTitle();
-			list[i][2] = currAnime.getCount();
+		int index = 0;
+		for (Anime a : animeList) {
+			list[index][0] = a.getYear();
+			list[index][1] = a.getTitle();
+			list[index][2] = a.getCount();
+			index++;
 		}
 
 		return list;
 	}
 
-	//TODO: javadoc
-	private Anime[] bubbleSort(SortedList<Anime> list) {
 	
-		return null;
-	}	
-
-	
-	
-	//TODO: javadoc
-	public Object[][] getAllAnimeAsArrayYearSort() {
+	/**
+	 * Grabs title, year, and count for each anime for display on the GUI. 
+	 * Return is type Object[][] so that ints and Strings are both displayed in the table together.
+	 * It could be type String[][], but ultimately doesn't matter.
+	 * 
+	 * The sorting for this method is sort by year values, 
+	 * and then in the case of overlap, refer to title spelling to sort
+	 * 
+	 * @return 2D array of anime data for display on the GUI
+	 */
+	public Object[][] getAllAnimeAsArrayYearBased() {
 		Object[][] list = new Object[animeList.size()][3];
-		
-		////////////
-		//or
+
 		//Get sorted list
-		Anime[] sortedList = bubbleSort(animeList);
+		Anime[] sortedList = insertionSort(animeList);
 		//Transform list into 2D array
-		//////////////
-		sortedList = new Anime[animeList.size()];
-		for (Anime a : animeList) {
-			//Add first anime to beginning
+				
+		//Get wanted data for each anime
+		int index = 0;
+		for (Anime a : sortedList) {
+			list[index][0] = a.getYear();
+			list[index][1] = a.getTitle();
+			list[index][2] = a.getCount();
+			index++;
+		}
+
+		return list;
+		}
+	
+	/**
+	 * Sorts with a focus on year before title, as opposed to SortedList's native alphabetical then year sort.
+	 * Insertion sort algorithm
+	 * @param list SortedList of Anime to be sorted in a different way
+	 * @return array of Anime sorted by year over title
+	 */
+	private Anime[] insertionSort(SortedList<Anime> list) {
+		Anime[] sortedList = new Anime[list.size()];
+		//numInserted is used so that when shifting elements the procedure doesn't bother with the null elements (useful in longer lists)
+		int numInserted = 0;
+		for (Anime a : list) {
+			//Base case, add first element to beginning of sortedList
 			if (sortedList[0] == null) {
 				sortedList[0] = a;
+				numInserted++;
 			} else {
-				//Otherwise add anime where it belongs on the list
-				int i = 0;
-				while (sortedList[i].sortsBeforeYearFocus(a) ) {
+				int insertionPoint = 0;
+				boolean inserted = false;
+
+				//Otherwise insert element where it belongs
+				while (!inserted) {
+					if (a.sortsBeforeYearFocus(sortedList[insertionPoint])) {
+						//Insert and shift elements to the right
+						for (int j = numInserted; j > insertionPoint; j--) {
+							sortedList[j] = sortedList[j - 1];
+						}
+						sortedList[insertionPoint] = a;
+						numInserted++;
+						inserted = true;
+					} else {
+						insertionPoint++;
+					}
 					
-					i++;
-				}
-				Anime swap = sortedList[i];
-				sortedList[i] = a;
-				sortedList[++i] = swap;
-			
-			
-			}
-			
-			
-			
-			//Place anime where it needs to go 
-		}
-		
-		//Transform sortedList into 2D array
-		
-		
-		//Compare data and sort into new list via selection sort.
-//		for (Anime a : animeList) {
-//			
-//		}
+				}//while not inserted
+			}//If sortedList is empty / else insertion code		
+		}//For (Anime a : list)
 
-		
-
-		
-		return null;
-		
+		return sortedList;
 	}
 	
 	

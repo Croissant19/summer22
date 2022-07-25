@@ -15,7 +15,7 @@ import util.SortedList;
  * @author Hunter Pruitt
  */
 class ManagerTest {
-
+	
 	/** Location of file used for testing */
 	private final String TEST_FILE = "test-files/ThreeWorkingImports.txt";
 	
@@ -83,11 +83,11 @@ class ManagerTest {
 	}
 	
 	/**
-	 * Ensures returned array is organized as expected, and correct
+	 * Ensures returned array is organized as expected, and correct in title based retrieval
 	 */
 	@Test
-	void testGetAllAnimeAsArray() {
-		Object[][] array = Manager.getInstance().getAllAnimeAsArray();
+	void testGetAllAnimeAsArrayTitleBased() {
+		Object[][] array = Manager.getInstance().getAllAnimeAsArrayTitleBased();
 		
 		//Test each column, one at a time
 		assertAll(
@@ -105,6 +105,29 @@ class ManagerTest {
 				);
 	}
 
+	/**
+	 * Ensures returned array is organized as expected, and correct in year based retrieval
+	 */
+	@Test
+	void testGetAllAnimeAsArrayYearBased() {
+		Object[][] array = Manager.getInstance().getAllAnimeAsArrayYearBased();
+		
+		//Test each column, one at a time
+		assertAll(
+				() -> assertEquals(1999, array[0][0]),
+				() -> assertEquals(2002, array[1][0]),
+				() -> assertEquals(2007, array[2][0]),
+
+				() -> assertEquals("One Piece", array[0][1]),
+				() -> assertEquals("Naruto", array[1][1]),
+				() -> assertEquals("Gurren Lagann", array[2][1]),
+
+				() -> assertEquals(100, array[0][2]),
+				() -> assertEquals(0, array[1][2]),
+				() -> assertEquals(26, array[2][2])
+				);
+	}
+	
 	/** 
 	 * Tests changes made to the list and that they are reflected properly
 	 */

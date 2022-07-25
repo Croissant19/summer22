@@ -460,7 +460,7 @@ public class GUI extends JFrame {
 	private void updateTable() {
 		
 		int numRows = Manager.getInstance().getAnimeList().size();
-		Object[][] rowVals = Manager.getInstance().getAllAnimeAsArray();
+		Object[][] rowVals = Manager.getInstance().getAllAnimeAsArrayTitleBased();
 
 		DefaultTableModel tm = (DefaultTableModel) table.getModel();
 		tm.setRowCount(0);
