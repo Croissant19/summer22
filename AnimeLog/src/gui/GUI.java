@@ -102,7 +102,7 @@ public class GUI extends JFrame {
 	public GUI() {
 		initComponents();
 		createEvents();
-		//TODO: remove test procedure
+		//TODO: remove test procedures
 		testStartUp();
 	}
 	
