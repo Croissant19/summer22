@@ -66,22 +66,51 @@ public class OptionsView extends JPanel {
 		pnlFields.setLayout(null);
 		
 		JRadioButton rdbtnAlphabet = new JRadioButton("Title");
-		rdbtnAlphabet.setBounds(161, 93, 74, 23);
+		rdbtnAlphabet.setBounds(49, 83, 74, 23);
 		pnlFields.add(rdbtnAlphabet);
 		
 		JRadioButton rdbtnYear = new JRadioButton("Year");
-		rdbtnYear.setBounds(272, 93, 74, 23);
+		rdbtnYear.setBounds(125, 83, 74, 23);
 		pnlFields.add(rdbtnYear);
 		
 		JLabel lblSortBy = new JLabel("Sort by:");
 		lblSortBy.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblSortBy.setBounds(48, 97, 64, 14);
+		lblSortBy.setBounds(33, 68, 64, 14);
 		pnlFields.add(lblSortBy);
 		
 		JLabel lblInstructions = new JLabel(NOTICE);
 		lblInstructions.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblInstructions.setBounds(48, 41, 318, 45);
+		lblInstructions.setBounds(33, 11, 350, 45);
 		pnlFields.add(lblInstructions);
+		
+		JLabel lblColors = new JLabel("Colors:");
+		lblColors.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblColors.setBounds(33, 117, 64, 14);
+		pnlFields.add(lblColors);
+		
+		JRadioButton rdbtnNoColors = new JRadioButton("No highlights");
+		rdbtnNoColors.setBounds(49, 132, 120, 23);
+		pnlFields.add(rdbtnNoColors);
+		
+		JRadioButton rdbtnColorFinDrop = new JRadioButton("Finished and Dropped highlights");
+		rdbtnColorFinDrop.setBounds(49, 158, 197, 23);
+		pnlFields.add(rdbtnColorFinDrop);
+		
+		JRadioButton rdbtnColorSeriesSpecial = new JRadioButton("Series and Special highlights");
+		rdbtnColorSeriesSpecial.setBounds(49, 186, 197, 23);
+		pnlFields.add(rdbtnColorSeriesSpecial);
+		
+		JRadioButton rdbtnColorLanguage = new JRadioButton("Sub or Dub highlights");
+		rdbtnColorLanguage.setBounds(49, 212, 197, 23);
+		pnlFields.add(rdbtnColorLanguage);
+		
+		JButton btnColor1 = new JButton("Color 1");
+		btnColor1.setBounds(287, 132, 74, 23);
+		pnlFields.add(btnColor1);
+		
+		JButton btnColor2 = new JButton("Color 2");
+		btnColor2.setBounds(287, 166, 74, 23);
+		pnlFields.add(btnColor2);
 		
 		
 		btnApply = new JButton("Apply");
