@@ -1,16 +1,17 @@
 package util;
 
 import java.util.Iterator;
+import anime.Anime;
+import manager.Manager.SortFocus;
 
 /**
- * List for storing objects in a sorted order,
+ * List for storing Anime objects in a sorted order,
  * modeled after a LinkedList.
- * Does not allow duplicates. 
+ * Does not allow duplicates.
+ * 
  * @author Hunter Pruitt
- *
- * @param <E> type of data to be stored in the list
  */
-public class SortedList<E extends Comparable<E>> implements Iterable<E> {
+public class SortedAnimeList implements Iterable<Anime> {
 
 	/** Number of elements in the list */
 	private int size;
@@ -18,12 +19,16 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 	/** Reference to the first element in the list */
 	private ListNode front;
 
+	/** Sorting method, either with a focus on name or on release year */
+	private SortFocus sortBy;
+	
 	/**
 	 * Constructor for SortedList, initializes size and front
 	 */
-	public SortedList() {
+	public SortedAnimeList(SortFocus sortBy) {
 		size = 0;
 		front = null;
+		this.sortBy = sortBy;
 	}
 	
 	/**
@@ -32,7 +37,7 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 	 * @throws NullPointerException if element is null
 	 * @throws IllegalArgumentException if element is duplicate 
 	 */
-	public void add(E element) {
+	public void add(Anime element) {
 
 		//Check can add
 		if (element == null) {
@@ -49,7 +54,8 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 		} else {
 			
 			//If need to add before front
-			if (0 < front.data.compareTo(element)) {
+			//TODO: test point?
+			if (sortsBefore(element, front.data)) {
 				front = new ListNode(element, front);
 				size++;
 				return;
@@ -60,7 +66,8 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 			
 			while(temp.next != null) {
 
-				if (0 < temp.next.data.compareTo(element)) {
+				//TODO: test point?
+				if (sortsBefore(element, temp.next.data)) {
 					//Add element before the next element
 					temp.next = new ListNode(element, temp.next);
 					size++;
@@ -82,12 +89,12 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 	 * @return element at given index
 	 * @throws IndexOutOfBoundsException if the idx is out of bounds for the list
 	 */
-	public E remove(int idx) {
+	public Anime remove(int idx) {
 		if(idx < 0 || idx >= size) {
 			throw new IndexOutOfBoundsException("Invalid index.");
 		}
 		
-		E removed;
+		Anime removed;
 	
 		//Remove from front
 		if(idx == 0) {
@@ -123,7 +130,7 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 	 * @param element element to search for
 	 * @return true if element is found
 	 */
-	public boolean contains(E element) {
+	public boolean contains(Anime element) {
 		ListNode temp = front;
 		//Return false if the list is empty
 		if (front == null) {
@@ -150,7 +157,7 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 	 * @param element to be searched for
 	 * @return index of the element in the sorted list
 	 */
-	public int indexOf(E element) {
+	public int indexOf(Anime element) {
 		int idx = -1;
 		
 		if (front != null) {
@@ -182,7 +189,7 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 	 * @throws IndexOutOfBoundsException if the idx is out of bounds
 	 * 		for the list
 	 */
-	public E get(int idx) {
+	public Anime get(int idx) {
 		if (idx < 0 || idx >= size) {
 			throw new IndexOutOfBoundsException("Invalid index.");
 		}
@@ -194,7 +201,22 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 		return temp.data;
 	}
 	
-
+	/**
+	 * Determines if the first parameter sorts before the second parameter depending on the SortedAnimeList's SortFocus
+	 * @param firstAnime 
+	 * @param secondAnime
+	 * @return boolean indicator if the first anime precedes the second anime
+	 * @throws IllegalArgument Exception is SortedAnimeList has an invalid sorting method or if the two anime are equal
+	 */
+	public boolean sortsBefore(Anime firstAnime, Anime secondAnime) {
+		if (sortBy == SortFocus.ALPHABETICAL) {
+			return firstAnime.sortsBeforeTitleFocus(secondAnime);
+		} else if (sortBy == SortFocus.NUMERICAL) {
+			return firstAnime.sortsBeforeYearFocus(secondAnime);
+		} else {
+			throw new IllegalArgumentException("Invalid sorting method");
+		}
+	}
 
 	/**
 	 * Returns the number of elements in the list.
@@ -210,7 +232,7 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 	 */
 	private class ListNode {
 		/** Information stored in the ListNode */
-		public E data;
+		public Anime data;
 		
 		/** Pointer to the following ListNode in the sequence */
 		private ListNode next;
@@ -220,7 +242,7 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 		 * used when adding to an empty list or at the end.
 		 * @param data the information to add to the list
 		 */
-		public ListNode(E data) {
+		public ListNode(Anime data) {
 			this.data = data;
 		}
 		
@@ -230,7 +252,7 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 		 * @param data the information to add to the list
 		 * @param next the ListNode containing the next element in the list
 		 */
-		public ListNode(E data, ListNode next) {
+		public ListNode(Anime data, ListNode next) {
 			this.data = data;
 			this.next = next;
 		}
@@ -241,7 +263,7 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 	 * @return Iterator for SortedLists
 	 */
 	@Override
-	public Iterator<E> iterator() {
+	public Iterator<Anime> iterator() {
 		return new SortedListIterator();
 	}
 
@@ -253,7 +275,7 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 	 * https://www.geeksforgeeks.org/java-implementing-iterator-and-iterable-interface/
 	 * https://stackoverflow.com/questions/7140866/cannot-convert-from-nodee-to-nodee
 	 */
-	private class SortedListIterator implements Iterator<E>{
+	private class SortedListIterator implements Iterator<Anime>{
 
 		/** ListNode the pointer is in front of, referenced with next() method */
 		private ListNode current;
@@ -280,8 +302,8 @@ public class SortedList<E extends Comparable<E>> implements Iterable<E> {
 		 * @return data held in a sorted list node
 		 */
 		@Override
-		public E next() {
-			E data = current.data;
+		public Anime next() {
+			Anime data = current.data;
 			current = current.next;
 			return data;
 		}

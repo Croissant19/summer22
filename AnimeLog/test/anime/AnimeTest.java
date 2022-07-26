@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import anime.Anime.Language;
 import anime.Anime.Type;
-import util.SortedList;
+import manager.Manager.SortFocus;
+import util.SortedAnimeList;
 
 /**
  * Tests the Anime class
@@ -82,15 +83,15 @@ class AnimeTest {
 	}
 	
 	/**
-	 * Tests the compareTo methods for anime
+	 * Tests the sortsBeforeTitleFocus() method for anime
 	 */
 	@Test
-	void testCompareTo() {
-		assertTrue(GURREN.compareTo(FMA03) > 0);
-		assertTrue(FMA09.compareTo(GURREN) < 0);
-		assertTrue(FMA03.compareTo(FMA09) < 0);
-		assertTrue(FMA09.compareTo(FMA03) > 0);
-		assertEquals(0, GURREN.compareTo(GURREN));
+	void testSortsBeforeTitleFocus() {
+		assertFalse(GURREN.sortsBeforeTitleFocus(FMA03));
+		assertTrue(FMA09.sortsBeforeTitleFocus(GURREN));
+		assertTrue(FMA03.sortsBeforeTitleFocus(FMA09));
+		assertFalse(FMA09.sortsBeforeTitleFocus(FMA03));
+		assertThrows(IllegalArgumentException.class, ()-> GURREN.sortsBeforeTitleFocus(GURREN));
 	}
 
 	/**
@@ -107,11 +108,11 @@ class AnimeTest {
 	
 	
 	/**
-	 * Tests the compareTo methods for anime using SortedList
+	 * Tests the sorting accuracy for anime using SortedAnimeList alphabetical sort
 	 */
 	@Test
-	void testCompareToSortedList() {
-		SortedList<Anime> list = new SortedList<Anime>();
+	void testCompareTitleSortedList() {
+		SortedAnimeList list = new SortedAnimeList(SortFocus.ALPHABETICAL);
 		list.add(FMA09);
 		list.add(FMA03);
 		list.add(GURREN);

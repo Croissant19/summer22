@@ -7,7 +7,7 @@ import java.util.Objects;
  * In this program, two anime cannot have the same name and year
  * @author Hunter Pruitt
  */
-public class Anime implements Comparable<Anime> {
+public class Anime {
 	
 	////////////
 	//Fields
@@ -151,52 +151,57 @@ public class Anime implements Comparable<Anime> {
 		
 	
 	/**
-	 * Compared two anime for sorting.
-	 * Using alphabetical order (and year if both titles match), this method returns
-	 * negative if this anime precedes the other, 0 if both have the same year and title, 
-	 * and positve if this anime follows the other in sorted order
+	 * Compares two anime for sorting using alphabetical order (and year if both titles match)
+	 * This method indicates if this anime precedes the other.
 	 * Sorting is not case-sensitive and numbers/symbols come before letters
 	 * 
-	 * @param a anime to be compared to
-	 * @return numerical indicator of where this anime should be sorted in compairison to another anime
+	 * @param otherAnime anime to be compared to
+	 * @return boolean indicator of if this anime comes before the parameter anime
+	 * @throws IllegalArgumentException if passed an anime identical to this
 	 */
-	@Override
-	public int compareTo(Anime a) {
-		//Get and compare titles
-		String thisTitle = this.title.toLowerCase();
-		String otherTitle = a.getTitle().toLowerCase();
+	public boolean sortsBeforeTitleFocus(Anime otherAnime) {
+		//TODO: Test
+		//If anime are equal, throw an exception
+		//Cannot have duplicate anime in the program
+		if (this.equals(otherAnime)) {
+			throw new IllegalArgumentException("Cannot compare duplicate anime.");
+		}
+		
+		String thisTitle = this.getTitle().toLowerCase();
+		String otherTitle = otherAnime.getTitle().toLowerCase();
 		if (!thisTitle.equals(otherTitle)) {
-			return thisTitle.compareTo(otherTitle);
-		} else { //Compare years
-			Integer thisYear = year;
-			Integer otherYear = a.getYear();
-			return thisYear.compareTo(otherYear);
+			//If titles are not equal, compare them ignoring case
+			return thisTitle.compareTo(otherTitle) < 0 ;
+			
+		} else {
+			//If titles are the same refer to release year
+			return this.getYear() < otherAnime.getYear();
 		}
 	}
+	
 	
 	/**
 	 * Alternate sorting based method. Indicates if this anime precedes the anime parameter 
 	 * based on year comparison and then alphabetical precedence
-	 * @param a Anime to be compared against
+	 * @param otherAnime Anime to be compared against
 	 * @return boolean indicator of if this anime comes before the parameter anime
 	 * @throws IllegalArgumentException if passed an anime identical to this
 	 */
-	public boolean sortsBeforeYearFocus(Anime a) {
-		//TODO: Test
+	public boolean sortsBeforeYearFocus(Anime otherAnime) {
 		//If anime are equal, throw an exception
 		//Cannot have duplicate anime in the program
-		if (this.equals(a)) {
+		if (this.equals(otherAnime)) {
 			throw new IllegalArgumentException("Cannot compare duplicate anime.");
 		}
 		
-		if (this.getYear() != a.getYear()) {
+		if (this.getYear() != otherAnime.getYear()) {
 			//If years do not match
-			return this.getYear() < a.getYear();
+			return this.getYear() < otherAnime.getYear();
 
 		} else {
 			//If years do match, check alphabetical precedence
 			String thisTitle = this.getTitle().toLowerCase();
-			String otherTitle = a.getTitle().toLowerCase();
+			String otherTitle = otherAnime.getTitle().toLowerCase();
 
 			return thisTitle.compareTo(otherTitle) > 0 ;
 		}
