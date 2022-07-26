@@ -10,7 +10,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import manager.Manager;
-import manager.Manager.SortFocus;
+import util.SortedAnimeList.SortFocus;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -484,14 +484,9 @@ public class GUI extends JFrame {
 		
 		int numRows = Manager.getInstance().getAnimeList().size();
 		
-		//Depending on sort method, sort table
-		SortFocus sortBy = Manager.getInstance().getSortMethod();
+		//Get sorted table
 		Object[][] rowVals;
-		if (sortBy == SortFocus.ALPHABETICAL) {
-			rowVals = Manager.getInstance().getAllAnimeAsArrayTitleBased();
-		} else {
-			rowVals = Manager.getInstance().getAllAnimeAsArrayYearBased();
-		}
+		rowVals = Manager.getInstance().getAllAnimeAsArray();
 		//TODO: maybe increase code speed by removing all of these get instance methods, maybe have an manager field
 
 		DefaultTableModel tm = (DefaultTableModel) table.getModel();
@@ -502,7 +497,9 @@ public class GUI extends JFrame {
 			row = rowVals[i];
 			tm.addRow(row);
 		}
-		//TODO: sort by options, filter, color for sub/dub or special/series
+
+		
+		
 		//TODO: credits? could be cool...		
 	}
 	

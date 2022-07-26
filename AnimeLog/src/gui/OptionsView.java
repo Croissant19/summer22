@@ -3,40 +3,15 @@ package gui;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-
-import anime.Anime;
-import anime.Anime.Language;
-import anime.Anime.Type;
 import manager.Manager;
-import manager.Manager.SortFocus;
-import util.SortedList;
+import util.SortedAnimeList.SortFocus;
+import util.SortedAnimeList;
 
-import javax.swing.JTextField;
 import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-
 import java.awt.Font;
-import java.awt.Image;
 
-import javax.imageio.ImageIO;
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Defines the GUI components for changing program settings
@@ -55,6 +30,8 @@ public class OptionsView extends JPanel {
 	private JRadioButton rdBtnColorFinDrop;
 	private JRadioButton rdBtnColorSeriesSpecial;
 	private JRadioButton rdBtnColorLanguage;
+	private JButton btnColor2;
+	private JButton btnColor1;
 	
 	//TODO: in anime io have setting data as an optional preceding delimiter
 	
@@ -113,11 +90,11 @@ public class OptionsView extends JPanel {
 		pnlFields.add(rdBtnColorLanguage);
 		
 		//TODO: explore JColorChooser
-		JButton btnColor1 = new JButton("Color 1");
+		btnColor1 = new JButton("Color 1");
 		btnColor1.setBounds(287, 132, 74, 23);
 		pnlFields.add(btnColor1);
 		
-		JButton btnColor2 = new JButton("Color 2");
+		btnColor2 = new JButton("Color 2");
 		btnColor2.setBounds(287, 166, 74, 23);
 		pnlFields.add(btnColor2);
 		
@@ -204,7 +181,19 @@ public class OptionsView extends JPanel {
 		});
 
 		
+		//Color choosers
 		
+		
+		btnColor1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+
+		btnColor2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+
 
 	}
 	

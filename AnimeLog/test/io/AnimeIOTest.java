@@ -13,7 +13,8 @@ import org.junit.jupiter.api.Test;
 import anime.Anime;
 import anime.Anime.Language;
 import anime.Anime.Type;
-import util.SortedList;
+import util.SortedAnimeList;
+import util.SortedAnimeList.SortFocus;
 
 /**
  * Tests the input output functionality for Anime lists
@@ -44,7 +45,7 @@ class AnimeIOTest {
 
 	
 	/** Sorted collection of Anime returned and passed to file IO methods */
-	private SortedList<Anime> list; 
+	private SortedAnimeList list; 
 	
 	
 	
@@ -53,7 +54,7 @@ class AnimeIOTest {
 	 */
 	@BeforeEach
 	public void setUp() {
-		list = new SortedList<Anime>();
+		list = new SortedAnimeList(SortFocus.ALPHABETICAL);
 	}
 	
 	/**

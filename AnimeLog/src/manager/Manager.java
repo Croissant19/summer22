@@ -1,11 +1,13 @@
 package manager;
 
+import java.awt.Color;
 import java.io.File;
 
 import anime.Anime;
 import anime.Anime.Language;
 import anime.Anime.Type;
 import io.AnimeIO;
+import util.SortedAnimeList.ColorMethod;
 import util.SortedAnimeList.SortFocus;
 import util.SortedAnimeList;
 
@@ -16,29 +18,46 @@ import util.SortedAnimeList;
  */
 public class Manager {
 
+	private static final Color DEFAULT_COLOR_1 = Color.GREEN;
+	
+	private static final Color DEFAULT_COLOR_2 = Color.CYAN;
+	
+	
 	/** Singleton pointer to the Manager object */
 	private static Manager instance = new Manager();
 	
-	/** Collection of user anime */
+	/** Pointer to list to display */
 	private SortedAnimeList animeList;
+
+	/** Reference Anime list sorted by Title */
+	private SortedAnimeList animeByTitle;
+
+	/** Reference Anime list sorted by Year */
+	private SortedAnimeList animeByYear;	
 	
-	/** Defines the way the user wants their data to be displayed on the table. Alphabetical title by default */
-	private SortFocus sortBy;
+	/** Method used to shade Anime table data */
+	private ColorMethod colorBy;
 	
-	
-	
-	
-	
-	
-	
+	/** Color one for shading rows */
+	private Color color1;
+
+	/** Color two for shading rows */
+	private Color color2;
+
 	
 	/**
 	 * Initializes the Manager object, and creates the animeList so that it is not null.
 	 * Sorting method is set to alphabetical by default as that is what SortedList is optimized for.
 	 */
 	private Manager() {
-		animeList = new SortedAnimeList(SortFocus.ALPHABETICAL);
+		animeByTitle = new SortedAnimeList(SortFocus.ALPHABETICAL);
+		animeByYear = new SortedAnimeList(SortFocus.NUMERICAL);
+		
+		//Set default preferences
 		setSortMethod("Alphabetical");
+		colorBy = ColorMethod.NO_COLOR;
+		color1 = DEFAULT_COLOR_1;
+		color2 = DEFAULT_COLOR_2;
 	}
 
 	/** 
@@ -54,7 +73,15 @@ public class Manager {
 	 * @param filename file selected by user in JFileChooser
 	 */
 	public void processFile(String filename) {
-		animeList = AnimeIO.readFile(filename);
+		//Load alphabetically sorted list by from import
+		animeByTitle = AnimeIO.readFile(filename);
+		//Load numerically sorted list from animeByTitle
+		for (Anime a : animeByTitle) {
+			animeByYear.add(a);
+		}
+		//Set pointer to default
+		//TODO: revamp so io creates correct type of list
+		animeList = animeByTitle;
 	}
 	
 	/**
@@ -93,19 +120,19 @@ public class Manager {
 	public void removeAnime(int idx) {
 		animeList.remove(idx);
 	}
-	
+
 	
 	/**
 	 * Grabs title, year, and count for each anime for display on the GUI. 
 	 * Return is type Object[][] so that ints and Strings are both displayed in the table together.
 	 * It could be type String[][], but ultimately doesn't matter.
 	 * 
-	 * The sorting for this method is sort by alphabetical titles, 
-	 * and then in the case of overlap, refer to debut years
+	 * The sorting for this method is dependant on the sorting method of the list that 
+	 * the pointer animeList is set to. This pointer can be changed by the user in the OptionsView 
 	 * 
 	 * @return 2D array of anime data for display on the GUI
 	 */
-	public Object[][] getAllAnimeAsArrayTitleBased()	{
+	public Object[][] getAllAnimeAsArray() {
 		Object[][] list = new Object[animeList.size()][3];
 		
 		//Get wanted data for each anime
@@ -121,76 +148,6 @@ public class Manager {
 	}
 
 	
-	/**
-	 * Grabs title, year, and count for each anime for display on the GUI. 
-	 * Return is type Object[][] so that ints and Strings are both displayed in the table together.
-	 * It could be type String[][], but ultimately doesn't matter.
-	 * 
-	 * The sorting for this method is sort by year values, 
-	 * and then in the case of overlap, refer to title spelling to sort
-	 * 
-	 * @return 2D array of anime data for display on the GUI
-	 */
-	public Object[][] getAllAnimeAsArrayYearBased() {
-		Object[][] list = new Object[animeList.size()][3];
-
-		//Get sorted list
-		Anime[] sortedList = insertionSort(animeList);
-		//Transform list into 2D array
-				
-		//Get wanted data for each anime
-		int index = 0;
-		for (Anime a : sortedList) {
-			list[index][0] = a.getYear();
-			list[index][1] = a.getTitle();
-			list[index][2] = a.getCount();
-			index++;
-		}
-
-		return list;
-		}
-	
-	/**
-	 * Sorts with a focus on year before title, as opposed to SortedList's native alphabetical then year sort.
-	 * Insertion sort algorithm
-	 * @param list SortedList of Anime to be sorted in a different way
-	 * @return array of Anime sorted by year over title
-	 */
-	private Anime[] insertionSort(SortedAnimeList list) {
-		Anime[] sortedList = new Anime[list.size()];
-		//numInserted is used so that when shifting elements the procedure doesn't bother with the null elements (useful in longer lists)
-		int numInserted = 0;
-		for (Anime a : list) {
-			//Base case, add first element to beginning of sortedList
-			if (sortedList[0] == null) {
-				sortedList[0] = a;
-				numInserted++;
-			} else {
-				int insertionPoint = 0;
-				boolean inserted = false;
-
-				//Otherwise insert element where it belongs
-				while (!inserted) {
-					if (a.sortsBeforeYearFocus(sortedList[insertionPoint])) {
-						//Insert and shift elements to the right
-						for (int j = numInserted; j > insertionPoint; j--) {
-							sortedList[j] = sortedList[j - 1];
-						}
-						sortedList[insertionPoint] = a;
-						numInserted++;
-						inserted = true;
-					} else {
-						insertionPoint++;
-					}
-					
-				}//while not inserted
-			}//If sortedList is empty / else insertion code		
-		}//For (Anime a : list)
-
-		return sortedList;
-	}
-
-	
 	////////////////////////
 	//Preference related methods
 	////////////////////////
@@ -201,7 +158,13 @@ public class Manager {
 	 * @throws IllegalArgumentException if the String does not refer to a defined sorting method
 	 */
 	public void setSortMethod(String sortMethod) {
-		this.sortBy = SortFocus.parseSort(sortMethod);
+		SortFocus sortBy = SortFocus.parseSort(sortMethod);
+		
+		if (sortBy == SortFocus.ALPHABETICAL) {
+			this.animeList = animeByTitle;
+		} else {
+			this.animeList= animeByYear; 
+		}
 	}
 	
 	/**
@@ -209,8 +172,58 @@ public class Manager {
 	 * @return SortFocus for the user's data table
 	 */
 	public SortFocus getSortMethod() {
-		return sortBy;
+		return animeList.getSortFocus();
 	}
+	
+	/**
+	 * Indicates the coloring method the user is using.
+	 * @return ColorMethod for the user's data table
+	 */
+	public ColorMethod getColorMethod() {
+		return colorBy;
+	}
+
+	/**
+	 * Sets the coloring method the user wants for their data table.
+	 * @param colorMethod for the data table
+	 * @throws IllegalArgumentException if the colorMethod is not a valid type
+	 */
+	public void setColorMethod(String colorMethod) {
+		colorBy = ColorMethod.parseSort(colorMethod);
+	}
+	
+	/**
+	 * Indicates the first color selected by the user or the default if not color selected
+	 * @return Primary color
+	 */
+	public Color getColor1() {
+		return color1;
+	}
+
+	/**
+	 * Sets the first color to a user passed color
+	 * @param c color to be set
+	 */
+	public void setColor1(Color c) {
+		color1 = c;
+	}
+	
+	/**
+	 * Indicates the second color selected by the user or the default if not color selected
+	 * @return Secondary color
+	 */
+	public Color getColor2() {
+		return color2;
+	}
+
+	/**
+	 * Sets the second color to a user passed color
+	 * @param c color to be set
+	 */
+	public void setColor2(Color c) {
+		color2 = c;
+	}
+
 	
 	////////////////////////
 	//Stat retrieval methods

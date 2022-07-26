@@ -21,6 +21,7 @@ import util.SortedAnimeList;
 public class AnimeIO {
 
 	//TODO: FIX README in test-files
+	//TODO: incorporate preferences into txt data
 	
 	/**
 	 * Writes data from files into a plaintext file compatible with the program's file reader
