@@ -11,7 +11,7 @@ import anime.Anime;
 import anime.Anime.Language;
 import anime.Anime.Type;
 import manager.Manager;
-import util.SortedList;
+import util.SortedAnimeList;
 
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
@@ -481,7 +481,7 @@ public class BrowseView extends JPanel {
 		
 		//Disable next and/or previous buttons if such anime do not exist
 
-		SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
+		SortedAnimeList list = Manager.getInstance().getAnimeList(); 
 		int currentIdx = list.indexOf(currentAnime);
 
 		btnNext.setEnabled(currentIdx < list.size() - 1);
@@ -549,7 +549,7 @@ public class BrowseView extends JPanel {
 		//Ensure it's okay to continue
 		if (canLeave()) {
 			//Handle the data change
-			SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
+			SortedAnimeList list = Manager.getInstance().getAnimeList(); 
 			int idx = list.indexOf(currentAnime) + 1;
 			mainGUI.setTableSelected(idx);	
 		} else {
@@ -566,7 +566,7 @@ public class BrowseView extends JPanel {
 		//Ensure it's okay to continue
 		if (canLeave()) {
 			//Handle the data change
-			SortedList<Anime> list = Manager.getInstance().getAnimeList(); 
+			SortedAnimeList list = Manager.getInstance().getAnimeList(); 
 			int idx = list.indexOf(currentAnime) - 1;
 			mainGUI.setTableSelected(idx);	
 		} else {

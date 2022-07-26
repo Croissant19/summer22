@@ -8,7 +8,7 @@ import java.util.Scanner;
 import anime.Anime;
 import anime.Anime.Language;
 import anime.Anime.Type;
-import util.SortedAnimeList.SortFocus;
+import manager.Preferences.SortFocus;
 import util.SortedAnimeList;
 
 /**

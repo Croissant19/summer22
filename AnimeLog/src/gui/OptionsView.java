@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import manager.Manager;
-import util.SortedAnimeList.SortFocus;
+import manager.Preferences.SortFocus;
 import util.SortedAnimeList;
 
 import javax.swing.JRadioButton;

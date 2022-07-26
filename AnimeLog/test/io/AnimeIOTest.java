@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 import anime.Anime;
 import anime.Anime.Language;
 import anime.Anime.Type;
+import manager.Preferences.SortFocus;
 import util.SortedAnimeList;
-import util.SortedAnimeList.SortFocus;
 
 /**
  * Tests the input output functionality for Anime lists

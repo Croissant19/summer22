@@ -10,7 +10,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import manager.Manager;
-import util.SortedAnimeList.SortFocus;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;

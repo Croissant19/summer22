@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import anime.Anime.Language;
 import anime.Anime.Type;
 import util.SortedAnimeList;
-import util.SortedAnimeList.SortFocus;
+import manager.Preferences.SortFocus;
 
 /**
  * Tests the Anime class

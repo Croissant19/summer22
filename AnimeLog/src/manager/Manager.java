@@ -7,8 +7,8 @@ import anime.Anime;
 import anime.Anime.Language;
 import anime.Anime.Type;
 import io.AnimeIO;
-import util.SortedAnimeList.ColorMethod;
-import util.SortedAnimeList.SortFocus;
+import manager.Preferences.ColorMethod;
+import manager.Preferences.SortFocus;
 import util.SortedAnimeList;
 
 /**
@@ -17,11 +17,6 @@ import util.SortedAnimeList;
  * @author Hunter Pruitt
  */
 public class Manager {
-
-	private static final Color DEFAULT_COLOR_1 = Color.GREEN;
-	
-	private static final Color DEFAULT_COLOR_2 = Color.CYAN;
-	
 	
 	/** Singleton pointer to the Manager object */
 	private static Manager instance = new Manager();
@@ -56,8 +51,8 @@ public class Manager {
 		//Set default preferences
 		setSortMethod("Alphabetical");
 		colorBy = ColorMethod.NO_COLOR;
-		color1 = DEFAULT_COLOR_1;
-		color2 = DEFAULT_COLOR_2;
+		color1 = Preferences.DEFAULT_COLOR_1;
+		color2 = Preferences.DEFAULT_COLOR_2;
 	}
 
 	/** 
