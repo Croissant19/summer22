@@ -43,6 +43,8 @@ import java.io.IOException;
  */
 public class OptionsView extends JPanel {
 
+	private static final String NOTICE = "<html>Preferences may be set and will be saved automatically along with other data in the program.</html>";
+	
 	private GUI mainGUI;
 	private JButton btnApply;
 	
@@ -63,6 +65,24 @@ public class OptionsView extends JPanel {
 		add(pnlFields);
 		pnlFields.setLayout(null);
 		
+		JRadioButton rdbtnAlphabet = new JRadioButton("Title");
+		rdbtnAlphabet.setBounds(161, 93, 74, 23);
+		pnlFields.add(rdbtnAlphabet);
+		
+		JRadioButton rdbtnYear = new JRadioButton("Year");
+		rdbtnYear.setBounds(272, 93, 74, 23);
+		pnlFields.add(rdbtnYear);
+		
+		JLabel lblSortBy = new JLabel("Sort by:");
+		lblSortBy.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblSortBy.setBounds(48, 97, 64, 14);
+		pnlFields.add(lblSortBy);
+		
+		JLabel lblInstructions = new JLabel(NOTICE);
+		lblInstructions.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblInstructions.setBounds(48, 41, 318, 45);
+		pnlFields.add(lblInstructions);
+		
 		
 		btnApply = new JButton("Apply");
 		btnApply.setBounds(167, 341, 89, 23);
@@ -77,9 +97,18 @@ public class OptionsView extends JPanel {
 	 */
 	private void createEvents() {		
 		//Events pertaining to large buttons, edit/save, next, previous
+		btnApply.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				applyChanges();
+			}
+		});
+
 
 	}
-
-
-
+	
+	
+	private void applyChanges() {
+		//TODO:
+		
+	}
 }

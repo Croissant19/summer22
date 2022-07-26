@@ -16,8 +16,10 @@ import java.awt.Font;
 public class HomeView extends JPanel {
 	
 	/** Default text at top of view, instructing how to use the page, uses html because newline characters cannot be displayed */
-	private static final String DEFAULT_TEXT = "<html>To load a pre-existing file, click the <em>File</em> dropdown and select <em>Load</em>. "
+	private static final String LOAD_TEXT = "<html>To load a pre-existing file, click the <em>File</em> dropdown and select <em>Load</em>. "
 			+ "Otherwise, click add to begin creating your own anime watch log!</html>";
+	
+	private static final String REMINDER = "<html>Don't forget to save before you leave in the <em>File</em> dropdown!</html>";
 	
 	//Stats to answer the lblQX series of JLabels
 	private JTextField txtA1;
@@ -34,14 +36,14 @@ public class HomeView extends JPanel {
 	public HomeView() {
 		setLayout(null);
 		
-		JLabel lblInstructions = new JLabel(DEFAULT_TEXT);
+		JLabel lblInstructions = new JLabel(LOAD_TEXT);
 		lblInstructions.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblInstructions.setHorizontalAlignment(SwingConstants.CENTER);
 		lblInstructions.setBounds(43, 11, 364, 56);
 		add(lblInstructions);
 		
 		JPanel statsPanel = new JPanel();
-		statsPanel.setBounds(20, 78, 409, 198);
+		statsPanel.setBounds(10, 78, 405, 198);
 		add(statsPanel);
 		statsPanel.setLayout(null);
 		
@@ -52,7 +54,7 @@ public class HomeView extends JPanel {
 		
 		txtA1 = new JTextField();
 		txtA1.setEditable(false);
-		txtA1.setBounds(137, 23, 61, 20);
+		txtA1.setBounds(121, 23, 61, 20);
 		statsPanel.add(txtA1);
 		txtA1.setColumns(10);
 		
@@ -64,7 +66,7 @@ public class HomeView extends JPanel {
 		txtA2 = new JTextField();
 		txtA2.setEditable(false);
 		txtA2.setColumns(10);
-		txtA2.setBounds(137, 66, 61, 20);
+		txtA2.setBounds(121, 66, 61, 20);
 		statsPanel.add(txtA2);
 		
 		JLabel lblQ3 = new JLabel("Number Specials:");
@@ -75,7 +77,7 @@ public class HomeView extends JPanel {
 		txtA3 = new JTextField();
 		txtA3.setEditable(false);
 		txtA3.setColumns(10);
-		txtA3.setBounds(137, 109, 61, 20);
+		txtA3.setBounds(121, 109, 61, 20);
 		statsPanel.add(txtA3);
 		
 		JLabel lblQ4 = new JLabel("Episode Count:");
@@ -86,41 +88,45 @@ public class HomeView extends JPanel {
 		txtA4 = new JTextField();
 		txtA4.setEditable(false);
 		txtA4.setColumns(10);
-		txtA4.setBounds(137, 152, 61, 20);
+		txtA4.setBounds(121, 152, 61, 20);
 		statsPanel.add(txtA4);
 		
 		JLabel lblQ5 = new JLabel("Favored Language:");
 		lblQ5.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblQ5.setBounds(211, 23, 117, 20);
+		lblQ5.setBounds(207, 23, 117, 20);
 		statsPanel.add(lblQ5);
 		
 		txtA5 = new JTextField();
 		txtA5.setEditable(false);
 		txtA5.setColumns(10);
-		txtA5.setBounds(338, 23, 61, 20);
+		txtA5.setBounds(323, 23, 61, 20);
 		statsPanel.add(txtA5);
 
 		JLabel lblQ6 = new JLabel("Percent Finished:");
 		lblQ6.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblQ6.setBounds(211, 66, 117, 20);
+		lblQ6.setBounds(207, 66, 117, 20);
 		statsPanel.add(lblQ6);
 		
 		txtA6 = new JTextField();
 		txtA6.setEditable(false);
 		txtA6.setColumns(10);
-		txtA6.setBounds(338, 66, 61, 20);
+		txtA6.setBounds(323, 66, 61, 20);
 		statsPanel.add(txtA6);
 		
 		txtA7 = new JTextField();
 		txtA7.setEditable(false);
 		txtA7.setColumns(10);
-		txtA7.setBounds(338, 109, 61, 20);
+		txtA7.setBounds(323, 109, 61, 20);
 		statsPanel.add(txtA7);
 		
 		JLabel lblQ7 = new JLabel("Percent Dropped:");
 		lblQ7.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblQ7.setBounds(211, 109, 117, 20);
+		lblQ7.setBounds(207, 109, 117, 20);
 		statsPanel.add(lblQ7);
+		
+		JLabel lblSaveReminder = new JLabel(REMINDER);
+		lblSaveReminder.setBounds(61, 287, 308, 14);
+		add(lblSaveReminder);
 		
 		
 		updateStats();

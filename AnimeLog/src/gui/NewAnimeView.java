@@ -68,6 +68,7 @@ public class NewAnimeView extends JPanel {
 		pnlFields.setLayout(null);
 		
 		lblTopInfo = new JLabel(DEFAULT_TEXT, SwingConstants.CENTER);
+		lblTopInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblTopInfo.setBounds(10, 11, 385, 52);
 		pnlFields.add(lblTopInfo);
 
