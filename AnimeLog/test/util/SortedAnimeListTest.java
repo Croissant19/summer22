@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import anime.Anime;
 import anime.Anime.Language;
 import anime.Anime.Type;
-import manager.Manager.SortFocus;
+import util.SortedAnimeList.SortFocus;
 
 /**
  * Test class for SortedAnimeList, contains, get, and size tested implicitly.
@@ -24,15 +24,19 @@ class SortedAnimeListTest {
 	
 	
 	
-	/**	List reference for use in testing */
-	private SortedAnimeList list;
+	/**	Alphabetically sorted list reference for use in testing */
+	private SortedAnimeList listAlphabetic;
+	
+	/**	Year-based sorted list reference for use in testing */
+	private SortedAnimeList listNumeric;
 	
 	/**
 	 * Resets the list field before each test.
 	 */
 	@BeforeEach
 	void setUp() {
-		list = new SortedAnimeList(SortFocus.ALPHABETICAL);
+		listAlphabetic = new SortedAnimeList(SortFocus.ALPHABETICAL);
+		listNumeric = new SortedAnimeList(SortFocus.NUMERICAL);
 	}
 
 	/**
@@ -40,7 +44,8 @@ class SortedAnimeListTest {
 	 */
 	@Test
 	void testSortedAnimeListConstruction() {
-		assertEquals(0, list.size());
+		assertEquals(0, listAlphabetic.size());
+		assertEquals(0, listNumeric.size());
 	}
 
 	/**
@@ -49,38 +54,53 @@ class SortedAnimeListTest {
 	@Test
 	void testAddRemove() {
 		//Add null
-		assertThrows(NullPointerException.class, () -> list.add(null));
+		assertThrows(NullPointerException.class, () -> listAlphabetic.add(null));
 		
 		//Add duplicate
-		list.add(ANIME_M);
-		assertEquals(1, list.size());
-		assertThrows(IllegalArgumentException.class, () -> list.add(ANIME_M));
-		
-		//Add out of order and ensure list is sorted correctly
-		list.add(ANIME_B);
-		list.add(ANIME_A);
-		list.add(ANIME_Z);
-		assertEquals(4, list.size());
+		listAlphabetic.add(ANIME_M);
+		assertEquals(1, listAlphabetic.size());
+		assertThrows(IllegalArgumentException.class, () -> listAlphabetic.add(ANIME_M));
 
-		assertEquals(ANIME_A, list.get(0));
-		assertEquals(ANIME_B, list.get(1));
-		assertEquals(ANIME_M, list.get(2));
-		assertEquals(ANIME_Z, list.get(3));
+		//Add out of order and ensure list is sorted correctly
+		listAlphabetic.add(ANIME_B);
+		listAlphabetic.add(ANIME_A);
+		listAlphabetic.add(ANIME_Z);
+		assertEquals(4, listAlphabetic.size());
+
+		assertEquals(ANIME_A, listAlphabetic.get(0));
+		assertEquals(ANIME_B, listAlphabetic.get(1));
+		assertEquals(ANIME_M, listAlphabetic.get(2));
+		assertEquals(ANIME_Z, listAlphabetic.get(3));
 
 		
 		//Remove and check that list is maintained correctly
-		assertThrows(IndexOutOfBoundsException.class, () -> list.remove(-1));
-		assertThrows(IndexOutOfBoundsException.class, () -> list.remove(20));
+		assertThrows(IndexOutOfBoundsException.class, () -> listAlphabetic.remove(-1));
+		assertThrows(IndexOutOfBoundsException.class, () -> listAlphabetic.remove(20));
 		
-		assertEquals(ANIME_A, list.remove(0));
-		assertEquals(ANIME_B, list.get(0));
-		assertEquals(ANIME_M, list.remove(1));
-		assertEquals(ANIME_Z, list.get(1));
-		assertEquals(2, list.size());
+		assertEquals(ANIME_A, listAlphabetic.remove(0));
+		assertEquals(ANIME_B, listAlphabetic.get(0));
+		assertEquals(ANIME_M, listAlphabetic.remove(1));
+		assertEquals(ANIME_Z, listAlphabetic.get(1));
+		assertEquals(2, listAlphabetic.size());
 
-		assertEquals(ANIME_Z, list.remove(1));
-		assertThrows(IndexOutOfBoundsException.class, () -> list.get(1));
+		assertEquals(ANIME_Z, listAlphabetic.remove(1));
+		assertThrows(IndexOutOfBoundsException.class, () -> listAlphabetic.get(1));
 
+		
+		//Test add and remove with Numerically sorted lists too
+		//Test add
+		listNumeric.add(ANIME_B);
+		listNumeric.add(ANIME_A);
+		listNumeric.add(ANIME_Z);
+		assertEquals(ANIME_Z, listNumeric.get(0));
+		assertEquals(ANIME_B, listNumeric.get(1));
+		assertEquals(ANIME_A, listNumeric.get(2));
+
+		//Test remove
+		assertEquals(ANIME_Z, listNumeric.remove(0));
+		assertEquals(ANIME_B, listNumeric.get(0));
+		assertEquals(ANIME_A, listNumeric.remove(1));
+		assertEquals(ANIME_B, listNumeric.remove(0));
 	}
 	
 	/**
@@ -88,14 +108,14 @@ class SortedAnimeListTest {
 	 */
 	@Test
 	void testIterator() {
-		list.add(ANIME_A);
-		list.add(ANIME_B);
-		list.add(ANIME_M);
-		list.add(ANIME_Y);
-		list.add(ANIME_Z);
+		listAlphabetic.add(ANIME_A);
+		listAlphabetic.add(ANIME_B);
+		listAlphabetic.add(ANIME_M);
+		listAlphabetic.add(ANIME_Y);
+		listAlphabetic.add(ANIME_Z);
 
 		String expString = "";
-		for (Anime a : list) {
+		for (Anime a : listAlphabetic) {
 			expString += a.getTitle() + " ";
 		}
 	
@@ -110,27 +130,27 @@ class SortedAnimeListTest {
 	@Test
 	void testIndexOf() {
 		//Test on empty list
-		assertEquals(-1, list.indexOf(ANIME_A));
+		assertEquals(-1, listAlphabetic.indexOf(ANIME_A));
 
-		list.add(ANIME_A);
-		list.add(ANIME_M);
-		list.add(ANIME_Z);
-		list.add(ANIME_B);
-		list.add(ANIME_Y);
+		listAlphabetic.add(ANIME_A);
+		listAlphabetic.add(ANIME_M);
+		listAlphabetic.add(ANIME_Z);
+		listAlphabetic.add(ANIME_B);
+		listAlphabetic.add(ANIME_Y);
 
 		//Test in general
-		assertEquals(0, list.indexOf(ANIME_A));
-		assertEquals(1, list.indexOf(ANIME_B));
-		assertEquals(2, list.indexOf(ANIME_M));
-		assertEquals(3, list.indexOf(ANIME_Y));
-		assertEquals(4, list.indexOf(ANIME_Z));
-		assertEquals(-1, list.indexOf(new Anime("!", 1999, 0, Language.DUB, Type.SPECIAL, false, false, "", "")));
+		assertEquals(0, listAlphabetic.indexOf(ANIME_A));
+		assertEquals(1, listAlphabetic.indexOf(ANIME_B));
+		assertEquals(2, listAlphabetic.indexOf(ANIME_M));
+		assertEquals(3, listAlphabetic.indexOf(ANIME_Y));
+		assertEquals(4, listAlphabetic.indexOf(ANIME_Z));
+		assertEquals(-1, listAlphabetic.indexOf(new Anime("!", 1999, 0, Language.DUB, Type.SPECIAL, false, false, "", "")));
 
 		//Test after removal
-		list.remove(3);
-		assertEquals(3, list.indexOf(ANIME_Z));
+		listAlphabetic.remove(3);
+		assertEquals(3, listAlphabetic.indexOf(ANIME_Z));
 		
-		list.remove(0);
-		assertEquals(0, list.indexOf(ANIME_B));	
+		listAlphabetic.remove(0);
+		assertEquals(0, listAlphabetic.indexOf(ANIME_B));	
 	}
 }

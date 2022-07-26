@@ -8,7 +8,8 @@ import java.util.Scanner;
 import anime.Anime;
 import anime.Anime.Language;
 import anime.Anime.Type;
-import util.SortedList;
+import util.SortedAnimeList.SortFocus;
+import util.SortedAnimeList;
 
 /**
  * Input Output class for Anime objects. 
@@ -27,7 +28,7 @@ public class AnimeIO {
 	 * @param filename save data destination
 	 * @throws IllegalArgumentException if an error occurs
 	 */
-	public static void writeData(SortedList<Anime> list, File filename) {
+	public static void writeData(SortedAnimeList list, File filename) {
 
 		try {
 			PrintWriter out = new PrintWriter(filename);
@@ -53,9 +54,9 @@ public class AnimeIO {
 	 * @throws IllegalArgumentException if the file cannot be read
 	 * @return sorted collection of anime from a user import, null if an error occurs
 	 */
-	public static SortedList<Anime> readFile(String filename) {
+	public static SortedAnimeList readFile(String filename) {
 		//Setup list and file contents
-		SortedList<Anime> list = new SortedList<Anime>();
+		SortedAnimeList list = new SortedAnimeList(SortFocus.ALPHABETICAL);
 		String contents = "";
 		FileInputStream fis;
 

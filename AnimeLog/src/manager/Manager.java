@@ -1,16 +1,13 @@
 package manager;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import anime.Anime;
 import anime.Anime.Language;
 import anime.Anime.Type;
 import io.AnimeIO;
-import util.SortedList;
+import util.SortedAnimeList.SortFocus;
+import util.SortedAnimeList;
 
 /**
  * Connects actions on the GUI to computations performed and data retrieved from other classes.
@@ -23,49 +20,10 @@ public class Manager {
 	private static Manager instance = new Manager();
 	
 	/** Collection of user anime */
-	private SortedList<Anime> animeList;
+	private SortedAnimeList animeList;
 	
 	/** Defines the way the user wants their data to be displayed on the table. Alphabetical title by default */
 	private SortFocus sortBy;
-	
-	
-	
-	
-	/**
-	 * Indicates whether the data is sorted by title (alphabetical) or by year (numerical).
-	 */
-	public enum SortFocus {
-		ALPHABETICAL("Alphabetical"), 
-		NUMERICAL("Numerical");
-		
-		/** Formatted String for each SortFocus for display in the GUI */
-		public final String formattedName;
-
-		/**
-		 * Constructor for each SortFocus enum, setting the formattedName field
-		 * @param formattedName String representation of the sorting method
-		 */
-		SortFocus(String formattedName){
-			this.formattedName = formattedName;
-		}
-
-		/**
-		 * Classifies a string of text into the correct SortFocus enum
-		 * @param text containing a sort mechanism name
-		 * @return SortFocus classification
-		 * @throws IllegalArgumentException if the text does not match any declared SortFocus
-		 */
-		public static SortFocus parseSort(String text) {
-				if (text.equals(ALPHABETICAL.formattedName)) {
-					return ALPHABETICAL;
-				} else if (text.equals(NUMERICAL.formattedName)) {
-					return NUMERICAL;
-				} else {
-					throw new IllegalArgumentException("Not a valid sorting mechanism");
-				}
-		}
-	}
-	
 	
 	
 	
@@ -79,7 +37,7 @@ public class Manager {
 	 * Sorting method is set to alphabetical by default as that is what SortedList is optimized for.
 	 */
 	private Manager() {
-		animeList = new SortedList<Anime>();
+		animeList = new SortedAnimeList(SortFocus.ALPHABETICAL);
 		setSortMethod("Alphabetical");
 	}
 
@@ -111,7 +69,7 @@ public class Manager {
 	 * Provides the animeList use in other classes
 	 * @return the animeList
 	 */
-	public SortedList<Anime> getAnimeList() {
+	public SortedAnimeList getAnimeList() {
 		return animeList;
 	}
 
@@ -198,7 +156,7 @@ public class Manager {
 	 * @param list SortedList of Anime to be sorted in a different way
 	 * @return array of Anime sorted by year over title
 	 */
-	private Anime[] insertionSort(SortedList<Anime> list) {
+	private Anime[] insertionSort(SortedAnimeList list) {
 		Anime[] sortedList = new Anime[list.size()];
 		//numInserted is used so that when shifting elements the procedure doesn't bother with the null elements (useful in longer lists)
 		int numInserted = 0;

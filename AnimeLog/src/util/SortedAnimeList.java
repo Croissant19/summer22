@@ -2,7 +2,6 @@ package util;
 
 import java.util.Iterator;
 import anime.Anime;
-import manager.Manager.SortFocus;
 
 /**
  * List for storing Anime objects in a sorted order,
@@ -21,6 +20,49 @@ public class SortedAnimeList implements Iterable<Anime> {
 
 	/** Sorting method, either with a focus on name or on release year */
 	private SortFocus sortBy;
+	
+
+	
+	/**
+	 * Indicates whether the data is sorted by title (alphabetical) or by year (numerical).
+	 */
+	public enum SortFocus {
+		ALPHABETICAL("Alphabetical"), 
+		NUMERICAL("Numerical");
+		
+		/** Formatted String for each SortFocus for display in the GUI */
+		public final String formattedName;
+
+		/**
+		 * Constructor for each SortFocus enum, setting the formattedName field
+		 * @param formattedName String representation of the sorting method
+		 */
+		SortFocus(String formattedName){
+			this.formattedName = formattedName;
+		}
+
+		/**
+		 * Classifies a string of text into the correct SortFocus enum
+		 * @param text containing a sort mechanism name
+		 * @return SortFocus classification
+		 * @throws IllegalArgumentException if the text does not match any declared SortFocus
+		 */
+		public static SortFocus parseSort(String text) {
+				if (text.equals(ALPHABETICAL.formattedName)) {
+					return ALPHABETICAL;
+				} else if (text.equals(NUMERICAL.formattedName)) {
+					return NUMERICAL;
+				} else {
+					throw new IllegalArgumentException("Not a valid sorting mechanism");
+				}
+		}
+	}
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * Constructor for SortedList, initializes size and front
