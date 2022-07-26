@@ -11,6 +11,7 @@ import anime.Anime;
 import anime.Anime.Language;
 import anime.Anime.Type;
 import manager.Manager;
+import manager.Manager.SortFocus;
 import util.SortedList;
 
 import javax.swing.JTextField;
@@ -43,10 +44,17 @@ import java.io.IOException;
  */
 public class OptionsView extends JPanel {
 
-	private static final String NOTICE = "<html>Preferences may be set and will be saved automatically along with other data in the program.</html>";
+	/** Notice on the preferences informing the user that they can be saved */
+	private static final String NOTICE = "<html>Preferences may be set here and will be saved automatically along with other data in the program.</html>";
 	
 	private GUI mainGUI;
 	private JButton btnApply;
+	private JRadioButton rdBtnAlphabet;
+	private JRadioButton rdBtnNumeric;
+	private JRadioButton rdBtnNoColors;
+	private JRadioButton rdBtnColorFinDrop;
+	private JRadioButton rdBtnColorSeriesSpecial;
+	private JRadioButton rdBtnColorLanguage;
 	
 	//TODO: in anime io have setting data as an optional preceding delimiter
 	
@@ -65,13 +73,13 @@ public class OptionsView extends JPanel {
 		add(pnlFields);
 		pnlFields.setLayout(null);
 		
-		JRadioButton rdbtnAlphabet = new JRadioButton("Title");
-		rdbtnAlphabet.setBounds(49, 83, 74, 23);
-		pnlFields.add(rdbtnAlphabet);
+		rdBtnAlphabet = new JRadioButton("Title");
+		rdBtnAlphabet.setBounds(49, 83, 74, 23);
+		pnlFields.add(rdBtnAlphabet);
 		
-		JRadioButton rdbtnYear = new JRadioButton("Year");
-		rdbtnYear.setBounds(125, 83, 74, 23);
-		pnlFields.add(rdbtnYear);
+		rdBtnNumeric = new JRadioButton("Year");
+		rdBtnNumeric.setBounds(125, 83, 74, 23);
+		pnlFields.add(rdBtnNumeric);
 		
 		JLabel lblSortBy = new JLabel("Sort by:");
 		lblSortBy.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -88,22 +96,23 @@ public class OptionsView extends JPanel {
 		lblColors.setBounds(33, 117, 64, 14);
 		pnlFields.add(lblColors);
 		
-		JRadioButton rdbtnNoColors = new JRadioButton("No highlights");
-		rdbtnNoColors.setBounds(49, 132, 120, 23);
-		pnlFields.add(rdbtnNoColors);
+		rdBtnNoColors = new JRadioButton("No highlights");
+		rdBtnNoColors.setBounds(49, 132, 120, 23);
+		pnlFields.add(rdBtnNoColors);
 		
-		JRadioButton rdbtnColorFinDrop = new JRadioButton("Finished and Dropped highlights");
-		rdbtnColorFinDrop.setBounds(49, 158, 197, 23);
-		pnlFields.add(rdbtnColorFinDrop);
+		rdBtnColorFinDrop = new JRadioButton("Finished and Dropped highlights");
+		rdBtnColorFinDrop.setBounds(49, 158, 197, 23);
+		pnlFields.add(rdBtnColorFinDrop);
 		
-		JRadioButton rdbtnColorSeriesSpecial = new JRadioButton("Series and Special highlights");
-		rdbtnColorSeriesSpecial.setBounds(49, 186, 197, 23);
-		pnlFields.add(rdbtnColorSeriesSpecial);
+		rdBtnColorSeriesSpecial = new JRadioButton("Series and Special highlights");
+		rdBtnColorSeriesSpecial.setBounds(49, 186, 197, 23);
+		pnlFields.add(rdBtnColorSeriesSpecial);
 		
-		JRadioButton rdbtnColorLanguage = new JRadioButton("Sub or Dub highlights");
-		rdbtnColorLanguage.setBounds(49, 212, 197, 23);
-		pnlFields.add(rdbtnColorLanguage);
+		rdBtnColorLanguage = new JRadioButton("Sub or Dub highlights");
+		rdBtnColorLanguage.setBounds(49, 212, 197, 23);
+		pnlFields.add(rdBtnColorLanguage);
 		
+		//TODO: explore JColorChooser
 		JButton btnColor1 = new JButton("Color 1");
 		btnColor1.setBounds(287, 132, 74, 23);
 		pnlFields.add(btnColor1);
@@ -119,6 +128,7 @@ public class OptionsView extends JPanel {
 
 		
 		createEvents();
+		displayCurrentSelection();		
 	}
 
 	/**
@@ -132,12 +142,111 @@ public class OptionsView extends JPanel {
 			}
 		});
 
+		//Events for ensuring only one radio button of each type can be selected at once
+		//Sort method
+		rdBtnAlphabet.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnAlphabet.isSelected()) {
+					rdBtnNumeric.setSelected(false);
+				}
+			
+			}
+		});
+		rdBtnNumeric.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnNumeric.isSelected()) {
+					rdBtnAlphabet.setSelected(false);
+				}
+			
+			}
+		});
+
+
+		//Color options
+		rdBtnNoColors.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnNoColors.isSelected()) {
+					rdBtnColorFinDrop.setSelected(false);
+					rdBtnColorSeriesSpecial.setSelected(false);
+					rdBtnColorLanguage.setSelected(false);
+				}			
+			}
+		});
+		rdBtnColorFinDrop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnColorFinDrop.isSelected()) {
+					rdBtnNoColors.setSelected(false);
+					rdBtnColorSeriesSpecial.setSelected(false);
+					rdBtnColorLanguage.setSelected(false);
+				}
+			
+			}
+		});
+		rdBtnColorSeriesSpecial.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnColorSeriesSpecial.isSelected()) {
+					rdBtnNoColors.setSelected(false);
+					rdBtnColorFinDrop.setSelected(false);
+					rdBtnColorLanguage.setSelected(false);
+				}
+			
+			}
+		});
+		rdBtnColorLanguage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnColorLanguage.isSelected()) {
+					rdBtnNoColors.setSelected(false);
+					rdBtnColorFinDrop.setSelected(false);
+					rdBtnColorSeriesSpecial.setSelected(false);
+				}
+			
+			}
+		});
+
+		
+		
 
 	}
 	
-	
+//	/*@throws IllegalArgumentException is no sorting button or color button is selected
 	private void applyChanges() {
+		String sortBy;
+		//Get sortBy
+		if (rdBtnAlphabet.isSelected()) {
+			sortBy = SortFocus.ALPHABETICAL.formattedName;
+		} else if (rdBtnNumeric.isSelected()) {
+			sortBy = SortFocus.NUMERICAL.formattedName;
+		} else {
+			throw new IllegalArgumentException("You must select a sorting preference.");
+		}
+		
 		//TODO:
+		//Get color preference
+		//TODO: fix bug where changing from browse view to options and apply button causes to switch to browse view
+		//Report selection to Manager
+		Manager.getInstance().setSortMethod(sortBy);
+//		Manager.getInstance().setColorSettings(colorSettings);
+		mainGUI.updateData();
+	}
+
+	/**
+	 * Indicates the current preferences by selecting the proper JRadioButtons
+	 * @throws IllegalArgumentException if the user has somehow stored an invalid selection
+	 */
+	public void displayCurrentSelection() {
+		SortFocus sortBy = Manager.getInstance().getSortMethod();
+		if (sortBy == SortFocus.ALPHABETICAL) {
+			rdBtnAlphabet.setSelected(true);
+			rdBtnNumeric.setSelected(false);
+		} else if (sortBy == SortFocus.NUMERICAL) {
+			rdBtnNumeric.setSelected(true);
+			rdBtnAlphabet.setSelected(false);
+		} else {
+			throw new IllegalArgumentException("Error with discovering user preferences");
+		}
+		
+		//TODO: color stuff
 		
 	}
+
 }

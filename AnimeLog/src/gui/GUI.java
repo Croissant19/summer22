@@ -10,6 +10,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import manager.Manager;
+import manager.Manager.SortFocus;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -62,7 +63,6 @@ public class GUI extends JFrame {
 	private JButton btnAdd;
 	private JButton btnRemove;
 	private JButton btnOptions;
-	//TODO: settings button for graph sort by? graph colors?
 	
 	private HomeView homeView = new HomeView();
 	private BrowseView browseView = new BrowseView(this);
@@ -421,7 +421,10 @@ public class GUI extends JFrame {
     	CardLayout cl = (CardLayout) cardPanel.getLayout();
     	cl.show(cardPanel, view);
     	// In case the user is leaving the NewAnimeView after adding an anime, reset the top text instructions.
+    	//TODO: reset text fields here too
     	newAnimeView.resetInstructions();
+    	//In case the user is leaving the OptionsView, reset selected to current preferences
+    	optionsView.displayCurrentSelection();
 	}
 
 	/**
@@ -480,7 +483,16 @@ public class GUI extends JFrame {
 	private void updateTable() {
 		
 		int numRows = Manager.getInstance().getAnimeList().size();
-		Object[][] rowVals = Manager.getInstance().getAllAnimeAsArrayTitleBased();
+		
+		//Depending on sort method, sort table
+		SortFocus sortBy = Manager.getInstance().getSortMethod();
+		Object[][] rowVals;
+		if (sortBy == SortFocus.ALPHABETICAL) {
+			rowVals = Manager.getInstance().getAllAnimeAsArrayTitleBased();
+		} else {
+			rowVals = Manager.getInstance().getAllAnimeAsArrayYearBased();
+		}
+		//TODO: maybe increase code speed by removing all of these get instance methods, maybe have an manager field
 
 		DefaultTableModel tm = (DefaultTableModel) table.getModel();
 		tm.setRowCount(0);

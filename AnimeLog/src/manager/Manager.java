@@ -24,13 +24,63 @@ public class Manager {
 	
 	/** Collection of user anime */
 	private SortedList<Anime> animeList;
-		
+	
+	/** Defines the way the user wants their data to be displayed on the table. Alphabetical title by default */
+	private SortFocus sortBy;
+	
+	
+	
 	
 	/**
-	 * Initializes the Manager object, and creates the animeList so that it is not null
+	 * Indicates whether the data is sorted by title (alphabetical) or by year (numerical).
+	 */
+	public enum SortFocus {
+		ALPHABETICAL("Alphabetical"), 
+		NUMERICAL("Numerical");
+		
+		/** Formatted String for each SortFocus for display in the GUI */
+		public final String formattedName;
+
+		/**
+		 * Constructor for each SortFocus enum, setting the formattedName field
+		 * @param formattedName String representation of the sorting method
+		 */
+		SortFocus(String formattedName){
+			this.formattedName = formattedName;
+		}
+
+		/**
+		 * Classifies a string of text into the correct SortFocus enum
+		 * @param text containing a sort mechanism name
+		 * @return SortFocus classification
+		 * @throws IllegalArgumentException if the text does not match any declared SortFocus
+		 */
+		public static SortFocus parseSort(String text) {
+				if (text.equals(ALPHABETICAL.formattedName)) {
+					return ALPHABETICAL;
+				} else if (text.equals(NUMERICAL.formattedName)) {
+					return NUMERICAL;
+				} else {
+					throw new IllegalArgumentException("Not a valid sorting mechanism");
+				}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Initializes the Manager object, and creates the animeList so that it is not null.
+	 * Sorting method is set to alphabetical by default as that is what SortedList is optimized for.
 	 */
 	private Manager() {
 		animeList = new SortedList<Anime>();
+		setSortMethod("Alphabetical");
 	}
 
 	/** 
@@ -40,7 +90,7 @@ public class Manager {
 	public static Manager getInstance() {
 		return instance;
 	}
-	
+
 	/**
 	 * Retrieves data from a user selected file
 	 * @param filename file selected by user in JFileChooser
@@ -48,8 +98,45 @@ public class Manager {
 	public void processFile(String filename) {
 		animeList = AnimeIO.readFile(filename);
 	}
+	
+	/**
+	 * Saves data to a file location specified by the user in JFileChooser
+	 * @param file to save data in
+	 */
+	public void saveFile(File file) {		
+		AnimeIO.writeData(animeList, file);		
+	}
+	
+	/**
+	 * Provides the animeList use in other classes
+	 * @return the animeList
+	 */
+	public SortedList<Anime> getAnimeList() {
+		return animeList;
+	}
 
-
+	/**
+	 * Adds an anime to the animeList
+	 * @param a Anime to be added
+	 * @throws NullPointerException if a is null
+	 * @throws IllegalArgumentException if a is a copy of any other element
+	 */
+	public void addAnime(Anime a) {
+		//TODO: If dupe "This entry already exists. Anime are considered the same if they share the same title and year"
+		animeList.add(a);
+	}
+	
+	
+	/**
+	 * Removes a selected anime from the animeList
+	 * @param idx index to remove from
+	 * @throws IndexOutOfBoundsException if the passed index is out of bounds
+	 */
+	public void removeAnime(int idx) {
+		animeList.remove(idx);
+	}
+	
+	
 	/**
 	 * Grabs title, year, and count for each anime for display on the GUI. 
 	 * Return is type Object[][] so that ints and Strings are both displayed in the table together.
@@ -144,44 +231,27 @@ public class Manager {
 
 		return sortedList;
 	}
-	
-	
-	/**
-	 * Saves data to a file location specified by the user in JFileChooser
-	 * @param file to save data in
-	 */
-	public void saveFile(File file) {		
-		AnimeIO.writeData(animeList, file);		
-	}
-		
-	
-	/**
-	 * Provides the animeList use in other classes
-	 * @return the animeList
-	 */
-	public SortedList<Anime> getAnimeList() {
-		return animeList;
-	}
 
+	
+	////////////////////////
+	//Preference related methods
+	////////////////////////
+	
 	/**
-	 * Adds an anime to the animeList
-	 * @param a Anime to be added
-	 * @throws NullPointerException if a is null
-	 * @throws IllegalArgumentException if a is a copy of any other element
+	 * Sets the method the user wants to sort their anime data by.
+	 * @param sortMethod String name of the method
+	 * @throws IllegalArgumentException if the String does not refer to a defined sorting method
 	 */
-	public void addAnime(Anime a) {
-		//TODO: If dupe "This entry already exists. Anime are considered the same if they share the same title and year"
-		animeList.add(a);
+	public void setSortMethod(String sortMethod) {
+		this.sortBy = SortFocus.parseSort(sortMethod);
 	}
 	
-	
 	/**
-	 * Removes a selected anime from the animeList
-	 * @param idx index to remove from
-	 * @throws IndexOutOfBoundsException if the passed index is out of bounds
+	 * Indicates the sorting method the user is using.
+	 * @return SortFocus for the user's data table
 	 */
-	public void removeAnime(int idx) {
-		animeList.remove(idx);
+	public SortFocus getSortMethod() {
+		return sortBy;
 	}
 	
 	////////////////////////

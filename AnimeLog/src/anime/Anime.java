@@ -36,6 +36,7 @@ public class Anime implements Comparable<Anime> {
 		 * Classifies a string of text into the correct type enum
 		 * @param text containing a type name
 		 * @return Type classification
+		 * @throws IllegalArgumentException is the type isn't valid.
 		 */
 		public static Type parseType(String text) {
 				if (text.equals(SERIES.formattedName)) {
@@ -72,6 +73,7 @@ public class Anime implements Comparable<Anime> {
 		 * Classifies a string of text into the correct language enum
 		 * @param text containing a language name
 		 * @return Language classification
+		 * @throws IllegalArgumentException is the language isn't valid.
 		 */
 		public static Language parseLang(String text) {
 			if (text.equals(SUB.formattedName)) {
