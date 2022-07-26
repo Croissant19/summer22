@@ -43,11 +43,11 @@ public class GUI extends JFrame {
 	/** Warning in case user tries to start browsing without any anime added */
 	private static final String BROWSE_WARNING = "To start browsing, you need to add at least one anime in your list.";
 
-	/** Notice that an anime needs to be selected to remove it */
+	/** Notice that an anime needs to be selected to remove it*/
 	private static final String REMOVE_INTRUCTIONS = "You must select an anime to remove it.";
 	
-	/** Warning asking if user is sure they want to remove the anime*/
-	private static final String REMOVE_WARNING = "Are you sure you want to remove this anime?";
+	/** Warning asking if user is sure they want to remove the anime, when used, the title of the anime is placed following */
+	private static final String REMOVE_WARNING = "Are you sure you want to remove ";
 	
 	
 	private JPanel contentPane;
@@ -342,7 +342,7 @@ public class GUI extends JFrame {
 				} else {
 
 					//Ask user if they are sure they want to remove the anime
-					int ans = JOptionPane.showConfirmDialog(rootPane, REMOVE_WARNING);
+					int ans = JOptionPane.showConfirmDialog(rootPane, REMOVE_WARNING + browseView.getCurrentAnime().getTitle() + "?");
 					if (ans != JOptionPane.YES_OPTION) {
 						//If not yes, stop operation
 						return;
