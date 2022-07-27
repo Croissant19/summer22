@@ -7,9 +7,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import anime.Anime;
-import anime.Anime.Language;
-import anime.Anime.Type;
+import data.Anime;
+import data.Anime.Language;
+import data.Anime.Type;
 import manager.Manager;
 import util.SortedAnimeList;
 

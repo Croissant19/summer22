@@ -1,14 +1,12 @@
 package manager;
 
-import java.awt.Color;
 import java.io.File;
 
-import anime.Anime;
-import anime.Anime.Language;
-import anime.Anime.Type;
-import io.AnimeIO;
-import manager.Preferences.ColorMethod;
-import manager.Preferences.SortFocus;
+import data.Anime;
+import data.Anime.Language;
+import data.Anime.Type;
+import data.Data;
+import io.DataIO;
 import util.SortedAnimeList;
 
 /**
@@ -24,35 +22,16 @@ public class Manager {
 	/** Pointer to list to display */
 	private SortedAnimeList animeList;
 
-	/** Reference Anime list sorted by Title */
-	private SortedAnimeList animeByTitle;
-
-	/** Reference Anime list sorted by Year */
-	private SortedAnimeList animeByYear;	
-	
-	/** Method used to shade Anime table data */
-	private ColorMethod colorBy;
-	
-	/** Color one for shading rows */
-	private Color color1;
-
-	/** Color two for shading rows */
-	private Color color2;
-
+	/** Object containing references to user data and preferences */
+	private Data userData;
 	
 	/**
-	 * Initializes the Manager object, and creates the animeList so that it is not null.
-	 * Sorting method is set to alphabetical by default as that is what SortedList is optimized for.
+	 * Initializes the Manager object, and creates empty or default user data so that it is not null.
+	 * Sorting method is set to alphabetical by default.
 	 */
 	private Manager() {
-		animeByTitle = new SortedAnimeList(SortFocus.ALPHABETICAL);
-		animeByYear = new SortedAnimeList(SortFocus.NUMERICAL);
-		
-		//Set default preferences
-		setSortMethod("Alphabetical");
-		colorBy = ColorMethod.NO_COLOR;
-		color1 = Preferences.DEFAULT_COLOR_1;
-		color2 = Preferences.DEFAULT_COLOR_2;
+		userData = new Data();
+		animeList = userData.getAlphabeticalAnimeList();
 	}
 
 	/** 
@@ -68,15 +47,8 @@ public class Manager {
 	 * @param filename file selected by user in JFileChooser
 	 */
 	public void processFile(String filename) {
-		//Load alphabetically sorted list by from import
-		animeByTitle = AnimeIO.readFile(filename);
-		//Load numerically sorted list from animeByTitle
-		for (Anime a : animeByTitle) {
-			animeByYear.add(a);
-		}
-		//Set pointer to default
-		//TODO: revamp so io creates correct type of list
-		animeList = animeByTitle;
+		userData = DataIO.readFile(filename);
+		//TODO: Handle preferences
 	}
 	
 	/**
@@ -84,7 +56,7 @@ public class Manager {
 	 * @param file to save data in
 	 */
 	public void saveFile(File file) {		
-		AnimeIO.writeData(animeList, file);		
+		DataIO.writeData(userData, file);		
 	}
 	
 	/**
@@ -104,6 +76,7 @@ public class Manager {
 	public void addAnime(Anime a) {
 		//TODO: If dupe "This entry already exists. Anime are considered the same if they share the same title and year"
 		animeList.add(a);
+		//TODO: handle add and such methods to apply to both lists
 	}
 	
 	
@@ -141,84 +114,6 @@ public class Manager {
 
 		return list;
 	}
-
-	
-	////////////////////////
-	//Preference related methods
-	////////////////////////
-	
-	/**
-	 * Sets the method the user wants to sort their anime data by.
-	 * @param sortMethod String name of the method
-	 * @throws IllegalArgumentException if the String does not refer to a defined sorting method
-	 */
-	public void setSortMethod(String sortMethod) {
-		SortFocus sortBy = SortFocus.parseSort(sortMethod);
-		
-		if (sortBy == SortFocus.ALPHABETICAL) {
-			this.animeList = animeByTitle;
-		} else {
-			this.animeList= animeByYear; 
-		}
-	}
-	
-	/**
-	 * Indicates the sorting method the user is using.
-	 * @return SortFocus for the user's data table
-	 */
-	public SortFocus getSortMethod() {
-		return animeList.getSortFocus();
-	}
-	
-	/**
-	 * Indicates the coloring method the user is using.
-	 * @return ColorMethod for the user's data table
-	 */
-	public ColorMethod getColorMethod() {
-		return colorBy;
-	}
-
-	/**
-	 * Sets the coloring method the user wants for their data table.
-	 * @param colorMethod for the data table
-	 * @throws IllegalArgumentException if the colorMethod is not a valid type
-	 */
-	public void setColorMethod(String colorMethod) {
-		colorBy = ColorMethod.parseSort(colorMethod);
-	}
-	
-	/**
-	 * Indicates the first color selected by the user or the default if not color selected
-	 * @return Primary color
-	 */
-	public Color getColor1() {
-		return color1;
-	}
-
-	/**
-	 * Sets the first color to a user passed color
-	 * @param c color to be set
-	 */
-	public void setColor1(Color c) {
-		color1 = c;
-	}
-	
-	/**
-	 * Indicates the second color selected by the user or the default if not color selected
-	 * @return Secondary color
-	 */
-	public Color getColor2() {
-		return color2;
-	}
-
-	/**
-	 * Sets the second color to a user passed color
-	 * @param c color to be set
-	 */
-	public void setColor2(Color c) {
-		color2 = c;
-	}
-
 	
 	////////////////////////
 	//Stat retrieval methods

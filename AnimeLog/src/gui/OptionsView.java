@@ -4,10 +4,12 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import manager.Manager;
-import manager.Preferences.SortFocus;
 import util.SortedAnimeList;
 
 import javax.swing.JRadioButton;
+
+import data.Preferences.SortFocus;
+
 import java.awt.Font;
 
 import java.awt.event.ActionEvent;

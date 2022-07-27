@@ -1,13 +1,13 @@
-package anime;
+package data;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import anime.Anime.Language;
-import anime.Anime.Type;
+import data.Anime.Language;
+import data.Anime.Type;
+import data.Preferences.SortFocus;
 import util.SortedAnimeList;
-import manager.Preferences.SortFocus;
 
 /**
  * Tests the Anime class

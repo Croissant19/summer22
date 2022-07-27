@@ -1,4 +1,4 @@
-package manager;
+package data;
 
 import java.awt.Color;
 
@@ -14,7 +14,19 @@ public class Preferences {
 	/** Default color for table data that meets selected conditions */
 	public static final Color DEFAULT_COLOR_2 = Color.CYAN;
 	
+	/** Method to sort user data in a GUI JTable */
+	private SortFocus sortBy;
 	
+	/** Method used to shade Anime table data */
+	private ColorMethod colorBy;
+	
+	/** Color one for shading rows */
+	private Color color1;
+
+	/** Color two for shading rows */
+	private Color color2;
+
+
 	/**
 	 * Indicates whether the data is sorted by title (alphabetical) or by year (numerical).
 	 */
@@ -91,5 +103,106 @@ public class Preferences {
 				}
 		}
 	}
+
+	/**
+	 * Default constructor for preferences object by setting fields to default settings
+	 */
+	public Preferences() {
+		//Set defaults
+		this(SortFocus.ALPHABETICAL, ColorMethod.NO_COLOR, Preferences.DEFAULT_COLOR_1.getRGB(), Preferences.DEFAULT_COLOR_2.getRGB());
+	}
+	
+	/**
+	 * Constructs preferences object by setting fields
+	 * @param sort SortFocus to sort by
+	 * @param color method for coloring data rows
+	 * @param c1 RGB of color for shading some data rows
+	 * @param c2 RGB of color for shading some other data rows
+	 */
+	public Preferences(SortFocus sort, ColorMethod color, int c1, int c2) {
+		//Set parameters
+		setSortMethod(sort);
+		setColorMethod(color);
+		setColor1(c1);
+		setColor2(c2);
+	}
+	
+	/**
+	 * Sets the method the user wants to sort their anime data by.
+	 * @param sortMethod Enumeration for sort method
+	 */
+	public void setSortMethod(SortFocus sortMethod) {
+		sortBy = sortMethod;
+	}
+	
+	/**
+	 * Indicates the sorting method the user is using.
+	 * @return SortFocus for the user's data table
+	 */
+	public SortFocus getSortMethod() {
+		return sortBy;
+	}
+	
+	/**
+	 * Indicates the coloring method the user is using.
+	 * @return ColorMethod for the user's data table
+	 */
+	public ColorMethod getColorMethod() {
+		return colorBy;
+	}
+
+	/**
+	 * Sets the coloring method the user wants for their data table.
+	 * @param colorMethod for the data table
+	 */
+	public void setColorMethod(ColorMethod colorMethod) {
+		colorBy = colorMethod;
+	}
+	
+	/**
+	 * Indicates the first color selected by the user or the default if not color selected
+	 * @return Primary color
+	 */
+	public Color getColor1() {
+		return color1;
+	}
+
+	/**
+	 * Sets the first color to a user passed color
+	 * @param rgb RGB of the color to be set
+	 */
+	public void setColor1(int rgb) {
+		color1 = new Color(rgb);
+	}
+	
+	/**
+	 * Indicates the second color selected by the user or the default if not color selected
+	 * @return Secondary color
+	 */
+	public Color getColor2() {
+		return color2;
+	}
+
+	/**
+	 * Sets the second color to a user passed color
+	 * @param rgb RGB of the color to be set
+	 */
+	public void setColor2(int rgb) {
+		color2 = new Color(rgb);
+	}
+	
+	
+	/**
+	 * Generates a String representation of user preferences for use in file io
+	 * @return String representation of fields
+	 */
+	@Override
+	public String toString() {
+		String s = sortBy.formattedName + "_," + colorBy.formattedName + ",_"
+				+ color1.getRGB() + ",_" + color2.getRGB();
+		
+		return s;
+	}
+
 	
 }

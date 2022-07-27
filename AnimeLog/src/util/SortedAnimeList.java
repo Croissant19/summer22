@@ -1,8 +1,9 @@
 package util;
 
 import java.util.Iterator;
-import anime.Anime;
-import manager.Preferences.SortFocus;
+
+import data.Anime;
+import data.Preferences.SortFocus;
 
 /**
  * List for storing Anime objects in a sorted order,

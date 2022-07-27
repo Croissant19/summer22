@@ -6,9 +6,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
-import anime.Anime;
-import anime.Anime.Language;
-import anime.Anime.Type;
+import data.Anime;
+import data.Anime.Language;
+import data.Anime.Type;
 import manager.Manager;
 
 import javax.swing.JTextField;

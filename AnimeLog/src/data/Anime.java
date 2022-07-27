@@ -1,4 +1,4 @@
-package anime;
+package data;
 
 import java.util.Objects;
 
@@ -374,7 +374,7 @@ public class Anime {
 		this.notes = notes;
 	}
 
-		
+
 	/**
 	 * Generates a String representation of an anime for use in file io
 	 * @return String representation of fields

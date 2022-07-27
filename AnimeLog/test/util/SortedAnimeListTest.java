@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import anime.Anime;
-import anime.Anime.Language;
-import anime.Anime.Type;
-import util.SortedAnimeList.SortFocus;
+import data.Anime;
+import data.Anime.Language;
+import data.Anime.Type;
+import data.Preferences.SortFocus;
 
 /**
  * Test class for SortedAnimeList, contains, get, and size tested implicitly.

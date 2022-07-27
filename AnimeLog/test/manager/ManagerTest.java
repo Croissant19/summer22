@@ -5,10 +5,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import anime.Anime;
-import anime.Anime.Language;
-import anime.Anime.Type;
-import util.SortedList;
+import data.Anime;
+import data.Anime.Language;
+import data.Anime.Type;
+import data.Preferences.SortFocus;
+import util.SortedAnimeList;
 
 /**
  * Tests the Manager class to ensure accuracy in various aspects
@@ -20,7 +21,7 @@ class ManagerTest {
 	private final String TEST_FILE = "test-files/ThreeWorkingImports.txt";
 	
 	/** Pointer to sorted anime list, refreshed with each test */
-	private SortedList<Anime> list;
+	private SortedAnimeList list;
 
 	/**
 	 * Loads the test file before each test to ensure tests do not interfere with each other
@@ -87,7 +88,9 @@ class ManagerTest {
 	 */
 	@Test
 	void testGetAllAnimeAsArrayTitleBased() {
-		Object[][] array = Manager.getInstance().getAllAnimeAsArrayTitleBased();
+		Manager.getInstance().setSortMethod(SortFocus.ALPHABETICAL.formattedName);
+
+		Object[][] array = Manager.getInstance().getAllAnimeAsArray();
 		
 		//Test each column, one at a time
 		assertAll(
@@ -110,7 +113,8 @@ class ManagerTest {
 	 */
 	@Test
 	void testGetAllAnimeAsArrayYearBased() {
-		Object[][] array = Manager.getInstance().getAllAnimeAsArrayYearBased();
+		Manager.getInstance().setSortMethod(SortFocus.NUMERICAL.formattedName);
+		Object[][] array = Manager.getInstance().getAllAnimeAsArray();
 		
 		//Test each column, one at a time
 		assertAll(
