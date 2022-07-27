@@ -1,2 +1,3 @@
+{PREFERENCES}Alphabetical,_NoColor,_-16711936,_-16711681
 <|>Gurren Lagann,_2007,_26,_Sub,_Series,_true,_false,_Hiroyuki ImaishiVery good op!
 <|>One Piece,_1999,_100,_Dub,_Series,_false,_false,_multiple,_Watching with brother

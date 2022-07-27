@@ -198,7 +198,7 @@ public class Preferences {
 	 */
 	@Override
 	public String toString() {
-		String s = sortBy.formattedName + "_," + colorBy.formattedName + ",_"
+		String s = sortBy.formattedName + ",_" + colorBy.formattedName + ",_"
 				+ color1.getRGB() + ",_" + color2.getRGB();
 		
 		return s;

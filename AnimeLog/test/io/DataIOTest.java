@@ -13,6 +13,9 @@ import org.junit.jupiter.api.Test;
 import data.Anime;
 import data.Anime.Language;
 import data.Anime.Type;
+import data.Data;
+import data.Preferences;
+import data.Preferences.ColorMethod;
 import data.Preferences.SortFocus;
 import util.SortedAnimeList;
 
@@ -20,7 +23,7 @@ import util.SortedAnimeList;
  * Tests the input output functionality for Anime lists
  * @author Hunter Pruitt
  */
-class AnimeIOTest {
+class DataIOTest {
 
 	/** IO file to create three Anime objects */
 	private static final String TEST_FILE_ONE = "test-files/ThreeWorkingImports.txt";
@@ -37,15 +40,23 @@ class AnimeIOTest {
 	/** Valid IO file with extra whitespace */
 	private static final String TEST_FILE_FIVE = "test-files/AcceptableExtraWhiteSpace.txt";
 	
+	/** Valid IO file non-default preferences */
+	private static final String TEST_FILE_SIX = "test-files/NonDefaultPreferences.txt";
+	
 	/** File containing expected information about an anime log*/
 	private static final File EXPECTED_OUT = new File("test-files/ThreeWorkingImports.txt");
 	
 	/** File containing actual information about an anime log*/
 	private static final File ACTUAL_OUT = new File("test-files/actual_out.txt");
 
-	
+	/** Reference pointer to default preference settings */
+	private static final Preferences DEFAULT_PREFERENCES = new Preferences();
+
 	/** Sorted collection of Anime returned and passed to file IO methods */
 	private SortedAnimeList list; 
+	
+	/** Data object storing the SortedAnimeLists and Preferences */
+	private Data data;
 	
 	
 	
@@ -54,7 +65,8 @@ class AnimeIOTest {
 	 */
 	@BeforeEach
 	public void setUp() {
-		list = new SortedAnimeList(SortFocus.ALPHABETICAL);
+		data = new Data();
+		list = data.getAlphabeticalAnimeList();
 	}
 	
 	/**
@@ -62,7 +74,8 @@ class AnimeIOTest {
 	 */
 	@Test
 	void testThreeWorkingImports() {
-		list = AnimeIO.readFile(TEST_FILE_ONE);
+		data = DataIO.readFile(TEST_FILE_ONE);
+		list = data.getAlphabeticalAnimeList();
 		assertEquals(3, list.size());
 		Anime actualGurren = list.get(0);
 		Anime actualNaruto = list.get(1);
@@ -114,17 +127,17 @@ class AnimeIOTest {
 	 * Test various bad imports
 	 */
 	@Test
-	void testBadLanguageImport() {
+	void testBadImport() {
 		//Test import with invalid language
-		Exception e1 = assertThrows(IllegalArgumentException.class, () -> AnimeIO.readFile(TEST_FILE_TWO));
+		Exception e1 = assertThrows(IllegalArgumentException.class, () -> DataIO.readFile(TEST_FILE_TWO));
 		assertEquals("Bad file data", e1.getMessage());
 		
 		//Test import with invalid leading delimiter
-		Exception e2 = assertThrows(IllegalArgumentException.class, () -> AnimeIO.readFile(TEST_FILE_THREE));
+		Exception e2 = assertThrows(IllegalArgumentException.class, () -> DataIO.readFile(TEST_FILE_THREE));
 		assertEquals("Bad file data", e2.getMessage());
 
 		//Test import with missing data
-		Exception e3 = assertThrows(IllegalArgumentException.class, () -> AnimeIO.readFile(TEST_FILE_FOUR));
+		Exception e3 = assertThrows(IllegalArgumentException.class, () -> DataIO.readFile(TEST_FILE_FOUR));
 		assertEquals("Bad file data", e3.getMessage());
 	}
 	
@@ -133,7 +146,7 @@ class AnimeIOTest {
 	 */
 	@Test
 	void testExtraWhitespace() {
-		list = AnimeIO.readFile(TEST_FILE_FIVE);
+		list = DataIO.readFile(TEST_FILE_FIVE).getAlphabeticalAnimeList();
 		assertEquals(1, list.size());
 
 		Anime actualGurren = list.get(0);
@@ -150,6 +163,20 @@ class AnimeIOTest {
 				() -> assertEquals("Hiroyuki Imaishi", actualGurren.getDirector()), 
 				() -> assertEquals("Very good op!", actualGurren.getNotes()) 
 		);
+	}
+	
+	/**
+	 * Tests importing data from files with non-default preferences
+	 */
+	@Test
+	void testFileWithUniquePreferences() {
+		data = DataIO.readFile(TEST_FILE_SIX);
+		Preferences p = data.getPreferences();
+		
+		assertEquals(SortFocus.NUMERICAL, p.getSortMethod());
+		assertEquals(ColorMethod.SUB_DUB, p.getColorMethod());
+		assertEquals(-10001936, p.getColor1().getRGB());
+		assertEquals(-16710081, p.getColor2().getRGB());
 	}
 	
 	/**
@@ -170,8 +197,9 @@ class AnimeIOTest {
 		list.add(c);
 		
 		//Export the list and check file is as expected
+		data = new Data(list, DEFAULT_PREFERENCES);
 		try {
-			AnimeIO.writeData(list, ACTUAL_OUT);
+			DataIO.writeData(data, ACTUAL_OUT);
 			assertTrue(compareFiles(EXPECTED_OUT, ACTUAL_OUT));
 		} catch (IOException e) {
 			fail("Threw an unexpected exception");
