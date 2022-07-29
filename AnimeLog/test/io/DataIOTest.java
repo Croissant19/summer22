@@ -20,7 +20,7 @@ import data.Preferences.SortFocus;
 import util.SortedAnimeList;
 
 /**
- * Tests the input output functionality for Anime lists
+ * Tests the input output functionality for user data
  * @author Hunter Pruitt
  */
 class DataIOTest {

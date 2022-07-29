@@ -88,7 +88,7 @@ class ManagerTest {
 	 */
 	@Test
 	void testGetAllAnimeAsArrayTitleBased() {
-		Manager.getInstance().setSortMethod(SortFocus.ALPHABETICAL.formattedName);
+		Manager.getInstance().setAnimeList(SortFocus.ALPHABETICAL);
 
 		Object[][] array = Manager.getInstance().getAllAnimeAsArray();
 		
@@ -113,7 +113,8 @@ class ManagerTest {
 	 */
 	@Test
 	void testGetAllAnimeAsArrayYearBased() {
-		Manager.getInstance().setSortMethod(SortFocus.NUMERICAL.formattedName);
+		Manager.getInstance().setAnimeList(SortFocus.NUMERICAL);
+		
 		Object[][] array = Manager.getInstance().getAllAnimeAsArray();
 		
 		//Test each column, one at a time

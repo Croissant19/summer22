@@ -70,6 +70,8 @@ public class GUI extends JFrame {
 
 	private JScrollPane scrollPane;
 	
+	/** Used to prevent table row selection events from firing when table is being rebuilt and such */
+	private boolean engageTableListener = true;
 	
 	//TODO: attribute logo
 	//https://www.flaticon.com/premium-icon/anime_2314736?term=anime&related_id=2314736#
@@ -349,8 +351,8 @@ public class GUI extends JFrame {
 						//Remove the indicated element from Manager's master copy of the list
 						Manager.getInstance().removeAnime(selected);
 						//Reload data
-						toggleToolbarButtons(btnHome);
 						updateData();
+						toggleToolbarButtons(btnHome);
 						setCard("homeView");
 						
 					}
@@ -368,6 +370,10 @@ public class GUI extends JFrame {
 					toggleToolbarButtons(btnOptions);
 					browseView.setCurrentAnime(null);
 					
+					//When move to optionsView, ensure no table element is selected, or else when user
+					//clicks apply changes the table action listener will pick up on the last selected Anime
+					//TODO: note this is not a fix...
+					table.clearSelection();
 				} else {
 					return;
 				}
@@ -379,6 +385,12 @@ public class GUI extends JFrame {
 		//Table Events
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 	        public void valueChanged(ListSelectionEvent event) {
+
+	        	//engageTableListener variable used so that when reloading table data, the program doesn't
+	        	//switch into browse mode for no reason. This was a previous bug...
+	        	if (!engageTableListener) {
+	        		return;
+	        	}
 
 	        	//Do nothing if selecting anime that is already being viewed
 	        	//May seem pointless, but protects against recursion when program has to counter user selection
@@ -480,7 +492,7 @@ public class GUI extends JFrame {
 	 * Updates the table with information from the user's anime log data
 	 */
 	private void updateTable() {
-		
+		engageTableListener = false;
 		int numRows = Manager.getInstance().getAnimeList().size();
 		
 		//Get sorted table
@@ -498,8 +510,12 @@ public class GUI extends JFrame {
 		}
 
 		
+		//TODO: implement color stuff
 		
 		//TODO: credits? could be cool...		
+		
+		
+		engageTableListener = true;
 	}
 	
 	/**
@@ -515,7 +531,6 @@ public class GUI extends JFrame {
 	
 	private void testStartUp() {
 		Manager.getInstance().processFile("./test-files/ThreeWorkingImports.txt");
-		updateTable();
-		homeView.updateStats();
+		updateData();
 	}
 }

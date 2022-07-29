@@ -203,7 +203,7 @@ public class Anime {
 			String thisTitle = this.getTitle().toLowerCase();
 			String otherTitle = otherAnime.getTitle().toLowerCase();
 
-			return thisTitle.compareTo(otherTitle) > 0 ;
+			return thisTitle.compareTo(otherTitle) < 0 ;
 		}
 	}
 	

@@ -1,11 +1,15 @@
 package manager;
 
+import java.awt.Color;
 import java.io.File;
 
 import data.Anime;
 import data.Anime.Language;
 import data.Anime.Type;
 import data.Data;
+import data.Preferences;
+import data.Preferences.ColorMethod;
+import data.Preferences.SortFocus;
 import io.DataIO;
 import util.SortedAnimeList;
 
@@ -48,7 +52,13 @@ public class Manager {
 	 */
 	public void processFile(String filename) {
 		userData = DataIO.readFile(filename);
-		//TODO: Handle preferences
+		//Set animeList
+		if (userData.getPreferences().getSortMethod() == SortFocus.ALPHABETICAL) {
+			animeList = userData.getAlphabeticalAnimeList();
+		} else if (userData.getPreferences().getSortMethod() == SortFocus.NUMERICAL) {
+			animeList = userData.getNumericalAnimeList();
+		}
+
 	}
 	
 	/**
@@ -57,6 +67,14 @@ public class Manager {
 	 */
 	public void saveFile(File file) {		
 		DataIO.writeData(userData, file);		
+	}
+
+	/**
+	 * Returns user Preferences 
+	 * @return Object containing the user's preferences
+	 */
+	public Preferences getPreferences() {
+		return this.userData.getPreferences();
 	}
 	
 	/**
@@ -68,15 +86,30 @@ public class Manager {
 	}
 
 	/**
-	 * Adds an anime to the animeList
+	 * Sets the pointer animeList to the SortedAnimeList relevant to the user's
+	 * sorting preference
+	 * @param focus method to sort anime data
+	 * @throws IllegalArgumentException if passed an invalid sorting method
+	 */
+	public void setAnimeList(SortFocus focus) {
+		if (focus == SortFocus.ALPHABETICAL) {
+			animeList = userData.getAlphabeticalAnimeList();
+		} else if (focus == SortFocus.NUMERICAL) {
+			animeList = userData.getNumericalAnimeList();
+		} else {
+			throw new IllegalArgumentException("Invalid sort method");
+		}
+	}
+	
+	/**
+	 * Adds an anime to userData
 	 * @param a Anime to be added
 	 * @throws NullPointerException if a is null
 	 * @throws IllegalArgumentException if a is a copy of any other element
 	 */
 	public void addAnime(Anime a) {
 		//TODO: If dupe "This entry already exists. Anime are considered the same if they share the same title and year"
-		animeList.add(a);
-		//TODO: handle add and such methods to apply to both lists
+		userData.addAnime(a);
 	}
 	
 	
@@ -86,7 +119,7 @@ public class Manager {
 	 * @throws IndexOutOfBoundsException if the passed index is out of bounds
 	 */
 	public void removeAnime(int idx) {
-		animeList.remove(idx);
+		userData.removeAnime(animeList.get(idx));
 	}
 
 	
@@ -113,6 +146,36 @@ public class Manager {
 		}
 
 		return list;
+	}
+	
+	////////////////////////
+	//Preference related methods
+	////////////////////////
+	
+	/**
+	 * Changes the sorting method and retrieves the proper animeList to use
+	 * @param sortBy SortFocus to sort anime by
+	 */
+	public void setSortMethod(SortFocus sortBy) {
+		userData.getPreferences().setSortMethod(sortBy);
+		if (sortBy == SortFocus.ALPHABETICAL) {
+			animeList = userData.getAlphabeticalAnimeList();
+		} else if (sortBy == SortFocus.NUMERICAL) {
+			animeList = userData.getNumericalAnimeList();
+		}
+	}
+	
+	/**
+	 * Changes the sorting method and retrieves the proper animeList to use
+	 * @param sortBy SortFocus to sort anime by
+	 */
+	public void setColorMethod(ColorMethod colorBy) {
+		userData.getPreferences().setColorMethod(colorBy);
+	}
+	
+	public void setColor(Color c, Color pointer) {
+		//TODO:
+
 	}
 	
 	////////////////////////

@@ -41,7 +41,29 @@ public class Data {
 
 		this.preferences = p;
 	}
+	
+	/**
+	 * Adds an anime to both sorted lists in the data
+	 * @param a Anime to be added
+	 * @throws NullPointerException if a is null
+	 * @throws IllegalArgumentException if a is a copy of any other element
+	 */
+	public void addAnime(Anime a) {
+		animeByTitle.add(a);
+		animeByYear.add(a);
+	}
 
+	/**
+	 * Removes the passed Anime from both lists in data
+	 * @param a Anime to be removed
+	 * @return removed Anime
+	 * @throws IndexOutOfBoundsException if the passed index is out of bounds
+	 */
+	public Anime removeAnime(Anime a) {
+		animeByTitle.remove(animeByTitle.indexOf(a));
+		return animeByYear.remove(animeByYear.indexOf(a));
+	}
+	
 	/**
 	 * Retrieves the anime list organized by title
 	 * @return SortedAnimeList sorted by title

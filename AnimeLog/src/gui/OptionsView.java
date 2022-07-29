@@ -3,11 +3,13 @@ package gui;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import manager.Manager;
-import util.SortedAnimeList;
 
 import javax.swing.JRadioButton;
 
+import data.Preferences.ColorMethod;
 import data.Preferences.SortFocus;
 
 import java.awt.Font;
@@ -28,7 +30,7 @@ public class OptionsView extends JPanel {
 	private JButton btnApply;
 	private JRadioButton rdBtnAlphabet;
 	private JRadioButton rdBtnNumeric;
-	private JRadioButton rdBtnNoColors;
+	private JRadioButton rdBtnNoColor;
 	private JRadioButton rdBtnColorFinDrop;
 	private JRadioButton rdBtnColorSeriesSpecial;
 	private JRadioButton rdBtnColorLanguage;
@@ -75,9 +77,9 @@ public class OptionsView extends JPanel {
 		lblColors.setBounds(33, 117, 64, 14);
 		pnlFields.add(lblColors);
 		
-		rdBtnNoColors = new JRadioButton("No highlights");
-		rdBtnNoColors.setBounds(49, 132, 120, 23);
-		pnlFields.add(rdBtnNoColors);
+		rdBtnNoColor = new JRadioButton("No highlights");
+		rdBtnNoColor.setBounds(49, 132, 120, 23);
+		pnlFields.add(rdBtnNoColor);
 		
 		rdBtnColorFinDrop = new JRadioButton("Finished and Dropped highlights");
 		rdBtnColorFinDrop.setBounds(49, 158, 197, 23);
@@ -117,7 +119,12 @@ public class OptionsView extends JPanel {
 		//Events pertaining to large buttons, edit/save, next, previous
 		btnApply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				applyChanges();
+				try {
+					applyChanges();					
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(getRootPane(), e1.getMessage());
+				}
+
 			}
 		});
 
@@ -142,9 +149,9 @@ public class OptionsView extends JPanel {
 
 
 		//Color options
-		rdBtnNoColors.addActionListener(new ActionListener() {
+		rdBtnNoColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (rdBtnNoColors.isSelected()) {
+				if (rdBtnNoColor.isSelected()) {
 					rdBtnColorFinDrop.setSelected(false);
 					rdBtnColorSeriesSpecial.setSelected(false);
 					rdBtnColorLanguage.setSelected(false);
@@ -154,7 +161,7 @@ public class OptionsView extends JPanel {
 		rdBtnColorFinDrop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (rdBtnColorFinDrop.isSelected()) {
-					rdBtnNoColors.setSelected(false);
+					rdBtnNoColor.setSelected(false);
 					rdBtnColorSeriesSpecial.setSelected(false);
 					rdBtnColorLanguage.setSelected(false);
 				}
@@ -164,17 +171,17 @@ public class OptionsView extends JPanel {
 		rdBtnColorSeriesSpecial.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (rdBtnColorSeriesSpecial.isSelected()) {
-					rdBtnNoColors.setSelected(false);
+					rdBtnNoColor.setSelected(false);
 					rdBtnColorFinDrop.setSelected(false);
 					rdBtnColorLanguage.setSelected(false);
 				}
-			
+
 			}
 		});
 		rdBtnColorLanguage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (rdBtnColorLanguage.isSelected()) {
-					rdBtnNoColors.setSelected(false);
+					rdBtnNoColor.setSelected(false);
 					rdBtnColorFinDrop.setSelected(false);
 					rdBtnColorSeriesSpecial.setSelected(false);
 				}
@@ -199,24 +206,42 @@ public class OptionsView extends JPanel {
 
 	}
 	
-//	/*@throws IllegalArgumentException is no sorting button or color button is selected
+
+	/**
+	 * Applies user selection to data stored in the Manager.
+	 * @throws IllegalArgumentException is no sorting button or color button is selected
+	 */
 	private void applyChanges() {
-		String sortBy;
+		SortFocus sortBy;
+		ColorMethod colorBy;
+		
 		//Get sortBy
 		if (rdBtnAlphabet.isSelected()) {
-			sortBy = SortFocus.ALPHABETICAL.formattedName;
+			sortBy = SortFocus.ALPHABETICAL;
 		} else if (rdBtnNumeric.isSelected()) {
-			sortBy = SortFocus.NUMERICAL.formattedName;
+			sortBy = SortFocus.NUMERICAL;
 		} else {
 			throw new IllegalArgumentException("You must select a sorting preference.");
 		}
 		
-		//TODO:
 		//Get color preference
+		if (this.rdBtnNoColor.isSelected()) {
+			colorBy = ColorMethod.NO_COLOR;
+		} else if (rdBtnColorFinDrop.isSelected()) {
+			colorBy = ColorMethod.FIN_DROP;
+		} else if (rdBtnColorSeriesSpecial.isSelected()) {
+			colorBy = ColorMethod.SERIES_SPECIAL;
+		} else if (rdBtnColorLanguage.isSelected()) {
+			colorBy = ColorMethod.SUB_DUB;
+		} else {
+			throw new IllegalArgumentException("You must select a color method preference.");
+		}
+		
 		//TODO: fix bug where changing from browse view to options and apply button causes to switch to browse view
 		//Report selection to Manager
 		Manager.getInstance().setSortMethod(sortBy);
-//		Manager.getInstance().setColorSettings(colorSettings);
+		Manager.getInstance().setColorMethod(colorBy);
+
 		mainGUI.updateData();
 	}
 
@@ -225,7 +250,7 @@ public class OptionsView extends JPanel {
 	 * @throws IllegalArgumentException if the user has somehow stored an invalid selection
 	 */
 	public void displayCurrentSelection() {
-		SortFocus sortBy = Manager.getInstance().getSortMethod();
+		SortFocus sortBy = Manager.getInstance().getPreferences().getSortMethod();
 		if (sortBy == SortFocus.ALPHABETICAL) {
 			rdBtnAlphabet.setSelected(true);
 			rdBtnNumeric.setSelected(false);
@@ -236,8 +261,34 @@ public class OptionsView extends JPanel {
 			throw new IllegalArgumentException("Error with discovering user preferences");
 		}
 		
-		//TODO: color stuff
 		
+		ColorMethod colorBy = Manager.getInstance().getPreferences().getColorMethod();		
+		if (colorBy == ColorMethod.NO_COLOR) {
+			rdBtnNoColor.setSelected(true);
+			rdBtnColorFinDrop.setSelected(false);
+			rdBtnColorSeriesSpecial.setSelected(false);
+			rdBtnColorLanguage.setSelected(false);
+		} else if (colorBy == ColorMethod.FIN_DROP) {
+			rdBtnNoColor.setSelected(false);
+			rdBtnColorFinDrop.setSelected(true);
+			rdBtnColorSeriesSpecial.setSelected(false);
+			rdBtnColorLanguage.setSelected(false);
+		} else if (colorBy == ColorMethod.SERIES_SPECIAL) {
+			rdBtnNoColor.setSelected(false);
+			rdBtnColorFinDrop.setSelected(false);
+			rdBtnColorSeriesSpecial.setSelected(true);
+			rdBtnColorLanguage.setSelected(false);
+		} else if (colorBy == ColorMethod.SUB_DUB) {
+			rdBtnNoColor.setSelected(false);
+			rdBtnColorFinDrop.setSelected(false);
+			rdBtnColorSeriesSpecial.setSelected(false);
+			rdBtnColorLanguage.setSelected(true);
+		} else {
+			throw new IllegalArgumentException("Error with discovering user preferences");
+		}
+
+		btnColor1.setBackground(Manager.getInstance().getPreferences().getColor1());
+		btnColor2.setBackground(Manager.getInstance().getPreferences().getColor2());
 	}
 
 }

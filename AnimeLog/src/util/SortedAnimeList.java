@@ -21,10 +21,7 @@ public class SortedAnimeList implements Iterable<Anime> {
 	private ListNode front;
 
 	/** Sorting method, either with a focus on name or on release year */
-	private SortFocus sortBy;
-	
-//TODO: maybe put all enums in single class
-	
+	private SortFocus sortBy;	
 	
 	/**
 	 * Constructor for SortedList, initializes size and front
@@ -58,7 +55,6 @@ public class SortedAnimeList implements Iterable<Anime> {
 		} else {
 			
 			//If need to add before front
-			//TODO: test point?
 			if (sortsBefore(element, front.data)) {
 				front = new ListNode(element, front);
 				size++;
@@ -70,7 +66,6 @@ public class SortedAnimeList implements Iterable<Anime> {
 			
 			while(temp.next != null) {
 
-				//TODO: test point?
 				if (sortsBefore(element, temp.next.data)) {
 					//Add element before the next element
 					temp.next = new ListNode(element, temp.next);

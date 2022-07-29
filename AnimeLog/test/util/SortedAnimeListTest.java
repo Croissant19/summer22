@@ -22,7 +22,8 @@ class SortedAnimeListTest {
 	private static final Anime ANIME_Y = new Anime("Y", 2002, 0, Language.DUB, Type.SERIES, false, false, "", null);
 	private static final Anime ANIME_Z = new Anime("Z", 2001, 0, Language.DUB, Type.SERIES, false, false, "", null);
 	
-	
+	private static final Anime ANIME_M2 = new Anime("M", 2002, 0, Language.DUB, Type.SERIES, false, false, "", null);
+	private static final Anime ANIME_OTHER_2003 = new Anime("C", 2003, 0, Language.DUB, Type.SERIES, false, false, "", null);
 	
 	/**	Alphabetically sorted list reference for use in testing */
 	private SortedAnimeList listAlphabetic;
@@ -102,6 +103,25 @@ class SortedAnimeListTest {
 		assertEquals(ANIME_A, listNumeric.remove(1));
 		assertEquals(ANIME_B, listNumeric.remove(0));
 	}
+	
+	/**
+	 * Asserts that add still works in respective lists when some sorting-dependant values are shared
+	 */
+	@Test
+	void testAddSomeMatchingFields() {
+		listAlphabetic.add(ANIME_M);
+		listAlphabetic.add(ANIME_M2);
+		assertEquals(ANIME_M2, listAlphabetic.get(0));
+		assertEquals(ANIME_M, listAlphabetic.get(1));
+
+		
+		listNumeric.add(ANIME_M);
+		listNumeric.add(ANIME_OTHER_2003);
+		assertEquals(ANIME_OTHER_2003, listNumeric.get(0));
+		assertEquals(ANIME_M, listNumeric.get(1));
+
+	}
+
 	
 	/**
 	 * Tests the iterable interface by using a for-each loop and ensuring fields are passed as desired
