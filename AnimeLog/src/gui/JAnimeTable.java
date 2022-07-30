@@ -1,4 +1,4 @@
-package util;
+package gui;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -20,8 +20,8 @@ import manager.Manager;
  * row coloring depending on contents and user-set conditions
  * @author Hunter Pruitt
  */
-public class AnimeTable extends JTable {
-
+public class JAnimeTable extends JTable {
+//TODO: update to JAnimeTable? and move to GUI?
 	/** Data headers for the data table */
 	private static final String[] COLUMN_NAMES= {"Year",
             "Title",
@@ -50,10 +50,10 @@ public class AnimeTable extends JTable {
 	}
 
 	/**
-	 * Constructor for AnimeTable. Creates a JTable using the JTable(TableModel) constructor with this class's custom TableModel
+	 * Constructor for JAnimeTable. Creates a JTable using the JTable(TableModel) constructor with this class's custom TableModel
 	 * and setting the default renderer to a ColorRenderer
 	 */
-	public AnimeTable() {
+	public JAnimeTable() {
 		super(NO_EDIT_MODEL);
 		renderer = new ColorRenderer();
 		super.setDefaultRenderer(Object.class, renderer);
@@ -63,7 +63,7 @@ public class AnimeTable extends JTable {
 	//TODO: test loading with a colorful color method
 
 	/**
-	 * Defines the rendering class used in AnimeTables.
+	 * Defines the rendering class used in JAnimeTables.
 	 * Contains functionality to color rows as necessary depending on user's color method selection
 	 * and the represented Anime's values.
 	 * 

@@ -11,7 +11,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import manager.Manager;
-import util.AnimeTable;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -50,7 +49,7 @@ public class GUI extends JFrame {
 	
 	private JPanel contentPane;
 	private JScrollPane scrollPane;
-	private AnimeTable table;
+	private JAnimeTable table;
 	private JPanel cardPanel;
 
 	private JComboBox<String> fileOptions;
@@ -192,7 +191,7 @@ public class GUI extends JFrame {
 		
 		
 		//Declare table model and override isCellEditable so that no cells are editable
-		table = new AnimeTable();
+		table = new JAnimeTable();
 				
 		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
