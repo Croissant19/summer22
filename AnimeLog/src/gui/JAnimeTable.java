@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -31,6 +32,7 @@ public class JAnimeTable extends JTable {
 	 * Defines an adjusted DefaultTableModel by removing the ability for all cells to be editable.
 	 */
 	private static final TableModel NO_EDIT_MODEL = new DefaultTableModel(null, COLUMN_NAMES) {
+
 		@Override
 	    public boolean isCellEditable(int row, int column) {
 	       //all cells false
@@ -40,14 +42,7 @@ public class JAnimeTable extends JTable {
 	
 	/** pointer to the table's ColorRenderer so that the color method therein can be changed */
 	private ColorRenderer renderer;
-	
-	/**
-	 * Returns the ColorRenderer so that it can be adjusted for the user's changes in ColorMethod
-	 * @return the renderer
-	 */
-	public ColorRenderer getRenderer() {
-		return renderer;
-	}
+
 
 	/**
 	 * Constructor for JAnimeTable. Creates a JTable using the JTable(TableModel) constructor with this class's custom TableModel
@@ -57,8 +52,18 @@ public class JAnimeTable extends JTable {
 		super(NO_EDIT_MODEL);
 		renderer = new ColorRenderer();
 		super.setDefaultRenderer(Object.class, renderer);
+		//Set header to bold
+		getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 11));
 	}
 
+	/**
+	 * Returns the ColorRenderer so that it can be adjusted for the user's changes in ColorMethod
+	 * @return the renderer
+	 */
+	public ColorRenderer getRenderer() {
+		return renderer;
+	}
+	
 	
 	//TODO: test loading with a colorful color method
 
