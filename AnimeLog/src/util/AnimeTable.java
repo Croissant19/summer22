@@ -1,6 +1,6 @@
 package util;
 
-
+import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JTable;
@@ -15,8 +15,10 @@ import data.Preferences.ColorMethod;
 import manager.Manager;
 
 /**
- * @author Hunter
- *
+ * Defines a JTable type class specifically for displaying Anime.
+ * Special functionality includes uniform non-editable cells and
+ * row coloring depending on contents and user-set conditions
+ * @author Hunter Pruitt
  */
 public class AnimeTable extends JTable {
 
@@ -25,7 +27,10 @@ public class AnimeTable extends JTable {
             "Title",
             "Count"};
 	
-	private static TableModel m = new DefaultTableModel(null, COLUMN_NAMES) {
+	/**
+	 * Defines an adjusted DefaultTableModel by removing the ability for all cells to be editable.
+	 */
+	private static final TableModel NO_EDIT_MODEL = new DefaultTableModel(null, COLUMN_NAMES) {
 		@Override
 	    public boolean isCellEditable(int row, int column) {
 	       //all cells false
@@ -33,45 +38,76 @@ public class AnimeTable extends JTable {
 	    }
 	};
 	
-	public AnimeTable(TableModel tm, ColorMethod colorBy) {
-		super(m);
-		super.setDefaultRenderer(getClass(), new ColorRenderer(colorBy));
+	/** pointer to the table's ColorRenderer so that the color method therein can be changed */
+	private ColorRenderer renderer;
+	
+	/**
+	 * Returns the ColorRenderer so that it can be adjusted for the user's changes in ColorMethod
+	 * @return the renderer
+	 */
+	public ColorRenderer getRenderer() {
+		return renderer;
+	}
+
+	/**
+	 * Constructor for AnimeTable. Creates a JTable using the JTable(TableModel) constructor with this class's custom TableModel
+	 * and setting the default renderer to a ColorRenderer
+	 */
+	public AnimeTable() {
+		super(NO_EDIT_MODEL);
+		renderer = new ColorRenderer();
+		super.setDefaultRenderer(Object.class, renderer);
 	}
 
 	
-	private class ColorRenderer extends DefaultTableCellRenderer {
+	//TODO: test loading with a colorful color method
 
-		private ColorMethod colorBy;
+	/**
+	 * Defines the rendering class used in AnimeTables.
+	 * Contains functionality to color rows as necessary depending on user's color method selection
+	 * and the represented Anime's values.
+	 * 
+	 * Created with help from 
+	 * <a href = "https://stackoverflow.com/questions/24848314/change-background-color-of-jtable-row-based-on-column-value">
+	 * https://stackoverflow.com/questions/24848314/change-background-color-of-jtable-row-based-on-column-value</a>
+	 */
+	public class ColorRenderer extends DefaultTableCellRenderer {
+
+		/** ColorMethod used for coloring the table, set to NO_COLOR until something is specified otherwise */
+		private ColorMethod colorBy = ColorMethod.NO_COLOR;
 		
 		/**
-		 * Creates the renderer and sets the coloring criteria
-		 * @param colorBy criteria for coloring rows
+		 * Sets the color rendering method.
+		 * @param colorBy ColorMethod to render with
 		 */
-		public ColorRenderer(ColorMethod colorBy) {
-			super();
+		public void setRenderer(ColorMethod colorBy) {
 			this.colorBy = colorBy;
 		}
 		
+		/**
+		 * Overrides DefaultTableCellRenderer's getTableCellRendererComponent so that all cells, regardless of data type
+		 * will be colored appropriately if their row is deemed to be colored by the user specifications
+		 */
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean hasFocus, int row, int col) {
-			
+
 			super.getTableCellRendererComponent(table, value, selected, hasFocus, row, col);
-			
+
 			//Get Anime object represented by row
 			Anime a = Manager.getInstance().getAnimeList().get(row);
-			
+
 			//See if row meets status one
 			if (meetsStatusOne(a)) {
 				setBackground(Manager.getInstance().getPreferences().getColor1());
-			}
-			
+			} 
 			//See if row meets status two
-			if (meetsStatusTwo(a)) {
+			else if (meetsStatusTwo(a)) {
 				setBackground(Manager.getInstance().getPreferences().getColor2());
+			} else {
+				setBackground(Color.WHITE);
+				setForeground(Color.BLACK);
 			}
-			
-			//TODO: maybe code for resetting to default bg color?
-			
+
 			return this;
 		}
 

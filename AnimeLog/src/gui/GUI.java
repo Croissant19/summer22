@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import manager.Manager;
+import util.AnimeTable;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -37,12 +38,6 @@ import java.awt.Dimension;
 
 public class GUI extends JFrame {
 
-	//TODO: remove?
-	/** Data headers for the data table */
-	private static final String[] COLUMN_NAMES= {"Year",
-            "Title",
-            "Count"};
-
 	/** Warning in case user tries to start browsing without any anime added */
 	private static final String BROWSE_WARNING = "To start browsing, you need to add at least one anime in your list.";
 
@@ -54,9 +49,9 @@ public class GUI extends JFrame {
 	
 	
 	private JPanel contentPane;
-	private JTable table;
+	private JScrollPane scrollPane;
+	private AnimeTable table;
 	private JPanel cardPanel;
-
 
 	private JComboBox<String> fileOptions;
 
@@ -70,8 +65,6 @@ public class GUI extends JFrame {
 	private BrowseView browseView = new BrowseView(this);
 	private NewAnimeView newAnimeView = new NewAnimeView(this);
 	private OptionsView optionsView = new OptionsView(this);
-
-	private JScrollPane scrollPane;
 	
 	/** Used to prevent table row selection events from firing when table is being rebuilt and such */
 	private boolean engageTableListener = true;
@@ -199,13 +192,7 @@ public class GUI extends JFrame {
 		
 		
 		//Declare table model and override isCellEditable so that no cells are editable
-		table = new JTable(new DefaultTableModel(null, COLUMN_NAMES) {
-			@Override
-		    public boolean isCellEditable(int row, int column) {
-		       //all cells false
-		       return false;
-		    }
-		});
+		table = new AnimeTable();
 				
 		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
@@ -496,8 +483,11 @@ public class GUI extends JFrame {
 	 */
 	private void updateTable() {
 		engageTableListener = false;
+		table.getRenderer().setRenderer(Manager.getInstance().getPreferences().getColorMethod());
+
 		int numRows = Manager.getInstance().getAnimeList().size();
-		
+
+
 		//Get sorted table
 		Object[][] rowVals;
 		rowVals = Manager.getInstance().getAllAnimeAsArray();
