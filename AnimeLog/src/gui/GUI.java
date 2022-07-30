@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import manager.Manager;
 
@@ -29,12 +30,14 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.io.File;
 import java.awt.CardLayout;
+import java.awt.Component;
 
 import javax.swing.UIManager;
 import java.awt.Dimension;
 
 public class GUI extends JFrame {
 
+	//TODO: remove?
 	/** Data headers for the data table */
 	private static final String[] COLUMN_NAMES= {"Year",
             "Title",
@@ -197,7 +200,7 @@ public class GUI extends JFrame {
 		
 		//Declare table model and override isCellEditable so that no cells are editable
 		table = new JTable(new DefaultTableModel(null, COLUMN_NAMES) {
-		    @Override
+			@Override
 		    public boolean isCellEditable(int row, int column) {
 		       //all cells false
 		       return false;

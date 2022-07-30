@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -192,9 +193,11 @@ public class OptionsView extends JPanel {
 		
 		//Color choosers
 		
-		
+		//TODO:
 		btnColor1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				JColorChooser chooser = new JColorChooser();
+				//chooser.createDialog(chooser, TOOL_TIP_TEXT_KEY, getFocusTraversalKeysEnabled(), chooser, null, null);
 			}
 		});
 
