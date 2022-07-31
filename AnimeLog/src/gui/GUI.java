@@ -8,7 +8,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import manager.Manager;
 
@@ -30,7 +29,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.io.File;
 import java.awt.CardLayout;
-import java.awt.Component;
 
 import javax.swing.UIManager;
 import java.awt.Dimension;
@@ -420,9 +418,8 @@ public class GUI extends JFrame {
 	private void setCard(String view) {
     	CardLayout cl = (CardLayout) cardPanel.getLayout();
     	cl.show(cardPanel, view);
-    	// In case the user is leaving the NewAnimeView after adding an anime, reset the top text instructions.
-    	//TODO: reset text fields here too
-    	newAnimeView.resetInstructions();
+    	// In case the user is leaving the NewAnimeView, reset the top text instructions and fields.
+    	newAnimeView.resetCard();
     	//In case the user is leaving the OptionsView, reset selected to current preferences
     	optionsView.displayCurrentSelection();
 	}

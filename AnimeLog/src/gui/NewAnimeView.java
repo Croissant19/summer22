@@ -340,10 +340,23 @@ public class NewAnimeView extends JPanel {
 	}
 
 	/**
-	 * Resets the instruction text at the top of the panel to the default.
-	 * Called with every card change but ineffective unless text was changed by successfully adding a new Anime
+	 * Clears the card by resetting instruction text at the top of the panel to the default and clearing all fields..
+	 * Called with every card change.
 	 */
-	public void resetInstructions() {
+	public void resetCard() {
 		lblTopInfo.setText(DEFAULT_TEXT);
+		
+		txtFldTitle.setText("");
+		txtFldYear.setText("");
+		txtFldCount.setText("");
+		txtFldDirector.setText("");
+		rdBtnSub.setSelected(false);
+		rdBtnDub.setSelected(false);
+		rdBtnOther.setSelected(false);
+		rdBtnSeries.setSelected(false);
+		rdBtnSpecial.setSelected(false);
+		chckBxFinished.setSelected(false);
+		chckBxDropped.setSelected(false);
+		
 	}
 }

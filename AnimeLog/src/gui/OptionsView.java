@@ -243,6 +243,7 @@ public class OptionsView extends JPanel {
     	return c;
 	}
 	
+	//TODO: fix button focus is ugly currently
 	//TODO: maybe change table header bg to light gray
 	//TODO: apply color changes more quickly
 	/**
