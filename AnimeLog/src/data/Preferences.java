@@ -7,7 +7,6 @@ import java.awt.Color;
  * @author Hunter Pruitt
  */
 public class Preferences {
-	//TODO: TEST Defaults
 	/** Default color for table data that meets selected conditions, a mint green shade*/
 	public static final Color DEFAULT_COLOR_1 = new Color(-3342388);
 	

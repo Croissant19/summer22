@@ -160,7 +160,6 @@ public class Anime {
 	 * @throws IllegalArgumentException if passed an anime identical to this
 	 */
 	public boolean sortsBeforeTitleFocus(Anime otherAnime) {
-		//TODO: Test
 		//If anime are equal, throw an exception
 		//Cannot have duplicate anime in the program
 		if (this.equals(otherAnime)) {

@@ -108,7 +108,6 @@ public class Manager {
 	 * @throws IllegalArgumentException if a is a copy of any other element
 	 */
 	public void addAnime(Anime a) {
-		//TODO: If dupe "This entry already exists. Anime are considered the same if they share the same title and year"
 		userData.addAnime(a);
 	}
 	
@@ -180,7 +179,6 @@ public class Manager {
 	 * @throws IllegalArgumentException if passed a bad pointer
 	 */
 	public void setColor(String pointer, Color c) {
-		//TODO:
 		if (pointer.equals("Color1")) {
 			getPreferences().setColor1(c.getRGB());
 		} else if (pointer.equals("Color2")) {

@@ -97,7 +97,7 @@ public class GUI extends JFrame {
 		initComponents();
 		createEvents();
 		//TODO: remove test procedures
-		testStartUp();
+//		testStartUp();
 	}
 	
 	/**
@@ -487,7 +487,6 @@ public class GUI extends JFrame {
 		//Get sorted table
 		Object[][] rowVals;
 		rowVals = Manager.getInstance().getAllAnimeAsArray();
-		//TODO: maybe increase code speed by removing all of these get instance methods, maybe have an manager field
 
 		DefaultTableModel tm = (DefaultTableModel) table.getModel();
 		tm.setRowCount(0);
@@ -498,9 +497,7 @@ public class GUI extends JFrame {
 			tm.addRow(row);
 		}
 
-		
-		//TODO: implement color stuff
-		
+				
 		//TODO: credits? could be cool...		
 		
 		
