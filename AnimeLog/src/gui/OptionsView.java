@@ -46,8 +46,8 @@ public class OptionsView extends JPanel {
 	private JRadioButton rdBtnColorFinDrop;
 	private JRadioButton rdBtnColorSeriesSpecial;
 	private JRadioButton rdBtnColorLanguage;
-	private JButton btnColor2;
 	private JButton btnColor1;
+	private JButton btnColor2;
 	
 	
 	/**
@@ -106,10 +106,12 @@ public class OptionsView extends JPanel {
 		
 		btnColor1 = new JButton("Color 1");
 		btnColor1.setBounds(287, 132, 74, 23);
+		btnColor1.setRequestFocusEnabled(false);
 		pnlFields.add(btnColor1);
 		
 		btnColor2 = new JButton("Color 2");
 		btnColor2.setBounds(287, 166, 74, 23);
+		btnColor2.setRequestFocusEnabled(false);
 		pnlFields.add(btnColor2);
 		
 		
@@ -215,12 +217,16 @@ public class OptionsView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				Color oldColor = Manager.getInstance().getPreferences().getColor1();
 				btnColor1.setBackground(getColorDialog(oldColor));
+				Manager.getInstance().setColor("Color1", btnColor1.getBackground());
+				mainGUI.updateData();
 			}
 		});
 		btnColor2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Color oldColor = Manager.getInstance().getPreferences().getColor2();
 				btnColor2.setBackground(getColorDialog(oldColor));
+				Manager.getInstance().setColor("Color2", btnColor2.getBackground());
+				mainGUI.updateData();
 			}
 		});
 
@@ -239,11 +245,9 @@ public class OptionsView extends JPanel {
     	if (answer == JOptionPane.YES_OPTION) {
         	c = colorChooser.getColor();
     	}
-    	System.out.println(c.getRGB());
     	return c;
 	}
 	
-	//TODO: fix button focus is ugly currently
 	//TODO: maybe change table header bg to light gray
 	//TODO: apply color changes more quickly
 	/**
@@ -279,8 +283,6 @@ public class OptionsView extends JPanel {
 		//Report selection to Manager
 		Manager.getInstance().setSortMethod(sortBy);
 		Manager.getInstance().setColorMethod(colorBy);
-		Manager.getInstance().setColor("Color1", btnColor1.getBackground());
-		Manager.getInstance().setColor("Color2", btnColor2.getBackground());
 
 		mainGUI.updateData();
 	}
