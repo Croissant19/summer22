@@ -9,10 +9,12 @@ import javax.swing.JOptionPane;
 import manager.Manager;
 
 import javax.swing.JRadioButton;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
 
 import data.Preferences.ColorMethod;
 import data.Preferences.SortFocus;
 
+import java.awt.Color;
 import java.awt.Font;
 
 import java.awt.event.ActionEvent;
@@ -27,6 +29,15 @@ public class OptionsView extends JPanel {
 	/** Notice on the preferences informing the user that they can be saved */
 	private static final String NOTICE = "<html>Preferences may be set here and will be saved automatically along with other data in the program.</html>";
 	
+	/** Title for JOptionPane that appears when user wants to select a color */
+	private static final String COLOR_DIALOG_TITLE = "Select A Color";
+	
+	/** Color Chooser Panel model with a grid of colors */
+	private AbstractColorChooserPanel swatch;
+
+	/** JColorChooser pointer */
+	private JColorChooser colorChooser;
+	
 	private GUI mainGUI;
 	private JButton btnApply;
 	private JRadioButton rdBtnAlphabet;
@@ -38,7 +49,6 @@ public class OptionsView extends JPanel {
 	private JButton btnColor2;
 	private JButton btnColor1;
 	
-	//TODO: in anime io have setting data as an optional preceding delimiter
 	
 	/**
 	 * Create the panel.
@@ -94,7 +104,6 @@ public class OptionsView extends JPanel {
 		rdBtnColorLanguage.setBounds(49, 212, 197, 23);
 		pnlFields.add(rdBtnColorLanguage);
 		
-		//TODO: explore JColorChooser
 		btnColor1 = new JButton("Color 1");
 		btnColor1.setBounds(287, 132, 74, 23);
 		pnlFields.add(btnColor1);
@@ -107,6 +116,16 @@ public class OptionsView extends JPanel {
 		btnApply = new JButton("Apply");
 		btnApply.setBounds(167, 341, 89, 23);
 		add(btnApply);
+
+		//Set swatch, the AbstractColorChooserPanel which will be used for selecting colors
+		//Cant's set it as a final var as it doesn't seem to be defined anywhere I can access, so this could definitely be improved
+		colorChooser = new JColorChooser();
+		AbstractColorChooserPanel[] panels = colorChooser.getChooserPanels();
+		for (AbstractColorChooserPanel accp : panels) {
+            if (accp.getDisplayName().equals("Swatches")) {
+            	swatch = accp;
+            }
+        }
 
 		
 		createEvents();
@@ -192,24 +211,40 @@ public class OptionsView extends JPanel {
 
 		
 		//Color choosers
-		
-		//TODO:
 		btnColor1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JColorChooser chooser = new JColorChooser();
-				//chooser.createDialog(chooser, TOOL_TIP_TEXT_KEY, getFocusTraversalKeysEnabled(), chooser, null, null);
+				Color oldColor = Manager.getInstance().getPreferences().getColor1();
+				btnColor1.setBackground(getColorDialog(oldColor));
 			}
 		});
-
 		btnColor2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Color oldColor = Manager.getInstance().getPreferences().getColor2();
+				btnColor2.setBackground(getColorDialog(oldColor));
 			}
 		});
 
 
 	}
 	
+	/**
+	 * Shows a dialog to get a color from the user for display in the gui
+	 * @param oldColor previous user color selection, in case of close or cancel
+	 * @return Color selected by the user in the JColorChooser, the oldColor if nothing passed
+	 */
+	private Color getColorDialog(Color oldColor) {
+		Color c = oldColor;
+		int answer = JOptionPane.showConfirmDialog(getRootPane(), swatch, COLOR_DIALOG_TITLE, JOptionPane.OK_CANCEL_OPTION);
 
+    	if (answer == JOptionPane.YES_OPTION) {
+        	c = colorChooser.getColor();
+    	}
+    	System.out.println(c.getRGB());
+    	return c;
+	}
+	
+	//TODO: maybe change table header bg to light gray
+	//TODO: apply color changes more quickly
 	/**
 	 * Applies user selection to data stored in the Manager.
 	 * @throws IllegalArgumentException is no sorting button or color button is selected
@@ -239,11 +274,12 @@ public class OptionsView extends JPanel {
 		} else {
 			throw new IllegalArgumentException("You must select a color method preference.");
 		}
-		
-		//TODO: fix bug where changing from browse view to options and apply button causes to switch to browse view
+
 		//Report selection to Manager
 		Manager.getInstance().setSortMethod(sortBy);
 		Manager.getInstance().setColorMethod(colorBy);
+		Manager.getInstance().setColor("Color1", btnColor1.getBackground());
+		Manager.getInstance().setColor("Color2", btnColor2.getBackground());
 
 		mainGUI.updateData();
 	}

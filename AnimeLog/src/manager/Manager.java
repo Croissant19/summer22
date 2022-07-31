@@ -172,10 +172,22 @@ public class Manager {
 	public void setColorMethod(ColorMethod colorBy) {
 		userData.getPreferences().setColorMethod(colorBy);
 	}
-	
-	public void setColor(Color c, Color pointer) {
-		//TODO:
 
+	/**
+	 * Sets the designated color to the color passed as a parameter
+	 * @param pointer String name indicating which user color is to be changed
+	 * @param c Color to set the user color to
+	 * @throws IllegalArgumentException if passed a bad pointer
+	 */
+	public void setColor(String pointer, Color c) {
+		//TODO:
+		if (pointer.equals("Color1")) {
+			getPreferences().setColor1(c.getRGB());
+		} else if (pointer.equals("Color2")) {
+			getPreferences().setColor2(c.getRGB());
+		} else {
+			throw new IllegalArgumentException("Pointer does not exist.");
+		}
 	}
 	
 	////////////////////////

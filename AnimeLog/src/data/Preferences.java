@@ -7,12 +7,12 @@ import java.awt.Color;
  * @author Hunter Pruitt
  */
 public class Preferences {
-
-	/** Default color for table data that meets selected conditions */
-	public static final Color DEFAULT_COLOR_1 = Color.GREEN;
+	//TODO: TEST Defaults
+	/** Default color for table data that meets selected conditions, a mint green shade*/
+	public static final Color DEFAULT_COLOR_1 = new Color(-3342388);
 	
-	/** Default color for table data that meets selected conditions */
-	public static final Color DEFAULT_COLOR_2 = Color.CYAN;
+	/** Default color for table data that meets selected conditions, a light metallic blue */
+	public static final Color DEFAULT_COLOR_2 = new Color(-3355393);
 	
 	/** Method to sort user data in a GUI JTable */
 	private SortFocus sortBy;
