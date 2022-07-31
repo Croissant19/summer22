@@ -22,7 +22,6 @@ import manager.Manager;
  * @author Hunter Pruitt
  */
 public class JAnimeTable extends JTable {
-//TODO: update to JAnimeTable? and move to GUI?
 	/** Data headers for the data table */
 	private static final String[] COLUMN_NAMES= {"Year",
             "Title",
@@ -64,8 +63,6 @@ public class JAnimeTable extends JTable {
 		return renderer;
 	}
 	
-	
-	//TODO: test loading with a colorful color method
 
 	/**
 	 * Defines the rendering class used in JAnimeTables.

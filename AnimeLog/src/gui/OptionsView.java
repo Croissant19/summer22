@@ -257,9 +257,6 @@ public class OptionsView extends JPanel {
     	return c;
 	}
 	
-	//TODO: maybe change table header bg to light gray
-
-	
 	/**
 	 * Applies ColorMethod selection to data stored in the Manager.
 	 * @throws IllegalArgumentException is no color button is selected

@@ -97,7 +97,7 @@ public class GUI extends JFrame {
 		initComponents();
 		createEvents();
 		//TODO: remove test procedures
-//		testStartUp();
+		testStartUp();
 	}
 	
 	/**

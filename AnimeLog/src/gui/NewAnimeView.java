@@ -30,6 +30,7 @@ public class NewAnimeView extends JPanel {
 	/** Text that appears in the box if an anime has already been added since opening this view */
 	private String secondaryText;
 	
+	/** Pointer to the main GUI component */
 	private GUI mainGUI;
 	
 	private JTextField txtFldTitle;

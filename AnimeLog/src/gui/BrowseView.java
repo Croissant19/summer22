@@ -5,7 +5,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 
 import data.Anime;
 import data.Anime.Language;
@@ -17,25 +16,11 @@ import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 
 import java.awt.Font;
-import java.awt.Image;
 
-import javax.imageio.ImageIO;
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Defines the GUI components for viewing anime
@@ -520,7 +505,6 @@ public class BrowseView extends JPanel {
 	 */
 	public boolean canLeave() {
 		boolean leave = true;
-		//TODO: add can leave scenario for close?
 
 		if (inEditMode && changeOccurred()) {
 			//Show a warning if there is danger of unsaved changes
