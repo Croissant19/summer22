@@ -17,8 +17,8 @@ import util.SortedAnimeList;
 
 /**
  * Input Output class for user Data. 
- * Works with Anime.toString() and Preferences.toString() to write data into .txt files.
- * Employed by the Manager class to load data from .txt files.
+ * Works with Anime.toString() and Preferences.toString() to write data into .txt style files.
+ * Employed by the Manager class to load data from plaintext files.
  * 
  * @author Hunter Pruitt
  */

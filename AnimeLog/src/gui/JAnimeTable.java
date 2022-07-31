@@ -62,7 +62,6 @@ public class JAnimeTable extends JTable {
 	public ColorRenderer getRenderer() {
 		return renderer;
 	}
-	
 
 	/**
 	 * Defines the rendering class used in JAnimeTables.

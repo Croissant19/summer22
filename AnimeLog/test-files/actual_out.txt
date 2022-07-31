@@ -1,4 +1,4 @@
-{PREFERENCES}Alphabetical,_NoColor,_-16711936,_-16711681
+{PREFERENCES}Alphabetical,_NoColor,_-3342388,_-3355393
 <|>Gurren Lagann,_2007,_26,_Sub,_Series,_true,_false,_Hiroyuki Imaishi,_Very good op!
 <|>Naruto,_2002,_0,_Other,_Special,_false,_true,_,_W
 O

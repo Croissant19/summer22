@@ -240,8 +240,8 @@ public class GUI extends JFrame {
 							return;
 						}
 						try {
-							File file = new File(getFilename(false) + ".txt");
-							
+							File file = new File(getFilename(false));
+
 							//If file exists ask if ok to overwrite?
 							if (file.exists()) {
 								int ans = JOptionPane.showConfirmDialog(rootPane, file.getName() + " already exists. Is it okay to overwrite it?");
