@@ -39,7 +39,6 @@ public class OptionsView extends JPanel {
 	private JColorChooser colorChooser;
 	
 	private GUI mainGUI;
-	private JButton btnApply;
 	private JRadioButton rdBtnAlphabet;
 	private JRadioButton rdBtnNumeric;
 	private JRadioButton rdBtnNoColor;
@@ -113,11 +112,7 @@ public class OptionsView extends JPanel {
 		btnColor2.setBounds(287, 166, 74, 23);
 		btnColor2.setRequestFocusEnabled(false);
 		pnlFields.add(btnColor2);
-		
-		
-		btnApply = new JButton("Apply");
-		btnApply.setBounds(167, 341, 89, 23);
-		add(btnApply);
+
 
 		//Set swatch, the AbstractColorChooserPanel which will be used for selecting colors
 		//Cant's set it as a final var as it doesn't seem to be defined anywhere I can access, so this could definitely be improved
@@ -138,34 +133,31 @@ public class OptionsView extends JPanel {
 	 * Creates events for components inside the card panel, so that fields can be edited/saved and interactables behave correctly
 	 */
 	private void createEvents() {		
-		//Events pertaining to large buttons, edit/save, next, previous
-		btnApply.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					applyChanges();					
-				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(getRootPane(), e1.getMessage());
-				}
-
-			}
-		});
-
 		//Events for ensuring only one radio button of each type can be selected at once
 		//Sort method
 		rdBtnAlphabet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Toggle other JRadioButton
 				if (rdBtnAlphabet.isSelected()) {
 					rdBtnNumeric.setSelected(false);
 				}
 			
+				//Update data
+				applySelectedSortMethod();
+				mainGUI.updateData();
 			}
 		});
 		rdBtnNumeric.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Toggle other JRadioButton
 				if (rdBtnNumeric.isSelected()) {
 					rdBtnAlphabet.setSelected(false);
 				}
 			
+				//Update data
+				applySelectedSortMethod();
+				mainGUI.updateData();
+				
 			}
 		});
 
@@ -173,41 +165,58 @@ public class OptionsView extends JPanel {
 		//Color options
 		rdBtnNoColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Toggle other JRadioButtons
 				if (rdBtnNoColor.isSelected()) {
 					rdBtnColorFinDrop.setSelected(false);
 					rdBtnColorSeriesSpecial.setSelected(false);
 					rdBtnColorLanguage.setSelected(false);
-				}			
+				}
+				
+				//Update data
+				applySelectedColorMethod();
+				mainGUI.updateData();
 			}
 		});
 		rdBtnColorFinDrop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Toggle other JRadioButtons
 				if (rdBtnColorFinDrop.isSelected()) {
 					rdBtnNoColor.setSelected(false);
 					rdBtnColorSeriesSpecial.setSelected(false);
 					rdBtnColorLanguage.setSelected(false);
 				}
 			
+				//Update data
+				applySelectedColorMethod();
+				mainGUI.updateData();
 			}
 		});
 		rdBtnColorSeriesSpecial.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Toggle other JRadioButtons
 				if (rdBtnColorSeriesSpecial.isSelected()) {
 					rdBtnNoColor.setSelected(false);
 					rdBtnColorFinDrop.setSelected(false);
 					rdBtnColorLanguage.setSelected(false);
 				}
 
+				//Update data
+				applySelectedColorMethod();
+				mainGUI.updateData();
 			}
 		});
 		rdBtnColorLanguage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Toggle other JRadioButtons
 				if (rdBtnColorLanguage.isSelected()) {
 					rdBtnNoColor.setSelected(false);
 					rdBtnColorFinDrop.setSelected(false);
 					rdBtnColorSeriesSpecial.setSelected(false);
 				}
 			
+				//Update data
+				applySelectedColorMethod();
+				mainGUI.updateData();
 			}
 		});
 
@@ -249,23 +258,14 @@ public class OptionsView extends JPanel {
 	}
 	
 	//TODO: maybe change table header bg to light gray
-	//TODO: apply color changes more quickly
+
+	
 	/**
-	 * Applies user selection to data stored in the Manager.
-	 * @throws IllegalArgumentException is no sorting button or color button is selected
+	 * Applies ColorMethod selection to data stored in the Manager.
+	 * @throws IllegalArgumentException is no color button is selected
 	 */
-	private void applyChanges() {
-		SortFocus sortBy;
+	private void applySelectedColorMethod() {
 		ColorMethod colorBy;
-		
-		//Get sortBy
-		if (rdBtnAlphabet.isSelected()) {
-			sortBy = SortFocus.ALPHABETICAL;
-		} else if (rdBtnNumeric.isSelected()) {
-			sortBy = SortFocus.NUMERICAL;
-		} else {
-			throw new IllegalArgumentException("You must select a sorting preference.");
-		}
 		
 		//Get color preference
 		if (this.rdBtnNoColor.isSelected()) {
@@ -279,12 +279,29 @@ public class OptionsView extends JPanel {
 		} else {
 			throw new IllegalArgumentException("You must select a color method preference.");
 		}
+		
+		//Report selection to Manager
+		Manager.getInstance().setColorMethod(colorBy);		
+	}
+	
+	/**
+	 * Applies SortFocus selection to data stored in the Manager.
+	 * @throws IllegalArgumentException is no sorting button is selected
+	 */
+	private void applySelectedSortMethod() {
+		SortFocus sortBy;
+		
+		//Get sortBy
+		if (rdBtnAlphabet.isSelected()) {
+			sortBy = SortFocus.ALPHABETICAL;
+		} else if (rdBtnNumeric.isSelected()) {
+			sortBy = SortFocus.NUMERICAL;
+		} else {
+			throw new IllegalArgumentException("You must select a sorting preference.");
+		}
 
 		//Report selection to Manager
 		Manager.getInstance().setSortMethod(sortBy);
-		Manager.getInstance().setColorMethod(colorBy);
-
-		mainGUI.updateData();
 	}
 
 	/**
