@@ -336,7 +336,7 @@ public class NewAnimeView extends JPanel {
 		}
 
 		//By here, was successful so can adjust top text to indicate so.
-		secondaryText = title + " was created successfully. Feel free to add another!";
+		secondaryText = "<html><em>" + title + "</em><br>was created successfully. Feel free to add another!</html>";
 		lblTopInfo.setText(secondaryText);
 	}
 

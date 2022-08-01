@@ -44,6 +44,8 @@ public class GUI extends JFrame {
 	/** Warning asking if user is sure they want to remove the anime, when used, the title of the anime is placed following */
 	private static final String REMOVE_WARNING = "Are you sure you want to remove ";
 	
+	//TODO: javadoc
+
 	
 	private JPanel contentPane;
 	private JScrollPane scrollPane;
@@ -399,12 +401,10 @@ public class GUI extends JFrame {
 	        	}
 	        }
 	    });
-		
-		
-		
+
 	}
 
-	
+
 	/**
 	 * Sets the view of the card panel to a requested page
 	 * @param view identifying text unique to the desired view
@@ -442,7 +442,7 @@ public class GUI extends JFrame {
 	 * @throws IllegalStateException if user does not select a file
 	 */
 	private String getFilename(boolean load) {
-		//TODO: note: "./" sets to current working directory, is necessary? works good blank too...
+		//Note: "./" sets to current working directory, and blank parameters set it to Documents folder
 		JFileChooser fc = new JFileChooser("./");
 		int returnVal;
 		//Show user prompts
