@@ -334,7 +334,7 @@ public class NewAnimeView extends JPanel {
 			}
 			
 			if (!txtFldStudio.getText().isBlank()) {
-				director = txtFldStudio.getText();	
+				studio = txtFldStudio.getText();	
 			}
 			
 			//Create the anime

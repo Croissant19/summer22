@@ -45,6 +45,7 @@ public class GUI extends JFrame {
 	private static final String REMOVE_WARNING = "Are you sure you want to remove ";
 	
 	//TODO: javadoc
+	//TODO: fix bug where studio isnt visible in browse mode (see flcl prog)
 	
 	private JPanel contentPane;
 	private JScrollPane scrollPane;
