@@ -140,14 +140,14 @@ class ManagerTest {
 	void testEditAnimeList() {
 		//Test exceptions for adding
 		assertThrows(NullPointerException.class, ()-> Manager.getInstance().addAnime(null));
-		Anime duplicate = new Anime("Gurren Lagann", 2007, 0, Language.DUB, Type.SPECIAL, false, false, "", "");
+		Anime duplicate = new Anime("Gurren Lagann", 2007, 0, Language.DUB, Type.SPECIAL, false, false, "", "Gainax", "");
 		assertThrows(IllegalArgumentException.class, ()-> Manager.getInstance().addAnime(duplicate));
 		
 		//Test exception for removing
 		assertThrows(IndexOutOfBoundsException.class, ()-> Manager.getInstance().removeAnime(10));
 		
 		//Test add
-		Anime testAnime = new Anime("a", 1999, 0, Language.DUB, Type.SERIES, false, false, null, null);
+		Anime testAnime = new Anime("a", 1999, 0, Language.DUB, Type.SERIES, false, false, null, null, null);
 		Manager.getInstance().addAnime(testAnime);
 		assertEquals(4, list.size());
 		assertEquals(testAnime, list.get(0));
@@ -155,7 +155,7 @@ class ManagerTest {
 		//Test remove
 		Manager.getInstance().removeAnime(0);
 		assertEquals(3, list.size());
-		assertEquals(new Anime("Gurren Lagann", 2007, 26, Language.SUB, Type.SPECIAL, true, false, "Hiroyuki Imaishi", "Very good op!"), 
+		assertEquals(new Anime("Gurren Lagann", 2007, 26, Language.SUB, Type.SPECIAL, true, false, "Hiroyuki Imaishi", "Gainax", "Very good op!"), 
 				list.get(0));
 	}
 

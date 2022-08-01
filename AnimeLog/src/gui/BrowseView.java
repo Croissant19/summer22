@@ -34,6 +34,7 @@ public class BrowseView extends JPanel {
 	private JTextField txtFldYear;
 	private JTextField txtFldCount;
 	private JTextField txtFldDirector;
+	private JTextField txtFldStudio;
 	private JTextArea txtAreaNotes;
 	private JRadioButton rdBtnSub;
 	private JRadioButton rdBtnDub;
@@ -49,6 +50,7 @@ public class BrowseView extends JPanel {
 	private boolean inEditMode = false;
 	
 	private Anime currentAnime;
+	private JLabel lblStudio;
 	
 	/**
 	 * Create the panel.
@@ -73,51 +75,51 @@ public class BrowseView extends JPanel {
 		add(btnPrevious);
 		
 		JPanel pnlFields = new JPanel();
-		pnlFields.setBounds(10, 11, 405, 319);
+		pnlFields.setBounds(10, 11, 405, 326);
 		add(pnlFields);
 		pnlFields.setLayout(null);
 		
 		JLabel lblTitle = new JLabel("Title:");
 		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		lblTitle.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTitle.setBounds(10, 10, 99, 14);
+		lblTitle.setBounds(10, 8, 99, 14);
 		pnlFields.add(lblTitle);
 		
 		JLabel lblYear = new JLabel("Year:");
 		lblYear.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		lblYear.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblYear.setBounds(10, 34, 99, 14);
+		lblYear.setBounds(10, 33, 99, 14);
 		pnlFields.add(lblYear);
 		
 		JLabel lblCount = new JLabel("Number Watched:");
 		lblCount.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblCount.setBounds(10, 58, 99, 14);
+		lblCount.setBounds(10, 57, 99, 14);
 		pnlFields.add(lblCount);
 		
 		JLabel lblLanguage = new JLabel("Language:");
 		lblLanguage.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblLanguage.setBounds(10, 82, 99, 14);
+		lblLanguage.setBounds(10, 84, 99, 14);
 		pnlFields.add(lblLanguage);
 		
 		JLabel lblType = new JLabel("Content Type:");
 		lblType.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		lblType.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblType.setBounds(10, 106, 99, 14);
+		lblType.setBounds(10, 112, 99, 14);
 		pnlFields.add(lblType);
 		
 		JLabel lblStatus = new JLabel("Status:");
 		lblStatus.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblStatus.setBounds(10, 130, 99, 14);
+		lblStatus.setBounds(10, 140, 99, 14);
 		pnlFields.add(lblStatus);
 		
 		JLabel lblDirector = new JLabel("Director:");
 		lblDirector.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblDirector.setBounds(10, 154, 99, 14);
+		lblDirector.setBounds(10, 167, 99, 14);
 		pnlFields.add(lblDirector);
 		
 		txtFldTitle = new JTextField();
 		txtFldTitle.setEditable(false);
-		txtFldTitle.setBounds(119, 7, 224, 20);
+		txtFldTitle.setBounds(119, 5, 224, 20);
 		txtFldTitle.setColumns(10);
 		pnlFields.add(txtFldTitle);
 
@@ -125,7 +127,7 @@ public class BrowseView extends JPanel {
 		txtFldYear = new JTextField();
 		txtFldYear.setEditable(false);
 		txtFldYear.setColumns(10);
-		txtFldYear.setBounds(119, 31, 55, 20);
+		txtFldYear.setBounds(119, 30, 55, 20);
 		pnlFields.add(txtFldYear);
 		
 		txtFldCount = new JTextField();
@@ -137,54 +139,65 @@ public class BrowseView extends JPanel {
 		txtFldDirector = new JTextField();
 		txtFldDirector.setEditable(false);
 		txtFldDirector.setColumns(10);
-		txtFldDirector.setBounds(119, 151, 172, 20);
+		txtFldDirector.setBounds(119, 164, 172, 20);
 		pnlFields.add(txtFldDirector);
 		
 		rdBtnSub = new JRadioButton("Sub");
 		rdBtnSub.setEnabled(false);
-		rdBtnSub.setBounds(115, 78, 55, 23);
+		rdBtnSub.setBounds(115, 80, 55, 23);
 		pnlFields.add(rdBtnSub);
 		
 		rdBtnDub = new JRadioButton("Dub");
 		rdBtnDub.setEnabled(false);
-		rdBtnDub.setBounds(172, 78, 55, 23);
+		rdBtnDub.setBounds(172, 80, 55, 23);
 		pnlFields.add(rdBtnDub);
 		
 		rdBtnOther = new JRadioButton("Other/TBD");
 		rdBtnOther.setEnabled(false);
-		rdBtnOther.setBounds(229, 78, 77, 23);
+		rdBtnOther.setBounds(229, 80, 77, 23);
 		pnlFields.add(rdBtnOther);
 		
 		chckBxFinished = new JCheckBox("Finished");
 		chckBxFinished.setEnabled(false);
-		chckBxFinished.setBounds(115, 126, 70, 23);
+		chckBxFinished.setBounds(115, 136, 70, 23);
 		pnlFields.add(chckBxFinished);
 		
 		chckBxDropped = new JCheckBox("Dropped");
 		chckBxDropped.setEnabled(false);
-		chckBxDropped.setBounds(187, 126, 70, 23);
+		chckBxDropped.setBounds(187, 136, 70, 23);
 		pnlFields.add(chckBxDropped);
 		
 		rdBtnSeries = new JRadioButton("Series");
 		rdBtnSeries.setEnabled(false);
-		rdBtnSeries.setBounds(115, 102, 70, 23);
+		rdBtnSeries.setBounds(115, 108, 70, 23);
 		pnlFields.add(rdBtnSeries);
 		
 		rdBtnSpecial = new JRadioButton("Special");
 		rdBtnSpecial.setEnabled(false);
-		rdBtnSpecial.setBounds(189, 102, 70, 23);
+		rdBtnSpecial.setBounds(182, 108, 70, 23);
 		pnlFields.add(rdBtnSpecial);
 		
 		txtAreaNotes = new JTextArea();
 		txtAreaNotes.setEditable(false);
-		txtAreaNotes.setBounds(10, 205, 385, 103);
+		txtAreaNotes.setBounds(10, 219, 385, 96);
 		pnlFields.add(txtAreaNotes);
 		txtAreaNotes.setColumns(10);
 		
 		JLabel lblNotes = new JLabel("Notes:");
 		lblNotes.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblNotes.setBounds(10, 190, 70, 14);
+		lblNotes.setBounds(10, 200, 70, 14);
 		pnlFields.add(lblNotes);
+		
+		lblStudio = new JLabel("Studio:");
+		lblStudio.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblStudio.setBounds(10, 192, 99, 14);
+		pnlFields.add(lblStudio);
+		
+		txtFldStudio = new JTextField();
+		txtFldStudio.setEditable(false);
+		txtFldStudio.setColumns(10);
+		txtFldStudio.setBounds(119, 189, 172, 20);
+		pnlFields.add(txtFldStudio);
 
 		
 		createEvents();
@@ -328,6 +341,7 @@ public class BrowseView extends JPanel {
 					|| currentAnime.isFinished() != chckBxFinished.isSelected()
 					|| currentAnime.isDropped() != chckBxDropped.isSelected()
 					|| !currentAnime.getDirector().equals(txtFldDirector.getText())
+					|| !currentAnime.getStudio().equals(txtFldStudio.getText())
 					|| !currentAnime.getNotes().equals(txtAreaNotes.getText());
 			
 		} catch (IllegalArgumentException e) {
@@ -421,6 +435,7 @@ public class BrowseView extends JPanel {
 		txtFldYear.setEditable(!txtFldYear.isEditable());
 		txtFldCount.setEditable(!txtFldCount.isEditable());
 		txtFldDirector.setEditable(!txtFldDirector.isEditable());
+		txtFldStudio.setEditable(!txtFldStudio.isEditable());
 		txtAreaNotes.setEditable(!txtAreaNotes.isEditable());
 		rdBtnSub.setEnabled(!rdBtnSub.isEnabled());
 		rdBtnDub.setEnabled(!rdBtnDub.isEnabled());
@@ -461,6 +476,7 @@ public class BrowseView extends JPanel {
 		
 		
 		txtFldDirector.setText(currentAnime.getDirector());
+		txtFldStudio.setText(currentAnime.getStudio());
 		txtAreaNotes.setText(currentAnime.getNotes());
 
 		
@@ -483,6 +499,7 @@ public class BrowseView extends JPanel {
 		txtFldYear.setText("");
 		txtFldCount.setText("");
 		txtFldDirector.setText("");
+		txtFldStudio.setText("");
 		rdBtnSub.setSelected(false);
 		rdBtnDub.setSelected(false);
 		rdBtnOther.setSelected(false);
@@ -576,6 +593,7 @@ public class BrowseView extends JPanel {
 		boolean fin;
 		boolean drop;
 		String director = "";
+		String studio = "";
 		String notes = "";
 		
 		//Check fields are acceptable
@@ -627,13 +645,16 @@ public class BrowseView extends JPanel {
 			if (!txtFldDirector.getText().isBlank()) {
 				director = txtFldDirector.getText();	
 			}
+			if (!txtFldStudio.getText().isBlank()) {
+				studio = txtFldStudio.getText();	
+			}
 			if (!txtAreaNotes.getText().isBlank()) {
 				notes = txtAreaNotes.getText();	
 			}
 			
 			
 			//Create the anime
-			return new Anime(title, year, count, lan, type, fin, drop, director, notes);
+			return new Anime(title, year, count, lan, type, fin, drop, director, studio, notes);
 		} catch (Exception e) {
 
 			if (e instanceof NumberFormatException) {

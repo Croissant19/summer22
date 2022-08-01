@@ -134,9 +134,8 @@ public class DataIO {
 		//Use argument with -1 so empty notes strings are retained
 		String[] splits = data.split(",_", -1);
 
-		//TODO: throw joption pane if string contains ",_ or <|>"
 		//Throw an exception if there are the wrong number of components
-		if (splits.length != 9) {
+		if (splits.length != 10) {
 			throw new IllegalArgumentException("Incorrect amount of anime components found.");
 		}
 				
@@ -149,15 +148,13 @@ public class DataIO {
 		boolean finished = Boolean.parseBoolean(splits[5]);
 		boolean dropped = Boolean.parseBoolean(splits[6]);
 		String director = splits[7].trim();
-		String notes = splits[8].trim();
-//		if (notes == null) {
-//			notes = "";
-//		}
+		String studio = splits[8].trim();
+		String notes = splits[9].trim();
 
 		
 		//Construct Anime and return
 		Anime a = new Anime(title, year, count, lang, type, finished, 
-				dropped, director, notes);
+				dropped, director, studio, notes);
 		return a;
 	}
 	

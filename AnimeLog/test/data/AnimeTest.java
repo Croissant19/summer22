@@ -17,15 +17,15 @@ class AnimeTest {
 
 	/**	Test anime for comparisons, Gurren Lagann */
 	private static final Anime GURREN = new Anime("Gurren Lagann", 2007, 26, 
-			Language.SUB, Type.SERIES, true, false, "Hiroyuki Imaishi", "Very good op!");
+			Language.SUB, Type.SERIES, true, false, "Hiroyuki Imaishi", "Gainax", "Very good op!");
 
 	/**	Test anime for comparisons, Fullmetal Alchemist */
 	private static final Anime FMA03 = new Anime("Fullmetal Alchemist", 2003, 51, 
-			Language.SUB, Type.SERIES, false, true, "Seiji Mizushima", "");
+			Language.SUB, Type.SERIES, false, true, "Seiji Mizushima", "Bones", "");
 	
 	/**	Test anime for comparisons, Fullmetal Alchemist Brotherhood */
 	private static final Anime FMA09 = new Anime("Fullmetal Alchemist", 2009, 26, 
-			Language.OTHER, Type.SERIES, false, false, "Yasuhiro Irie", null);
+			Language.OTHER, Type.SERIES, false, false, "Yasuhiro Irie", "Bones", null);
 	
 	
 	/**
@@ -35,7 +35,7 @@ class AnimeTest {
 	@Test
 	void testAnimeSuccess() {
 		Anime a = new Anime("Gurren Lagann", 2007, 26, Language.SUB, Type.SERIES, true, false, 
-				"Hiroyuki Imaishi", "Very good op!");
+				"Hiroyuki Imaishi", "Gainax", "Very good op!");
 
 		//Test getters and setters
 		assertAll(
@@ -46,6 +46,7 @@ class AnimeTest {
 				() -> assertTrue(a.isFinished()),
 				() -> assertFalse(a.isDropped()),
 				() -> assertEquals("Hiroyuki Imaishi", a.getDirector()),
+				() -> assertEquals("Gainax", a.getStudio()),
 				() -> assertEquals("Very good op!", a.getNotes())
 				);
 	}
@@ -58,28 +59,41 @@ class AnimeTest {
 	void testAnimeExceptions() {
 		//Finished and dropped
 		Exception e1 = assertThrows(IllegalArgumentException.class, 
-				() -> new Anime("Bleach", 2004, 100, Language.DUB, Type.SERIES, true, true, "Multiple directors", ""));
+				() -> new Anime("Bleach", 2004, 100, Language.DUB, Type.SERIES, true, true, "Multiple directors", "", ""));
 		assertEquals("Show cannot be both dropped and finished", e1.getMessage());
 
 		//Blank title
 		Exception e2 = assertThrows(IllegalArgumentException.class, 
-				() -> new Anime("", 2004, 100, Language.DUB, Type.SERIES, true, false, "Multiple directors", ""));
+				() -> new Anime("", 2004, 100, Language.DUB, Type.SERIES, true, false, "Multiple directors", "", ""));
 		assertEquals("Title cannot be blank", e2.getMessage());
 		
 		//Year out of bounds
 		Exception e3 = assertThrows(IllegalArgumentException.class, 
-				() -> new Anime("Bleach", 2101, 100, Language.DUB, Type.SERIES, true, false, "Multiple directors", ""));
+				() -> new Anime("Bleach", 2101, 100, Language.DUB, Type.SERIES, true, false, "Multiple directors", "", ""));
 		assertEquals("Invalid year", e3.getMessage());
 	
 		Exception e4 = assertThrows(IllegalArgumentException.class, 
-				() -> new Anime("Bleach", 1899, 100, Language.DUB, Type.SERIES, true, false, "Multiple directors", ""));
+				() -> new Anime("Bleach", 1899, 100, Language.DUB, Type.SERIES, true, false, "Multiple directors","",  ""));
 		assertEquals("Invalid year", e4.getMessage());
 		
 		//Negative count
 		Exception e5 = assertThrows(IllegalArgumentException.class, 
-				() -> new Anime("Bleach", 2004, -1, Language.DUB, Type.SERIES, true, false, "Multiple directors", ""));
+				() -> new Anime("Bleach", 2004, -1, Language.DUB, Type.SERIES, true, false, "Multiple directors", "", ""));
 		assertEquals("Count must be non-negative", e5.getMessage());
 		
+		
+		//Illegal Strings
+		Exception e6 = assertThrows(IllegalArgumentException.class, 
+				() -> GURREN.setTitle("<|>"));
+		assertEquals("Text fields cannot contain the sequences \",_\" or \"<|>\"", e6.getMessage());
+		assertThrows(IllegalArgumentException.class, () -> GURREN.setDirector("<|>"));
+		assertThrows(IllegalArgumentException.class, () -> GURREN.setStudio("<|>"));
+		assertThrows(IllegalArgumentException.class, () -> GURREN.setNotes("<|>"));
+		
+		assertThrows(IllegalArgumentException.class, () -> GURREN.setTitle(",_"));
+		assertThrows(IllegalArgumentException.class, () -> GURREN.setDirector(",_"));
+		assertThrows(IllegalArgumentException.class, () -> GURREN.setStudio(",_"));
+		assertThrows(IllegalArgumentException.class, () -> GURREN.setNotes(",_"));
 	}
 	
 	/**
@@ -118,13 +132,13 @@ class AnimeTest {
 		list.add(GURREN);
 		
 		Anime a = new Anime("a", 2003, 51, 
-				Language.SUB, Type.SERIES, false, true, "Seiji Mizushima", "");
+				Language.SUB, Type.SERIES, false, true, "Seiji Mizushima", "", "");
 		
 		Anime num = new Anime("0", 2003, 51, 
-				Language.SUB, Type.SERIES, false, true, "Seiji Mizushima", "");
+				Language.SUB, Type.SERIES, false, true, "Seiji Mizushima", "", "");
 		
 		Anime symbol = new Anime("%", 2003, 51, 
-				Language.SUB, Type.SERIES, false, true, "Seiji Mizushima", "");
+				Language.SUB, Type.SERIES, false, true, "Seiji Mizushima", "", "");
 
 		
 		
@@ -152,15 +166,15 @@ class AnimeTest {
 	void testToStringAndEquals() {
 
 		Anime a = new Anime("Gurren Lagann", 2007, 26, Language.SUB, Type.SERIES, true, false, 
-				"Hiroyuki Imaishi", "Very good op!");
+				"Hiroyuki Imaishi", "Gainax", "Very good op!");
 		Anime b = new Anime("Your Name", 2017, 1, Language.SUB, Type.SPECIAL, true, false, 
-				"Makoto Shinkai","");
+				"Makoto Shinkai", "", "");
 		
 		//Test toString
-		assertEquals("Gurren Lagann,_2007,_26,_Sub,_Series,_true,_false,_Hiroyuki Imaishi,_Very good op!",
+		assertEquals("Gurren Lagann,_2007,_26,_Sub,_Series,_true,_false,_Hiroyuki Imaishi,_Gainax,_Very good op!",
 				a.toString());
 		
-		assertEquals("Your Name,_2017,_1,_Sub,_Special,_true,_false,_Makoto Shinkai,_",
+		assertEquals("Your Name,_2017,_1,_Sub,_Special,_true,_false,_Makoto Shinkai,_,_",
 				b.toString());
 	
 		//Test equals

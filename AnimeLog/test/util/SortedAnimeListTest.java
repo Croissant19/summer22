@@ -16,14 +16,14 @@ import data.Preferences.SortFocus;
  */
 class SortedAnimeListTest {
 
-	private static final Anime ANIME_A = new Anime("A", 2005, 0, Language.DUB, Type.SERIES, false, false, "", null);
-	private static final Anime ANIME_B = new Anime("B", 2004, 0, Language.DUB, Type.SERIES, false, false, "", null);
-	private static final Anime ANIME_M = new Anime("M", 2003, 0, Language.DUB, Type.SERIES, false, false, "", null);
-	private static final Anime ANIME_Y = new Anime("Y", 2002, 0, Language.DUB, Type.SERIES, false, false, "", null);
-	private static final Anime ANIME_Z = new Anime("Z", 2001, 0, Language.DUB, Type.SERIES, false, false, "", null);
+	private static final Anime ANIME_A = new Anime("A", 2005, 0, Language.DUB, Type.SERIES, false, false, "", "", null);
+	private static final Anime ANIME_B = new Anime("B", 2004, 0, Language.DUB, Type.SERIES, false, false, "", "", null);
+	private static final Anime ANIME_M = new Anime("M", 2003, 0, Language.DUB, Type.SERIES, false, false, "", "", null);
+	private static final Anime ANIME_Y = new Anime("Y", 2002, 0, Language.DUB, Type.SERIES, false, false, "", "", null);
+	private static final Anime ANIME_Z = new Anime("Z", 2001, 0, Language.DUB, Type.SERIES, false, false, "", "", null);
 	
-	private static final Anime ANIME_M2 = new Anime("M", 2002, 0, Language.DUB, Type.SERIES, false, false, "", null);
-	private static final Anime ANIME_OTHER_2003 = new Anime("C", 2003, 0, Language.DUB, Type.SERIES, false, false, "", null);
+	private static final Anime ANIME_M2 = new Anime("M", 2002, 0, Language.DUB, Type.SERIES, false, false, "", "", null);
+	private static final Anime ANIME_OTHER_2003 = new Anime("C", 2003, 0, Language.DUB, Type.SERIES, false, false, "", "", null);
 	
 	/**	Alphabetically sorted list reference for use in testing */
 	private SortedAnimeList listAlphabetic;
@@ -164,7 +164,7 @@ class SortedAnimeListTest {
 		assertEquals(2, listAlphabetic.indexOf(ANIME_M));
 		assertEquals(3, listAlphabetic.indexOf(ANIME_Y));
 		assertEquals(4, listAlphabetic.indexOf(ANIME_Z));
-		assertEquals(-1, listAlphabetic.indexOf(new Anime("!", 1999, 0, Language.DUB, Type.SPECIAL, false, false, "", "")));
+		assertEquals(-1, listAlphabetic.indexOf(new Anime("!", 1999, 0, Language.DUB, Type.SPECIAL, false, false, "", "", "")));
 
 		//Test after removal
 		listAlphabetic.remove(3);

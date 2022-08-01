@@ -8,6 +8,18 @@ import java.util.Objects;
  * @author Hunter Pruitt
  */
 public class Anime {
+
+	/** String used in data files for delimiting properties */
+	private static final String INVALID_STRING_1 = ",_";
+
+	/** String used in data files for delimiting anime entries */
+	private static final String INVALID_STRING_2 = "<|>";
+	
+	/** String used in data files for delimiting preference data, not included in text-check procedure due to improbability */
+	private static final String INVALID_STRING_3 = "{PREFERENCES}";
+
+	/** Message for exceptions thrown that contain illegal substrings */
+	private static final String ILLEGAL_SUBSTRING_EXCEPTION = "Text fields cannot contain the sequences \",_\" or \"<|>\"";
 	
 	////////////
 	//Fields
@@ -112,6 +124,9 @@ public class Anime {
 	/** Director credits on the show */
 	private String director;
 	
+	/** Studio credited with producing the show */
+	private String studio;
+	
 	/** Optional notes for the user to attach to this entry */
 	private String notes;
 			
@@ -131,11 +146,12 @@ public class Anime {
 	 * @param finished if the user finished watching
 	 * @param dropped if the user stopped watching
 	 * @param director 
+	 * @param studio producers of the show
 	 * @param notes personal notes about the entry
 	 * @throws IllegalArgumentException if passed bad parameters
 	 */
 	public Anime(String title, int year, int count, Language lan, Type type, boolean finished, 
-			boolean dropped, String director, String notes) {
+			boolean dropped, String director, String studio, String notes) {
 
 		//Delegate checks to setters
 		setTitle(title);
@@ -146,6 +162,7 @@ public class Anime {
 		setFinished(finished);
 		setDropped(dropped);
 		setDirector(director);
+		setStudio(studio);
 		setNotes(notes);
 	}
 		
@@ -218,11 +235,13 @@ public class Anime {
 	/**
 	 * Changes or sets the title field
 	 * @param title the title to set
-	 * @throws IllegalArumentException if title is blank
+	 * @throws IllegalArumentException if title is blank or contains an illegal String
 	 */
 	public void setTitle(String title) {
 		if (title.isBlank()) {
 			throw new IllegalArgumentException("Title cannot be blank");
+		} else if (!isValidString(title)) {
+			throw new IllegalArgumentException(ILLEGAL_SUBSTRING_EXCEPTION);
 		}
 		this.title = title;
 	}
@@ -348,14 +367,39 @@ public class Anime {
 	}
 
 	/**
-	 * Changes or sets the notes field
+	 * Changes or sets the director field
 	 * @param director the director to set
+	 * @throws IllegalArguemntException if the string contains an illegal substring
 	 */
 	public void setDirector(String director) {
+		if (!isValidString(director)) {
+			throw new IllegalArgumentException(ILLEGAL_SUBSTRING_EXCEPTION);
+		}
 		//Accepts empty values
 		this.director = director;
 	}
 
+	/**
+	 * Returns the studio(s) for the GUI
+	 * @return the studio
+	 */
+	public String getStudio() {
+		return studio;
+	}
+
+	/**
+	 * Changes or sets the studio field
+	 * @param studio the studio to set
+	 * @throws IllegalArguemntException if the string contains an illegal substring
+	 */
+	public void setStudio(String studio) {
+		if (!isValidString(studio)) {
+			throw new IllegalArgumentException(ILLEGAL_SUBSTRING_EXCEPTION);
+		}
+		//Accepts empty values
+		this.studio = studio;
+	}
+	
 	/**
 	 * Returns the notes for the GUI
 	 * @return the notes
@@ -367,12 +411,25 @@ public class Anime {
 	/**
 	 * Changes or sets the notes field
 	 * @param notes the notes to set
+	 * @throws IllegalArguemntException if the string contains an illegal substring
 	 */
 	public void setNotes(String notes) {
+		if (!isValidString(notes)) {
+			throw new IllegalArgumentException(ILLEGAL_SUBSTRING_EXCEPTION);
+		}
 		//Accepts empty values
 		this.notes = notes;
 	}
 
+	/**
+	 * Indicates if the string used for any field stored as text contains illegal substrings, i.e., strings that
+	 * are also used in DataIO to parse data.
+	 * @param s String to be checked
+	 * @return boolean indicator of if a String is acceptable
+	 */
+	private boolean isValidString(String s) {
+		return s == null || !s.contains(INVALID_STRING_1) && !s.contains(INVALID_STRING_2);
+	}
 
 	/**
 	 * Generates a String representation of an anime for use in file io
@@ -382,7 +439,7 @@ public class Anime {
 	public String toString() {
 		String s = title + ",_" + year + ",_" + count + ",_" + language.formattedName 
 				+ ",_" + type.formattedName + ",_" + finished + ",_" + dropped + ",_" 
-				+ director + ",_" + notes;
+				+ director + ",_" + studio + ",_" + notes;
 
 		return s;
 	}
@@ -393,7 +450,7 @@ public class Anime {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(count, director, dropped, finished, language, notes, title, type);
+		return Objects.hash(count, director, studio, dropped, finished, language, notes, title, type);
 	}
 
 	/**

@@ -205,17 +205,17 @@ class DataIOTest {
 	}
 	
 	/**
-	 * Tests the export functionality of the AnimeIO with working file info
+	 * Tests the export functionality of the DataIO with working file info
 	 */
 	@Test
 	void testExport() {
 		//Create and add the expected anime
 		Anime a = new Anime("Gurren Lagann", 2007, 26, Language.SUB, Type.SERIES, true, false, 
-				"Hiroyuki Imaishi", "Very good op!");
+				"Hiroyuki Imaishi", "Gainax", "Very good op!");
 		Anime b = new Anime("One Piece", 1999, 100, Language.DUB, Type.SERIES, false, false, 
-				"multiple", "Watching with brother");
+				"multiple", "Toei", "Watching with brother");
 		Anime c = new Anime("Naruto", 2002, 0, Language.OTHER, Type.SPECIAL, false, true, 
-				"", "W\nO\nA\nH");
+				"", "Pierrot", "W\nO\nA\nH");
 		
 		list.add(a);
 		list.add(b);

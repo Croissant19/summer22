@@ -1,2 +1,2 @@
 {PREFERENCES}Alphabetical,_NoColor,_-16711936,_-16711681
-<|>Gurren Lagann,_2007,_26,_Sub,_Series,_,_false,_Hiroyuki Imaishi,_Very good op!
+<|>Gurren Lagann,_2007,_26,_Sub,_Series,_,_false,_Hiroyuki Imaishi,_Gainax,_Very good op!

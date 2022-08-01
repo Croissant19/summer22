@@ -37,6 +37,7 @@ public class NewAnimeView extends JPanel {
 	private JTextField txtFldYear;
 	private JTextField txtFldCount;
 	private JTextField txtFldDirector;
+	private JTextField txtFldStudio;
 
 	private JRadioButton rdBtnSub;
 	private JRadioButton rdBtnDub;
@@ -70,94 +71,103 @@ public class NewAnimeView extends JPanel {
 		
 		lblTopInfo = new JLabel(DEFAULT_TEXT, SwingConstants.CENTER);
 		lblTopInfo.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblTopInfo.setBounds(10, 11, 385, 52);
+		lblTopInfo.setBounds(10, 5, 385, 52);
 		pnlFields.add(lblTopInfo);
 
 		
 		JLabel lblTitle = new JLabel("Title:");
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblTitle.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTitle.setBounds(10, 73, 99, 14);
+		lblTitle.setBounds(10, 65, 99, 14);
 		pnlFields.add(lblTitle);
 		
 		JLabel lblYear = new JLabel("Year:");
 		lblYear.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblYear.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblYear.setBounds(10, 97, 99, 14);
+		lblYear.setBounds(10, 90, 99, 14);
 		pnlFields.add(lblYear);
 		
 		JLabel lblCount = new JLabel("Number Watched:");
 		lblCount.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblCount.setBounds(10, 121, 99, 14);
+		lblCount.setBounds(10, 115, 99, 14);
 		pnlFields.add(lblCount);
 		
 		JLabel lblLanguage = new JLabel("Language:");
 		lblLanguage.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblLanguage.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblLanguage.setBounds(10, 145, 99, 14);
+		lblLanguage.setBounds(10, 140, 99, 14);
 		pnlFields.add(lblLanguage);
 		
 		JLabel lblType = new JLabel("Content Type:");
 		lblType.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblType.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblType.setBounds(10, 169, 99, 14);
+		lblType.setBounds(10, 168, 99, 14);
 		pnlFields.add(lblType);
 		
 		JLabel lblStatus = new JLabel("Status:");
 		lblStatus.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblStatus.setBounds(10, 193, 99, 14);
+		lblStatus.setBounds(10, 197, 99, 14);
 		pnlFields.add(lblStatus);
 		
 		JLabel lblDirector = new JLabel("Director:");
 		lblDirector.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblDirector.setBounds(10, 217, 99, 14);
+		lblDirector.setBounds(10, 224, 99, 14);
 		pnlFields.add(lblDirector);
 		
 		JLabel lblNotes = new JLabel("You can add notes/comments or an image to this entry on the main viewer.");
 		lblNotes.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNotes.setBounds(10, 258, 385, 36);
+		lblNotes.setBounds(10, 271, 385, 36);
 		pnlFields.add(lblNotes);
 		
 		txtFldTitle = new JTextField();
-		txtFldTitle.setBounds(119, 70, 224, 20);
+		txtFldTitle.setBounds(119, 62, 224, 20);
 		pnlFields.add(txtFldTitle);
 		txtFldTitle.setColumns(10);
 		
 		txtFldYear = new JTextField();
 		txtFldYear.setColumns(10);
-		txtFldYear.setBounds(119, 94, 55, 20);
+		txtFldYear.setBounds(119, 87, 55, 20);
 		pnlFields.add(txtFldYear);
 		
 		txtFldCount = new JTextField();
 		txtFldCount.setColumns(10);
-		txtFldCount.setBounds(119, 118, 55, 20);
+		txtFldCount.setBounds(119, 112, 55, 20);
 		pnlFields.add(txtFldCount);
 		
 		txtFldDirector = new JTextField();
 		txtFldDirector.setColumns(10);
-		txtFldDirector.setBounds(119, 214, 224, 20);
+		txtFldDirector.setBounds(119, 221, 224, 20);
 		pnlFields.add(txtFldDirector);
 		
-		rdBtnSub = new JRadioButton("Sub");
-	
+		JLabel lblStudio = new JLabel("Studio:");
+		lblStudio.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblStudio.setBounds(10, 246, 99, 14);
+		pnlFields.add(lblStudio);
+		
+		txtFldStudio = new JTextField();
+		txtFldStudio.setColumns(10);
+		txtFldStudio.setBounds(119, 246, 224, 20);
+		pnlFields.add(txtFldStudio);
 
-		rdBtnSub.setBounds(115, 141, 55, 23);
+		
+		rdBtnSub = new JRadioButton("Sub");	
+		rdBtnSub.setBounds(115, 137, 55, 23);
 		pnlFields.add(rdBtnSub);
 		
 		rdBtnDub = new JRadioButton("Dub");
-		rdBtnDub.setBounds(172, 141, 55, 23);
+		rdBtnDub.setBounds(172, 136, 55, 23);
 		pnlFields.add(rdBtnDub);
 		
 		rdBtnOther = new JRadioButton("Other/TBD");
-		rdBtnOther.setBounds(229, 141, 82, 23);
+		rdBtnOther.setBounds(230, 136, 82, 23);
 		pnlFields.add(rdBtnOther);
 		
 		chckBxFinished = new JCheckBox("Finished");
-		chckBxFinished.setBounds(115, 189, 70, 23);
+		chckBxFinished.setBounds(115, 193, 70, 23);
 		pnlFields.add(chckBxFinished);
 		
 		chckBxDropped = new JCheckBox("Dropped");
-		chckBxDropped.setBounds(187, 189, 70, 23);
+		chckBxDropped.setBounds(189, 193, 70, 23);
 		pnlFields.add(chckBxDropped);
 		
 		rdBtnSeries = new JRadioButton("Series");
@@ -165,7 +175,7 @@ public class NewAnimeView extends JPanel {
 		pnlFields.add(rdBtnSeries);
 		
 		rdBtnSpecial = new JRadioButton("Special");
-		rdBtnSpecial.setBounds(189, 165, 70, 23);
+		rdBtnSpecial.setBounds(182, 164, 70, 23);
 		pnlFields.add(rdBtnSpecial);
 		
 		createEvents();
@@ -248,6 +258,7 @@ public class NewAnimeView extends JPanel {
 		txtFldYear.setText("");
 		txtFldCount.setText("");
 		txtFldDirector.setText("");
+		txtFldStudio.setText("");
 		rdBtnSub.setSelected(false);
 		rdBtnDub.setSelected(false);
 		rdBtnOther.setSelected(false);
@@ -272,6 +283,7 @@ public class NewAnimeView extends JPanel {
 		boolean fin;
 		boolean drop;
 		String director = "";
+		String studio = "";
 		
 		//Check fields are acceptable
 		try {
@@ -321,9 +333,12 @@ public class NewAnimeView extends JPanel {
 				director = txtFldDirector.getText();	
 			}
 			
+			if (!txtFldStudio.getText().isBlank()) {
+				director = txtFldStudio.getText();	
+			}
 			
 			//Create the anime
-			Anime a = new Anime(title, year, count, lan, type, fin, drop, director, "");
+			Anime a = new Anime(title, year, count, lan, type, fin, drop, director, studio, "");
 			Manager.getInstance().addAnime(a);
 			mainGUI.updateData();
 		} catch (Exception e) {
@@ -351,6 +366,7 @@ public class NewAnimeView extends JPanel {
 		txtFldYear.setText("");
 		txtFldCount.setText("");
 		txtFldDirector.setText("");
+		txtFldStudio.setText("");
 		rdBtnSub.setSelected(false);
 		rdBtnDub.setSelected(false);
 		rdBtnOther.setSelected(false);
