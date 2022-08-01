@@ -43,6 +43,9 @@ class DataIOTest {
 	/** Valid IO file non-default preferences */
 	private static final String TEST_FILE_SIX = "test-files/NonDefaultPreferences.txt";
 	
+	/** Valid IO with no notes */
+	private static final String TEST_FILE_SEVEN = "test-files/WorkingImportNoNotes.txt";
+	
 	/** File containing expected information about an anime log*/
 	private static final File EXPECTED_OUT = new File("test-files/ThreeWorkingImports.txt");
 	
@@ -177,6 +180,28 @@ class DataIOTest {
 		assertEquals(ColorMethod.SUB_DUB, p.getColorMethod());
 		assertEquals(-10001936, p.getColor1().getRGB());
 		assertEquals(-16710081, p.getColor2().getRGB());
+	}
+	
+	/**
+	 * Tests importing an Anime with no notes attached
+	 */
+	@Test
+	void testImportNoNotes() {
+		Anime actual = DataIO.readFile(TEST_FILE_SEVEN).getAlphabeticalAnimeList().get(0);
+
+		//Assert that anime is read correctly
+		assertAll(
+				() -> assertEquals("Gurren Lagann", actual.getTitle()), 
+				() -> assertEquals(2007, actual.getYear()), 
+				() -> assertEquals(26, actual.getCount()), 
+				() -> assertEquals("Sub", actual.getLanguage()), 
+				() -> assertEquals("Series", actual.getType()), 
+				() -> assertTrue(actual.isFinished()),
+				() -> assertFalse(actual.isDropped()),
+				() -> assertEquals("Hiroyuki Imaishi", actual.getDirector()), 
+				() -> assertEquals("", actual.getNotes()) 
+		);
+	
 	}
 	
 	/**

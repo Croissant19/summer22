@@ -126,28 +126,34 @@ public class DataIO {
 	 * Processes a String containing information to construct an Anime object
 	 * @param data
 	 * @return Anime with imported user data
-	 * @throws IllegalArgumentException if there is too much information
+	 * @throws IllegalArgumentException if error occurs in reading data
 	 */
 	private static Anime processAnime(String data) {
 		
-		Scanner in = new Scanner(data);
-		in.useDelimiter(",_");
-		
-		//Read data
-		String title = in.next().trim();
-		int year = Integer.parseInt(in.next());
-		int count = Integer.parseInt(in.next());
-		Language lang = Language.parseLang(in.next());
-		Type type = Type.parseType(in.next());
-		boolean finished = Boolean.parseBoolean(in.next());
-		boolean dropped = Boolean.parseBoolean(in.next());
-		String director = in.next().trim();
-		String notes = in.next().trim();
-		if (in.hasNext()) {
-			in.close();
-			throw new IllegalArgumentException();
+		//Break Anime data into Strings containing each component
+		//Use argument with -1 so empty notes strings are retained
+		String[] splits = data.split(",_", -1);
+
+		//TODO: throw joption pane if string contains ",_ or <|>"
+		//Throw an exception if there are the wrong number of components
+		if (splits.length != 9) {
+			throw new IllegalArgumentException("Incorrect amount of anime components found.");
 		}
-		in.close();
+				
+		//Read data
+		String title = splits[0].trim();
+		int year = Integer.parseInt(splits[1]);
+		int count = Integer.parseInt(splits[2]);
+		Language lang = Language.parseLang(splits[3]);
+		Type type = Type.parseType(splits[4]);
+		boolean finished = Boolean.parseBoolean(splits[5]);
+		boolean dropped = Boolean.parseBoolean(splits[6]);
+		String director = splits[7].trim();
+		String notes = splits[8].trim();
+//		if (notes == null) {
+//			notes = "";
+//		}
+
 		
 		//Construct Anime and return
 		Anime a = new Anime(title, year, count, lang, type, finished, 
