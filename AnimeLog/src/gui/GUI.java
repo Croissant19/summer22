@@ -66,9 +66,6 @@ public class GUI extends JFrame {
 	/** Used to prevent table row selection events from firing when table is being rebuilt and such */
 	private boolean engageTableListener = true;
 	
-	//TODO: attribute logo
-	//https://www.flaticon.com/premium-icon/anime_2314736?term=anime&related_id=2314736#
-	
 	/**
 	 * Launch the application.
 	 */
@@ -96,15 +93,12 @@ public class GUI extends JFrame {
 	public GUI() {
 		initComponents();
 		createEvents();
-		//TODO: remove test procedures
-		testStartUp();
 	}
 	
 	/**
 	 * Code for initializing components
 	 */
 	private void initComponents() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(GUI.class.getResource("/resources/icon_24.png")));
 		setResizable(false);
 		setTitle("Anime Log");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -203,6 +197,10 @@ public class GUI extends JFrame {
 		scrollPane.setViewportView(table);
 		contentPane.setLayout(gl_contentPane);
 
+		
+		//Logo from
+		//https://www.flaticon.com/premium-icon/anime_2314736?term=anime&related_id=2314736#
+		setIconImage(Toolkit.getDefaultToolkit().getImage(GUI.class.getResource("/resources/icon_24.png")));
 	}
 	
 	/**
@@ -356,11 +354,7 @@ public class GUI extends JFrame {
 					setCard("optionsView");
 					toggleToolbarButtons(btnOptions);
 					browseView.setCurrentAnime(null);
-					
-					//When move to optionsView, ensure no table element is selected, or else when user
-					//clicks apply changes the table action listener will pick up on the last selected Anime
-					//TODO: note this is not a fix...
-					table.clearSelection();
+
 				} else {
 					return;
 				}
@@ -495,11 +489,7 @@ public class GUI extends JFrame {
 		for (int i = 0; i < numRows; i++) {
 			row = rowVals[i];
 			tm.addRow(row);
-		}
-
-				
-		//TODO: credits? could be cool...		
-		
+		}		
 		
 		engageTableListener = true;
 	}
@@ -512,11 +502,4 @@ public class GUI extends JFrame {
     	table.setRowSelectionInterval(idx, idx);		
 	}
 
-	
-	//////////////////////////////
-	
-	private void testStartUp() {
-		Manager.getInstance().processFile("./test-files/ThreeWorkingImports.txt");
-		updateData();
-	}
 }
