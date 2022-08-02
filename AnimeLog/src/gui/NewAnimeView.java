@@ -114,7 +114,7 @@ public class NewAnimeView extends JPanel {
 		lblDirector.setBounds(10, 224, 99, 14);
 		pnlFields.add(lblDirector);
 		
-		JLabel lblNotes = new JLabel("You can add notes/comments or an image to this entry on the main viewer.");
+		JLabel lblNotes = new JLabel("You can add notes/comments to this entry on the main viewer.");
 		lblNotes.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNotes.setBounds(10, 271, 385, 36);
 		pnlFields.add(lblNotes);

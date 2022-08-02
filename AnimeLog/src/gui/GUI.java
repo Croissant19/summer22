@@ -46,6 +46,7 @@ public class GUI extends JFrame {
 	
 	//TODO: javadoc
 	//TODO: fix bug where studio isnt visible in browse mode (see flcl prog)
+	//TODO: Use textField.setCaretPosition(0);
 	
 	private JPanel contentPane;
 	private JScrollPane scrollPane;
@@ -447,9 +448,9 @@ public class GUI extends JFrame {
 		int returnVal;
 		//Show user prompts
 		if (load) {
-			returnVal = fc.showOpenDialog(fc);
+			returnVal = fc.showOpenDialog(rootPane);
 		} else {
-			returnVal = fc.showSaveDialog(null);
+			returnVal = fc.showSaveDialog(rootPane);
 		}
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			throw new IllegalStateException();
