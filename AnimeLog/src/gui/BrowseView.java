@@ -182,6 +182,7 @@ public class BrowseView extends JPanel {
 		txtAreaNotes.setBounds(10, 219, 385, 96);
 		pnlFields.add(txtAreaNotes);
 		txtAreaNotes.setColumns(10);
+		txtAreaNotes.setLineWrap(true);
 		
 		JLabel lblNotes = new JLabel("Notes:");
 		lblNotes.setFont(new Font("Tahoma", Font.BOLD, 11));
