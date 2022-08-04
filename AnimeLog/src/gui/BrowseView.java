@@ -50,7 +50,6 @@ public class BrowseView extends JPanel {
 	private boolean inEditMode = false;
 	
 	private Anime currentAnime;
-	private JLabel lblStudio;
 	
 	/**
 	 * Create the panel.
@@ -117,6 +116,17 @@ public class BrowseView extends JPanel {
 		lblDirector.setBounds(10, 167, 99, 14);
 		pnlFields.add(lblDirector);
 		
+		JLabel lblStudio = new JLabel("Studio:");
+		lblStudio.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblStudio.setBounds(10, 192, 99, 14);
+		pnlFields.add(lblStudio);
+		
+		JLabel lblNotes = new JLabel("Notes:");
+		lblNotes.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblNotes.setBounds(10, 200, 70, 14);
+		pnlFields.add(lblNotes);
+
+				
 		txtFldTitle = new JTextField();
 		txtFldTitle.setEditable(false);
 		txtFldTitle.setBounds(119, 5, 224, 20);
@@ -142,6 +152,20 @@ public class BrowseView extends JPanel {
 		txtFldDirector.setBounds(119, 164, 172, 20);
 		pnlFields.add(txtFldDirector);
 		
+		txtFldStudio = new JTextField();
+		txtFldStudio.setEditable(false);
+		txtFldStudio.setColumns(10);
+		txtFldStudio.setBounds(119, 189, 172, 20);
+		pnlFields.add(txtFldStudio);
+		
+		txtAreaNotes = new JTextArea();
+		txtAreaNotes.setEditable(false);
+		txtAreaNotes.setBounds(10, 219, 385, 96);
+		pnlFields.add(txtAreaNotes);
+		txtAreaNotes.setColumns(10);
+		txtAreaNotes.setLineWrap(true);
+		
+
 		rdBtnSub = new JRadioButton("Sub");
 		rdBtnSub.setEnabled(false);
 		rdBtnSub.setBounds(115, 80, 55, 23);
@@ -176,30 +200,6 @@ public class BrowseView extends JPanel {
 		rdBtnSpecial.setEnabled(false);
 		rdBtnSpecial.setBounds(182, 108, 70, 23);
 		pnlFields.add(rdBtnSpecial);
-		
-		txtAreaNotes = new JTextArea();
-		txtAreaNotes.setEditable(false);
-		txtAreaNotes.setBounds(10, 219, 385, 96);
-		pnlFields.add(txtAreaNotes);
-		txtAreaNotes.setColumns(10);
-		txtAreaNotes.setLineWrap(true);
-		
-		JLabel lblNotes = new JLabel("Notes:");
-		lblNotes.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblNotes.setBounds(10, 200, 70, 14);
-		pnlFields.add(lblNotes);
-		
-		lblStudio = new JLabel("Studio:");
-		lblStudio.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblStudio.setBounds(10, 192, 99, 14);
-		pnlFields.add(lblStudio);
-		
-		txtFldStudio = new JTextField();
-		txtFldStudio.setEditable(false);
-		txtFldStudio.setColumns(10);
-		txtFldStudio.setBounds(119, 189, 172, 20);
-		pnlFields.add(txtFldStudio);
-
 		
 		createEvents();
 	}
@@ -479,7 +479,11 @@ public class BrowseView extends JPanel {
 		txtFldDirector.setText(currentAnime.getDirector());
 		txtFldStudio.setText(currentAnime.getStudio());
 		txtAreaNotes.setText(currentAnime.getNotes());
-
+		
+		//Reset the caret position to show the beginning of text fields
+		txtFldTitle.setCaretPosition(0);
+		txtFldDirector.setCaretPosition(0);
+		txtFldStudio.setCaretPosition(0);
 		
 		//Disable next and/or previous buttons if such anime do not exist
 
