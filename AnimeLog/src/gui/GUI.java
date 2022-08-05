@@ -95,7 +95,7 @@ public class GUI extends JFrame {
 		initComponents();
 		createEvents();
 	}
-	
+
 	/**
 	 * Code for initializing components
 	 */
