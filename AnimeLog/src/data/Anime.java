@@ -21,9 +21,6 @@ public class Anime {
 	/** Message for exceptions thrown that contain illegal substrings */
 	private static final String ILLEGAL_SUBSTRING_EXCEPTION = "Text fields cannot contain the sequences \",_\" or \"<|>\"";
 	
-	////////////
-	//Fields
-	////////////
 	
 	/**
 	 * Indicates whether the content is a series, or a special.
