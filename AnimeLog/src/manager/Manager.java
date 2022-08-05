@@ -166,7 +166,7 @@ public class Manager {
 	
 	/**
 	 * Changes the sorting method and retrieves the proper animeList to use
-	 * @param sortBy SortFocus to sort anime by
+	 * @param colorBy ColorMethod to sort anime by
 	 */
 	public void setColorMethod(ColorMethod colorBy) {
 		userData.getPreferences().setColorMethod(colorBy);

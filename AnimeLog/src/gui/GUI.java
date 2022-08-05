@@ -33,6 +33,11 @@ import java.awt.CardLayout;
 import javax.swing.UIManager;
 import java.awt.Dimension;
 
+/**
+ * Main container for user interface, holding a JAnimeTable and several JPanels in a Card Layout
+ * @author Hunter Pruitt
+ *
+ */
 public class GUI extends JFrame {
 
 	/** Warning in case user tries to start browsing without any anime added */
@@ -43,8 +48,6 @@ public class GUI extends JFrame {
 	
 	/** Warning asking if user is sure they want to remove the anime, when used, the title of the anime is placed following */
 	private static final String REMOVE_WARNING = "Are you sure you want to remove ";
-	
-	//TODO: javadoc
 	
 	private JPanel contentPane;
 	private JScrollPane scrollPane;

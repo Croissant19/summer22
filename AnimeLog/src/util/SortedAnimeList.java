@@ -205,7 +205,7 @@ public class SortedAnimeList implements Iterable<Anime> {
 	 * @param firstAnime 
 	 * @param secondAnime
 	 * @return boolean indicator if the first anime precedes the second anime
-	 * @throws IllegalArgument Exception is SortedAnimeList has an invalid sorting method or if the two anime are equal
+	 * @throws IllegalArgumentException if SortedAnimeList has an invalid sorting method or if the two anime are equal
 	 */
 	public boolean sortsBefore(Anime firstAnime, Anime secondAnime) {
 		if (sortBy == SortFocus.ALPHABETICAL) {
