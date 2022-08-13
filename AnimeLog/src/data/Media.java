@@ -18,7 +18,7 @@ public abstract class Media {
 	private static final String INVALID_STRING_3 = "{PREFERENCES}";
 
 	/** Message for exceptions thrown that contain illegal substrings */
-	private static final String ILLEGAL_SUBSTRING_EXCEPTION = "Text fields cannot contain the sequences \",_\" or \"<|>\"";
+	public static final String ILLEGAL_SUBSTRING_EXCEPTION = "Text fields cannot contain the sequences \",_\" or \"<|>\"";
 	
 	/** Title of the Media object */
 	private String title;

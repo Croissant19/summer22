@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import data.Anime.Language;
-import data.Anime.Type;
+import data.Media.Type;
 import data.Preferences.SortFocus;
 import util.SortedAnimeList;
 
@@ -60,7 +60,7 @@ class AnimeTest {
 		//Finished and dropped
 		Exception e1 = assertThrows(IllegalArgumentException.class, 
 				() -> new Anime("Bleach", 2004, 100, Language.DUB, Type.SERIES, true, true, "Multiple directors", "", ""));
-		assertEquals("Show cannot be both dropped and finished", e1.getMessage());
+		assertEquals("Entry cannot be both dropped and finished", e1.getMessage());
 
 		//Blank title
 		Exception e2 = assertThrows(IllegalArgumentException.class, 
