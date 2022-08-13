@@ -3,7 +3,7 @@ package data;
 import java.util.Objects;
 
 /**
- * Defines an Anime object as the fundamental piece of the AnimeLog program.
+ * Defines an Anime object as a fundamental piece of the AnimeLog program.
  * In this program, two anime cannot have the same name and year
  * @author Hunter Pruitt
  */
@@ -56,11 +56,6 @@ public class Anime extends Media {
 			}
 		}
 	}
-				
-	
-	////////////
-	//METHODS
-	////////////
 	
 	/**
 	 * Constructor for an anime object, used when reading in data
