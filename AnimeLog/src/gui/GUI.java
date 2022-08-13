@@ -70,6 +70,8 @@ public class GUI extends JFrame {
 	/** Used to prevent table row selection events from firing when table is being rebuilt and such */
 	private boolean engageTableListener = true;
 	
+	//TODO: change remove functionality to go by browse's current, not the table's current, fix room for error and existing bug
+	
 	/**
 	 * Launch the application.
 	 */
@@ -126,7 +128,7 @@ public class GUI extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, 679, GroupLayout.PREFERRED_SIZE)
+						.addComponent(toolBar, GroupLayout.DEFAULT_SIZE, 704, Short.MAX_VALUE)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 268, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
