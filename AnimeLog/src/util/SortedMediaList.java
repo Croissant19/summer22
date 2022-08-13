@@ -2,18 +2,20 @@ package util;
 
 import java.util.Iterator;
 
-import data.Anime;
+import data.Media;
 import data.Preferences.SortFocus;
 
 /**
- * List for storing Anime objects in a sorted order,
+ * List for storing Media objects in a sorted order,
  * modeled after a LinkedList.
  * Does not allow duplicates.
  * 
  * @author Hunter Pruitt
  */
-public class SortedAnimeList implements Iterable<Anime> {
+public class SortedMediaList implements Iterable<Media> {
 
+	//TODO: ensure only of same type can be in the list? right?
+	
 	/** Number of elements in the list */
 	private int size;
 	
@@ -26,7 +28,7 @@ public class SortedAnimeList implements Iterable<Anime> {
 	/**
 	 * Constructor for SortedList, initializes size and front
 	 */
-	public SortedAnimeList(SortFocus sortBy) {
+	public SortedMediaList(SortFocus sortBy) {
 		size = 0;
 		front = null;
 		this.sortBy = sortBy;
@@ -38,7 +40,7 @@ public class SortedAnimeList implements Iterable<Anime> {
 	 * @throws NullPointerException if element is null
 	 * @throws IllegalArgumentException if element is duplicate 
 	 */
-	public void add(Anime element) {
+	public void add(Media element) {
 
 		//Check can add
 		if (element == null) {
@@ -82,18 +84,18 @@ public class SortedAnimeList implements Iterable<Anime> {
 	}
 	
 	/**
-	 * Returns the element from the given index.  The element is
+	 * Returns the element from the given index. The element is
 	 * removed from the list.
 	 * @param idx index to remove element from
 	 * @return element at given index
 	 * @throws IndexOutOfBoundsException if the idx is out of bounds for the list
 	 */
-	public Anime remove(int idx) {
+	public Media remove(int idx) {
 		if(idx < 0 || idx >= size) {
 			throw new IndexOutOfBoundsException("Invalid index.");
 		}
 		
-		Anime removed;
+		Media removed;
 	
 		//Remove from front
 		if(idx == 0) {
@@ -129,7 +131,7 @@ public class SortedAnimeList implements Iterable<Anime> {
 	 * @param element element to search for
 	 * @return true if element is found
 	 */
-	public boolean contains(Anime element) {
+	public boolean contains(Media element) {
 		ListNode temp = front;
 		//Return false if the list is empty
 		if (front == null) {
@@ -156,7 +158,7 @@ public class SortedAnimeList implements Iterable<Anime> {
 	 * @param element to be searched for
 	 * @return index of the element in the sorted list
 	 */
-	public int indexOf(Anime element) {
+	public int indexOf(Media element) {
 		int idx = -1;
 		
 		if (front != null) {
@@ -188,7 +190,7 @@ public class SortedAnimeList implements Iterable<Anime> {
 	 * @throws IndexOutOfBoundsException if the idx is out of bounds
 	 * 		for the list
 	 */
-	public Anime get(int idx) {
+	public Media get(int idx) {
 		if (idx < 0 || idx >= size) {
 			throw new IndexOutOfBoundsException("Invalid index.");
 		}
@@ -201,17 +203,17 @@ public class SortedAnimeList implements Iterable<Anime> {
 	}
 	
 	/**
-	 * Determines if the first parameter sorts before the second parameter depending on the SortedAnimeList's SortFocus
-	 * @param firstAnime 
-	 * @param secondAnime
-	 * @return boolean indicator if the first anime precedes the second anime
-	 * @throws IllegalArgumentException if SortedAnimeList has an invalid sorting method or if the two anime are equal
+	 * Determines if the first parameter sorts before the second parameter depending on the SortedMediaList's SortFocus
+	 * @param firstMedia 
+	 * @param secondMedia
+	 * @return boolean indicator if the first Media precedes the second Media
+	 * @throws IllegalArgumentException if SortedMediaList has an invalid sorting method or if the two Media are equal
 	 */
-	public boolean sortsBefore(Anime firstAnime, Anime secondAnime) {
+	public boolean sortsBefore(Media firstMedia, Media secondMedia) {
 		if (sortBy == SortFocus.ALPHABETICAL) {
-			return firstAnime.sortsBeforeTitleFocus(secondAnime);
+			return firstMedia.sortsBeforeTitleFocus(secondMedia);
 		} else if (sortBy == SortFocus.NUMERICAL) {
-			return firstAnime.sortsBeforeYearFocus(secondAnime);
+			return firstMedia.sortsBeforeYearFocus(secondMedia);
 		} else {
 			throw new IllegalArgumentException("Invalid sorting method");
 		}
@@ -239,7 +241,7 @@ public class SortedAnimeList implements Iterable<Anime> {
 	 */
 	private class ListNode {
 		/** Information stored in the ListNode */
-		public Anime data;
+		public Media data;
 		
 		/** Pointer to the following ListNode in the sequence */
 		private ListNode next;
@@ -249,7 +251,7 @@ public class SortedAnimeList implements Iterable<Anime> {
 		 * used when adding to an empty list or at the end.
 		 * @param data the information to add to the list
 		 */
-		public ListNode(Anime data) {
+		public ListNode(Media data) {
 			this.data = data;
 		}
 		
@@ -259,7 +261,7 @@ public class SortedAnimeList implements Iterable<Anime> {
 		 * @param data the information to add to the list
 		 * @param next the ListNode containing the next element in the list
 		 */
-		public ListNode(Anime data, ListNode next) {
+		public ListNode(Media data, ListNode next) {
 			this.data = data;
 			this.next = next;
 		}
@@ -270,7 +272,7 @@ public class SortedAnimeList implements Iterable<Anime> {
 	 * @return Iterator for SortedLists
 	 */
 	@Override
-	public Iterator<Anime> iterator() {
+	public Iterator<Media> iterator() {
 		return new SortedListIterator();
 	}
 
@@ -282,7 +284,7 @@ public class SortedAnimeList implements Iterable<Anime> {
 	 * https://www.geeksforgeeks.org/java-implementing-iterator-and-iterable-interface/
 	 * https://stackoverflow.com/questions/7140866/cannot-convert-from-nodee-to-nodee
 	 */
-	private class SortedListIterator implements Iterator<Anime>{
+	private class SortedListIterator implements Iterator<Media>{
 
 		/** ListNode the pointer is in front of, referenced with next() method */
 		private ListNode current;
@@ -309,8 +311,8 @@ public class SortedAnimeList implements Iterable<Anime> {
 		 * @return data held in a sorted list node
 		 */
 		@Override
-		public Anime next() {
-			Anime data = current.data;
+		public Media next() {
+			Media data = current.data;
 			current = current.next;
 			return data;
 		}

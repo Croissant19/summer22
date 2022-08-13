@@ -7,14 +7,15 @@ import org.junit.jupiter.api.Test;
 
 import data.Anime;
 import data.Anime.Language;
-import data.Anime.Type;
+import data.Media;
+import data.Media.Type;
 import data.Preferences.SortFocus;
 
 /**
- * Test class for SortedAnimeList, contains, get, and size tested implicitly.
+ * Test class for SortedMediaList, contains, get, and size tested implicitly.
  * @author Hunter Pruitt
  */
-class SortedAnimeListTest {
+class SortedMediaListTest {
 
 	private static final Anime ANIME_A = new Anime("A", 2005, 0, Language.DUB, Type.SERIES, false, false, "", "", null);
 	private static final Anime ANIME_B = new Anime("B", 2004, 0, Language.DUB, Type.SERIES, false, false, "", "", null);
@@ -26,25 +27,25 @@ class SortedAnimeListTest {
 	private static final Anime ANIME_OTHER_2003 = new Anime("C", 2003, 0, Language.DUB, Type.SERIES, false, false, "", "", null);
 	
 	/**	Alphabetically sorted list reference for use in testing */
-	private SortedAnimeList listAlphabetic;
+	private SortedMediaList listAlphabetic;
 	
 	/**	Year-based sorted list reference for use in testing */
-	private SortedAnimeList listNumeric;
+	private SortedMediaList listNumeric;
 	
 	/**
 	 * Resets the list field before each test.
 	 */
 	@BeforeEach
 	void setUp() {
-		listAlphabetic = new SortedAnimeList(SortFocus.ALPHABETICAL);
-		listNumeric = new SortedAnimeList(SortFocus.NUMERICAL);
+		listAlphabetic = new SortedMediaList(SortFocus.ALPHABETICAL);
+		listNumeric = new SortedMediaList(SortFocus.NUMERICAL);
 	}
 
 	/**
 	 * Asserts that the list is constructed properly
 	 */
 	@Test
-	void testSortedAnimeListConstruction() {
+	void testSortedMediaListConstruction() {
 		assertEquals(0, listAlphabetic.size());
 		assertEquals(0, listNumeric.size());
 	}
@@ -135,7 +136,7 @@ class SortedAnimeListTest {
 		listAlphabetic.add(ANIME_Z);
 
 		String expString = "";
-		for (Anime a : listAlphabetic) {
+		for (Media a : listAlphabetic) {
 			expString += a.getTitle() + " ";
 		}
 	
