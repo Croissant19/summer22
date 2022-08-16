@@ -45,7 +45,7 @@ public abstract class Media {
 	 * Indicates which type of media is involved, 
 	 * useful for when the class isn't visible and certain checks/behaviour need to be involved.
 	 */
-	public enum MediaType{NOT_FOUND, ANIME, MANGA};
+	public enum MediaType{ANIME, MANGA};
 
 
 	/**

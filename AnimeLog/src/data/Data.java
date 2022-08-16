@@ -70,7 +70,7 @@ public class Data {
 	 * @throws IllegalArgumentException if a is a copy of any other element
 	 * @throws IllegalArgumentException if the parameter is not an Anime
 	 */
-	public void addAnime(Anime a) {
+	public void addAnime(Media a) {
 		if (a instanceof Anime) {
 			animeByTitle.add(a);
 			animeByYear.add(a);	
@@ -86,7 +86,7 @@ public class Data {
 	 * @throws IllegalArgumentException if m is a copy of any other element
 	 * @throws IllegalArgumentException if the parameter is not a Manga
 	 */
-	public void addManga(Manga m) {
+	public void addManga(Media m) {
 		if (m instanceof Manga) {
 			mangaByTitle.add(m);
 			mangaByYear.add(m);	

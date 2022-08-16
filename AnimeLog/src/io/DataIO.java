@@ -88,7 +88,7 @@ public class DataIO {
 		
 		//Read file into Preferences object and String of Anime data
 		Scanner in = new Scanner(fis);
-		MediaType mt = MediaType.NOT_FOUND;
+		MediaType mt = null;
 		String nextLine;
 
 		//Prepare String data for each content type
