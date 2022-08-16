@@ -99,7 +99,7 @@ public class OptionsView extends JPanel {
 		rdBtnColorSeriesSpecial.setBounds(49, 186, 197, 23);
 		pnlFields.add(rdBtnColorSeriesSpecial);
 		
-		rdBtnColorLanguage = new JRadioButton("Sub or Dub highlights");
+		rdBtnColorLanguage = new JRadioButton("Sub and Dub highlights");
 		rdBtnColorLanguage.setBounds(49, 212, 197, 23);
 		pnlFields.add(rdBtnColorLanguage);
 		
