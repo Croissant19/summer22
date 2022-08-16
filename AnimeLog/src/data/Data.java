@@ -68,10 +68,15 @@ public class Data {
 	 * @param a Anime to be added
 	 * @throws NullPointerException if a is null
 	 * @throws IllegalArgumentException if a is a copy of any other element
+	 * @throws IllegalArgumentException if the parameter is not an Anime
 	 */
 	public void addAnime(Anime a) {
-		animeByTitle.add(a);
-		animeByYear.add(a);
+		if (a instanceof Anime) {
+			animeByTitle.add(a);
+			animeByYear.add(a);	
+		} else {
+			throw new IllegalArgumentException("Tried to add non-Anime object to Anime list.");
+		}
 	}
 
 	/**
@@ -79,10 +84,15 @@ public class Data {
 	 * @param m Manga to be added
 	 * @throws NullPointerException if m is null
 	 * @throws IllegalArgumentException if m is a copy of any other element
+	 * @throws IllegalArgumentException if the parameter is not a Manga
 	 */
 	public void addManga(Manga m) {
-		mangaByTitle.add(m);
-		mangaByYear.add(m);
+		if (m instanceof Manga) {
+			mangaByTitle.add(m);
+			mangaByYear.add(m);	
+		} else {
+			throw new IllegalArgumentException("Tried to add non-Manga object to Manga list.");
+		}
 	}
 	
 	/**
@@ -90,10 +100,15 @@ public class Data {
 	 * @param a Anime to be removed
 	 * @return removed Anime
 	 * @throws IndexOutOfBoundsException if the passed index is out of bounds
+	 * @throws IllegalArgumentException if the parameter is not an Anime
 	 */
-	public Anime removeAnime(Anime a) {
-		animeByTitle.remove(animeByTitle.indexOf(a));
-		return (Anime) animeByYear.remove(animeByYear.indexOf(a));
+	public Media removeAnime(Media a) {
+		if (a instanceof Anime) {
+			animeByTitle.remove(animeByTitle.indexOf(a));
+			return animeByYear.remove(animeByYear.indexOf(a));	
+		} else {
+			throw new IllegalArgumentException("Tried to remove non-Anime from Anime list.");
+		}
 	}
 	
 	/**
@@ -101,10 +116,15 @@ public class Data {
 	 * @param m Manga to be removed
 	 * @return removed Manga
 	 * @throws IndexOutOfBoundsException if the passed index is out of bounds
+	 * @throws IllegalArgumentException if the parameter is not a Manga
 	 */
-	public Manga removeManga(Manga m) {
-		mangaByTitle.remove(mangaByTitle.indexOf(m));
-		return (Manga) mangaByYear.remove(mangaByYear.indexOf(m));
+	public Media removeManga(Media m) {
+		if (m instanceof Manga) {
+			mangaByTitle.remove(mangaByTitle.indexOf(m));
+			return mangaByYear.remove(mangaByYear.indexOf(m));
+		} else {
+			throw new IllegalArgumentException("Tried to remove non-Manga from Manga list.");
+		}
 	}
 
 	/**

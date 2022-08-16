@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import data.Anime.Language;
 import data.Media.Type;
 import data.Preferences.SortFocus;
-import util.SortedAnimeList;
+import util.SortedMediaList;
 
 /**
  * Tests the Anime class
@@ -126,7 +126,7 @@ class AnimeTest {
 	 */
 	@Test
 	void testCompareTitleSortedList() {
-		SortedAnimeList list = new SortedAnimeList(SortFocus.ALPHABETICAL);
+		SortedMediaList list = new SortedMediaList(SortFocus.ALPHABETICAL);
 		list.add(FMA09);
 		list.add(FMA03);
 		list.add(GURREN);

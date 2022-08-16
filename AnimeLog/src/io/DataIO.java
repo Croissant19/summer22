@@ -6,9 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-import data.Anime;
-import data.Anime.Language;
-import data.Media.Type;
 import data.Data;
 import data.Media;
 import data.Preferences;
@@ -123,8 +120,6 @@ public class DataIO {
 		}
 
 		in.close();
-		
-		//TODO: test with just preferences
 
 		//Create objects from data
 		if (!animeDataString.isBlank()) {
