@@ -40,7 +40,14 @@ public abstract class Media {
 	
 	/** Optional notes for the user to attach to this entry */
 	private String notes;
-	
+
+	/**
+	 * Indicates which type of media is involved, 
+	 * useful for when the class isn't visible and certain checks/behaviour need to be involved.
+	 */
+	public enum MediaType{NOT_FOUND, ANIME, MANGA};
+
+
 	/**
 	 * Indicates whether the content is a series, or a special.
 	 * In Anime, specials may refer to movies or OVAs, Manga Type Special may refer to one shots or unusual entries.

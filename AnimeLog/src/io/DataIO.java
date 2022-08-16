@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import data.Data;
 import data.Media;
+import data.Media.MediaType;
 import data.Preferences;
 import data.Preferences.ColorMethod;
 import data.Preferences.SortFocus;
@@ -21,13 +22,6 @@ import util.SortedMediaList;
  * @author Hunter Pruitt
  */
 public class DataIO {
-	//TODO move enum to Data?
-
-	/**
-	 * Indicates which type of media is involved, 
-	 * useful for when the class isn't visible and certain checks/behaviour need to be involved.
-	 */
-	private static enum MediaType{NOT_FOUND, ANIME, MANGA};
 	
 	/**
 	 * Writes data from files into a plaintext file compatible with the program's file reader
