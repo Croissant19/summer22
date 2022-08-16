@@ -48,11 +48,15 @@ public class Data {
 		animeByTitle = animeList;
 		mangaByTitle = mangaList;
 		//Construct numerical list from alphabetical list
-		for (Media m : animeList) {
-			animeByYear.add(m);
+		if (animeList != null) {
+			for (Media m : animeList) {
+				animeByYear.add(m);
+			}	
 		}
-		for (Media m : mangaList) {
-			mangaByYear.add(m);
+		if (mangaList != null) {
+			for (Media m : mangaList) {
+				mangaByYear.add(m);
+			}	
 		}
 
 		animePreferences = animeP;

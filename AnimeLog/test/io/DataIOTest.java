@@ -12,12 +12,13 @@ import org.junit.jupiter.api.Test;
 
 import data.Anime;
 import data.Anime.Language;
-import data.Anime.Type;
+import data.Media.Type;
 import data.Data;
+import data.Manga;
 import data.Preferences;
 import data.Preferences.ColorMethod;
 import data.Preferences.SortFocus;
-import util.SortedAnimeList;
+import util.SortedMediaList;
 
 /**
  * Tests the input output functionality for user data
@@ -25,8 +26,8 @@ import util.SortedAnimeList;
  */
 class DataIOTest {
 
-	/** IO file to create three Anime objects */
-	private static final String TEST_FILE_ONE = "test-files/ThreeWorkingImports.txt";
+	/** IO file to create three Anime objects and three Manga objects */
+	private static final String TEST_FILE_ONE = "test-files/SixWorkingImports.txt";
 	
 	/** Invalid IO file due to bad language */
 	private static final String TEST_FILE_TWO = "test-files/SecondAnimeBadLang.txt";
@@ -46,17 +47,32 @@ class DataIOTest {
 	/** Valid IO with no notes */
 	private static final String TEST_FILE_SEVEN = "test-files/WorkingImportNoNotes.txt";
 	
+	/** Invalid IO file due to Manga color Preferences */
+	private static final String TEST_FILE_EIGHT = "test-files/MangaInvalidColorMethod.txt";
+
+	/** Valid IO file with only Manga Preferences */
+	private static final String TEST_FILE_NINE = "test-files/MangaPreferencesOnly.txt";
+	
+	/** Valid IO file, blank which indicates that everything is null */
+	private static final String TEST_FILE_TEN = "test-files/BlankFile.txt";
+	
 	/** File containing expected information about an anime log*/
-	private static final File EXPECTED_OUT = new File("test-files/ThreeWorkingImports.txt");
+	private static final File EXPECTED_OUT = new File("test-files/SixWorkingImports.txt");
 	
 	/** File containing actual information about an anime log*/
 	private static final File ACTUAL_OUT = new File("test-files/actual_out.txt");
 
 	/** Reference pointer to default preference settings */
 	private static final Preferences DEFAULT_PREFERENCES = new Preferences();
+	
+	/** Reference pointer to alternative preference settings used in TEST_FILE_ONE */
+	private static final Preferences TEST_PREFERENCES = new Preferences(SortFocus.NUMERICAL, ColorMethod.NO_COLOR, -16711936,-16711681);
 
 	/** Sorted collection of Anime returned and passed to file IO methods */
-	private SortedAnimeList list; 
+	private SortedMediaList animeList; 
+	
+	/** Sorted collection of Manga returned and passed to file IO methods */
+	private SortedMediaList mangaList; 
 	
 	/** Data object storing the SortedAnimeLists and Preferences */
 	private Data data;
@@ -69,26 +85,32 @@ class DataIOTest {
 	@BeforeEach
 	public void setUp() {
 		data = new Data();
-		list = data.getAlphabeticalAnimeList();
+		animeList = data.getAlphabeticalAnimeList();
+		mangaList = data.getAlphabeticalMangaList();
 	}
 	
 	/**
-	 * Test for successful imports with 3 generic anime
+	 * Test for successful imports with 3 generic anime and 3 generic manga
 	 */
 	@Test
-	void testThreeWorkingImports() {
+	void testSixWorkingImports() {
 		data = DataIO.readFile(TEST_FILE_ONE);
-		list = data.getAlphabeticalAnimeList();
-		assertEquals(3, list.size());
-		Anime actualGurren = list.get(0);
-		Anime actualNaruto = list.get(1);
-		Anime actualOnePiece = list.get(2);
+		animeList = data.getAlphabeticalAnimeList();
+		mangaList = data.getAlphabeticalMangaList();
+		
+		//Check Anime
+		//////////////////
+
+		assertEquals(3, animeList.size());
+		Anime actualGurren = (Anime) animeList.get(0);
+		Anime actualNaruto = (Anime) animeList.get(1);
+		Anime actualOnePiece = (Anime) animeList.get(2);
 
 		//Assert first anime is correct
 		assertAll(
 				() -> assertEquals("Gurren Lagann", actualGurren.getTitle()), 
 				() -> assertEquals(2007, actualGurren.getYear()), 
-				() -> assertEquals(26, actualGurren.getCount()), 
+				() -> assertEquals(27, actualGurren.getCount()), 
 				() -> assertEquals("Sub", actualGurren.getLanguage()), 
 				() -> assertEquals("Series", actualGurren.getType()), 
 				() -> assertTrue(actualGurren.isFinished()),
@@ -123,6 +145,56 @@ class DataIOTest {
 				() -> assertEquals("multiple", actualOnePiece.getDirector()), 
 				() -> assertEquals("Watching with brother", actualOnePiece.getNotes())
 		);
+		
+		//Check Manga
+		//////////////////
+
+		assertEquals(3, mangaList.size());
+		Manga actualChainsawMan = (Manga) mangaList.get(0);
+		Manga actualFirePunch = (Manga) mangaList.get(1);
+		Manga actualLookBack = (Manga) mangaList.get(2);
+
+		//Assert first Manga is correct
+		assertAll(
+				() -> assertEquals("Chainsaw Man", actualChainsawMan.getTitle()), 
+				() -> assertEquals(2018, actualChainsawMan.getYear()), 
+				() -> assertEquals(99, actualChainsawMan.getCount()), 
+				() -> assertEquals("Tatsuki Fujimoto", actualChainsawMan.getAuthor()),
+				() -> assertEquals("Shonen Jump", actualChainsawMan.getPublisher()),
+				() -> assertEquals("Series", actualChainsawMan.getType()), 
+				() -> assertFalse(actualChainsawMan.isFinished()),
+				() -> assertFalse(actualChainsawMan.isDropped()),
+				() -> assertTrue(actualChainsawMan.isOngoing()),
+				() -> assertEquals("", actualChainsawMan.getNotes())
+		);
+		
+		//Assert second Manga is correct
+		assertAll(
+				() -> assertEquals("Fire Punch", actualFirePunch.getTitle()), 
+				() -> assertEquals(2016, actualFirePunch.getYear()), 
+				() -> assertEquals(83, actualFirePunch.getCount()), 
+				() -> assertEquals("Tatsuki Fujimoto", actualFirePunch.getAuthor()),
+				() -> assertEquals("Shonen Jump", actualFirePunch.getPublisher()),
+				() -> assertEquals("Series", actualFirePunch.getType()), 
+				() -> assertTrue(actualFirePunch.isFinished()),
+				() -> assertFalse(actualFirePunch.isDropped()),
+				() -> assertFalse(actualFirePunch.isOngoing()),
+				() -> assertEquals("Worth a reread", actualFirePunch.getNotes())
+		);
+
+		//Assert third Manga is correct
+		assertAll(
+				() -> assertEquals("Look Back", actualLookBack.getTitle()), 
+				() -> assertEquals(2021, actualLookBack.getYear()), 
+				() -> assertEquals(1, actualLookBack.getCount()), 
+				() -> assertEquals("Tatsuki Fujimoto", actualLookBack.getAuthor()),
+				() -> assertEquals("Shonen Jump", actualLookBack.getPublisher()),
+				() -> assertEquals("Special", actualLookBack.getType()), 
+				() -> assertTrue(actualLookBack.isFinished()),
+				() -> assertFalse(actualLookBack.isDropped()),
+				() -> assertFalse(actualLookBack.isOngoing()),
+				() -> assertEquals("Fav oneshot so far\nmaybe should purchase?", actualLookBack.getNotes()) 
+		);
 	}
 
 	
@@ -142,6 +214,10 @@ class DataIOTest {
 		//Test import with missing data
 		Exception e3 = assertThrows(IllegalArgumentException.class, () -> DataIO.readFile(TEST_FILE_FOUR));
 		assertEquals("Bad file data", e3.getMessage());
+		
+		//Test import with invalid manga ColorMethod
+		Exception e4 = assertThrows(IllegalArgumentException.class, () -> DataIO.readFile(TEST_FILE_EIGHT));
+		assertEquals("Using language-based color method with Manga, not allowed.", e4.getMessage());
 	}
 	
 	/**
@@ -149,10 +225,10 @@ class DataIOTest {
 	 */
 	@Test
 	void testExtraWhitespace() {
-		list = DataIO.readFile(TEST_FILE_FIVE).getAlphabeticalAnimeList();
-		assertEquals(1, list.size());
+		animeList = DataIO.readFile(TEST_FILE_FIVE).getAlphabeticalAnimeList();
+		assertEquals(1, animeList.size());
 
-		Anime actualGurren = list.get(0);
+		Anime actualGurren = (Anime) animeList.get(0);
 
 		//Assert that anime is read and whitespace trimmed
 		assertAll(
@@ -174,12 +250,33 @@ class DataIOTest {
 	@Test
 	void testFileWithUniquePreferences() {
 		data = DataIO.readFile(TEST_FILE_SIX);
-		Preferences p = data.getPreferences();
-		
+		Preferences p = data.getAnimePreferences();
+
 		assertEquals(SortFocus.NUMERICAL, p.getSortMethod());
 		assertEquals(ColorMethod.SUB_DUB, p.getColorMethod());
 		assertEquals(-10001936, p.getColor1().getRGB());
 		assertEquals(-16710081, p.getColor2().getRGB());
+	}
+
+	/**
+	 * Tests importing data where only Manga Preferences have been set
+	 */
+	@Test
+	void testFileMangaPreferencesOnly() {
+		data = DataIO.readFile(TEST_FILE_NINE);
+
+		//Ensure Manga Preferences correct
+		Preferences p = data.getMangaPreferences();
+
+		assertEquals(SortFocus.NUMERICAL, p.getSortMethod());
+		assertEquals(ColorMethod.NO_COLOR, p.getColorMethod());
+		assertEquals(-16711936, p.getColor1().getRGB());
+		assertEquals(-16711681, p.getColor2().getRGB());
+
+		//Assert everything else null
+		assertNull(data.getAlphabeticalAnimeList());
+		assertNull(data.getAlphabeticalMangaList());
+		assertNull(data.getAnimePreferences());
 	}
 	
 	/**
@@ -187,7 +284,7 @@ class DataIOTest {
 	 */
 	@Test
 	void testImportNoNotes() {
-		Anime actual = DataIO.readFile(TEST_FILE_SEVEN).getAlphabeticalAnimeList().get(0);
+		Anime actual = (Anime) DataIO.readFile(TEST_FILE_SEVEN).getAlphabeticalAnimeList().get(0);
 
 		//Assert that anime is read correctly
 		assertAll(
@@ -203,6 +300,20 @@ class DataIOTest {
 		);
 	
 	}
+
+	/**
+	 * Ensures that everything is null when there is no data to read and that exceptions are not thrown.
+	 */
+	@Test
+	void testBlankFileGivesNull() {
+		data = DataIO.readFile(TEST_FILE_TEN);
+
+		//Assert everything null
+		assertNull(data.getAlphabeticalAnimeList());
+		assertNull(data.getAnimePreferences());
+		assertNull(data.getAlphabeticalMangaList());
+		assertNull(data.getMangaPreferences());
+	}
 	
 	/**
 	 * Tests the export functionality of the DataIO with working file info
@@ -210,26 +321,35 @@ class DataIOTest {
 	@Test
 	void testExport() {
 		//Create and add the expected anime
-		Anime a = new Anime("Gurren Lagann", 2007, 26, Language.SUB, Type.SERIES, true, false, 
+		Anime a1 = new Anime("Gurren Lagann", 2007, 27, Language.SUB, Type.SERIES, true, false, 
 				"Hiroyuki Imaishi", "Gainax", "Very good op!");
-		Anime b = new Anime("One Piece", 1999, 100, Language.DUB, Type.SERIES, false, false, 
+		Anime a2 = new Anime("One Piece", 1999, 100, Language.DUB, Type.SERIES, false, false, 
 				"multiple", "Toei", "Watching with brother");
-		Anime c = new Anime("Naruto", 2002, 0, Language.OTHER, Type.SPECIAL, false, true, 
+		Anime a3 = new Anime("Naruto", 2002, 0, Language.OTHER, Type.SPECIAL, false, true, 
 				"", "Pierrot", "W\nO\nA\nH");
 		
-		list.add(a);
-		list.add(b);
-		list.add(c);
+		animeList.add(a1);
+		animeList.add(a2);
+		animeList.add(a3);
+		
+		//Create and add the expected anime
+		Manga m1 = new Manga("Chainsaw Man", 2018, 99, "Tatsuki Fujimoto", "Shonen Jump", Type.SERIES, false, false, true, "");
+		Manga m2 = new Manga("Fire Punch", 2016, 83, "Tatsuki Fujimoto", "Shonen Jump", Type.SERIES, true, false, false, "Worth a reread");
+		Manga m3 = new Manga("Look Back", 2021, 1,  "Tatsuki Fujimoto", "Shonen Jump", Type.SPECIAL, true, false, false, "Fav oneshot so far\r\n"
+				+ "maybe should purchase?");
+		
+		mangaList.add(m1);
+		mangaList.add(m2);
+		mangaList.add(m3);
 		
 		//Export the list and check file is as expected
-		data = new Data(list, DEFAULT_PREFERENCES);
+		data = new Data(animeList, DEFAULT_PREFERENCES, mangaList, TEST_PREFERENCES);
 		try {
 			DataIO.writeData(data, ACTUAL_OUT);
 			assertTrue(compareFiles(EXPECTED_OUT, ACTUAL_OUT));
 		} catch (IOException e) {
 			fail("Threw an unexpected exception");
-		}
-		
+		}	
 	}
 	
 	/**
@@ -268,7 +388,6 @@ class DataIOTest {
 		fis.close();
 		
 		return expContents.equals(actContents) && expLineCt == actLineCt;
-		
 	}
 	
 }

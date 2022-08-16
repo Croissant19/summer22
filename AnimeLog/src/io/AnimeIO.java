@@ -19,36 +19,42 @@ public class AnimeIO {
 	 * Takes information from String and creates Anime objects accordingly,
 	 * returning them in a list sorted by title
 	 * @param data string containing the Anime to be added to the program
-	 * @return SortedMediaList of user Anime
+	 * @return SortedMediaList of user Anime, null if no Anime to read
 	 * @throws IllegalArgumentException if an error occurs
 	 */
 	public static SortedMediaList getAnimeFromString(String data) {
-		SortedMediaList list = new SortedMediaList(SortFocus.ALPHABETICAL);
+		SortedMediaList list = null;
 		
-		if (data.substring(0, 3).equals("<|>")) {
-			//Remove the initial delimiter after verifying in the if conditional
-			data = data.substring(3);
-		} else {
-			//If missing first delimiter, throw exception
-			throw new IllegalArgumentException("Bad file data");
-		}
+		//Ensures there is data to read, returns null if not
+		if (!data.isBlank()) {
 
-		
-		//Break file into Strings containing each Anime
-		String[] splits = data.split("\\n?<[|]>");
-
-		//Process each Anime and add to the list
-		try {
-			for (String s : splits) {
-				//Skip empty Strings
-				if (!s.isEmpty()) {
-					Anime a = processAnime(s);
-					list.add(a);	
-				}
+			list = new SortedMediaList(SortFocus.ALPHABETICAL);
+			if (data.substring(0, 3).equals("<|>")) {
+				//Remove the initial delimiter after verifying in the if conditional
+				data = data.substring(3);
+			} else {
+				//If missing first delimiter, throw exception
+				throw new IllegalArgumentException("Bad file data");
 			}
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Bad file data");
-		}
+
+			
+			//Break file into Strings containing each Anime
+			String[] splits = data.split("\\n?<[|]>");
+
+			//Process each Anime and add to the list
+			try {
+				for (String s : splits) {
+					//Skip empty Strings
+					if (!s.isEmpty()) {
+						Anime a = processAnime(s);
+						list.add(a);	
+					}
+				}
+			} catch (Exception e) {
+				throw new IllegalArgumentException("Bad file data");
+			}
+
+		}//Empty check
 		
 		
 		return list;

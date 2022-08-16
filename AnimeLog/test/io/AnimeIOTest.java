@@ -76,7 +76,16 @@ class AnimeIOTest {
 	            () -> assertEquals("", a3.getDirector()),
 	            () -> assertEquals("Toei", a3.getStudio()),
 	            () -> assertEquals("Watching with brother", a3.getNotes())
-	    );
-	
-	}	
+	    );		
+	}
+
+	/**
+	 * Ensures empty data does not throw exceptions in case user does not have data after preferences
+	 */
+	@Test
+	void testReadEmptyData() {
+		SortedMediaList list = AnimeIO.getAnimeFromString("");
+		assertNull(list);
+	}
+
 }

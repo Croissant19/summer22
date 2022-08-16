@@ -14,7 +14,6 @@ import util.SortedMediaList;
  */
 public class MangaIO {
 
-
 	/**
 	 * Takes information from String and creates Manga objects accordingly,
 	 * returning them in a list sorted by title
@@ -23,31 +22,37 @@ public class MangaIO {
 	 * @throws IllegalArgumentException if an error occurs
 	 */
 	public static SortedMediaList getMangaFromString(String data) {
-		SortedMediaList list = new SortedMediaList(SortFocus.ALPHABETICAL);
+		SortedMediaList list = null;
 		
-		if (data.substring(0, 3).equals("<|>")) {
-			//Remove the initial delimiter after verifying in the if conditional
-			data = data.substring(3);
-		} else {
-			//If missing first delimiter, throw exception
-			throw new IllegalArgumentException("Bad file data");
-		}
-		
-		//Break file into Strings containing each Manga
-		String[] splits = data.split("\\n?<[|]>");
-
-		//Process each Manga and add to the list
-		try {
-			for (String s : splits) {
-				//Skip empty Strings
-				if (!s.isEmpty()) {
-					Manga m = processManga(s);
-					list.add(m);	
-				}
+		//Ensures there is data to read, returns null if not
+		if (!data.isBlank()) {
+			list = new SortedMediaList(SortFocus.ALPHABETICAL);
+			
+			if (data.substring(0, 3).equals("<|>")) {
+				//Remove the initial delimiter after verifying in the if conditional
+				data = data.substring(3);
+			} else {
+				//If missing first delimiter, throw exception
+				throw new IllegalArgumentException("Bad file data");
 			}
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Bad file data");
-		}
+			
+			//Break file into Strings containing each Manga
+			String[] splits = data.split("\\n?<[|]>");
+
+			//Process each Manga and add to the list
+			try {
+				for (String s : splits) {
+					//Skip empty Strings
+					if (!s.isEmpty()) {
+						Manga m = processManga(s);
+						list.add(m);	
+					}
+				}
+			} catch (Exception e) {
+				throw new IllegalArgumentException("Bad file data");
+			}	
+
+		} //If data is not blank
 		
 		
 		return list;

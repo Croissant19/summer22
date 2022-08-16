@@ -75,7 +75,14 @@ class MangaIOTest {
 	            () -> assertFalse(m3.isOngoing()),
 	            () -> assertEquals("Fav oneshot so far\r\nmaybe should purchase?", m3.getNotes())
 	    );
+	}
 
-	}	
+	/**
+	 * Ensures empty data does not throw exceptions in case user does not have data after preferences
+	 */
+	@Test
+	void testReadEmptyData() {
+		SortedMediaList list = MangaIO.getMangaFromString("");
+		assertNull(list);
+	}
 }
-
