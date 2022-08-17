@@ -56,12 +56,14 @@ class SortedMediaListTest {
 	@Test
 	void testAddRemove() {
 		//Add null
-		assertThrows(NullPointerException.class, () -> listAlphabetic.add(null));
-		
+		Exception e1 = assertThrows(IllegalArgumentException.class, () -> listAlphabetic.add(null));
+		assertEquals("Cannot add null element.", e1.getMessage());
+
 		//Add duplicate
 		listAlphabetic.add(ANIME_M);
 		assertEquals(1, listAlphabetic.size());
-		assertThrows(IllegalArgumentException.class, () -> listAlphabetic.add(ANIME_M));
+		Exception e2 = assertThrows(IllegalArgumentException.class, () -> listAlphabetic.add(ANIME_M));
+		assertEquals("Cannot add duplicate element.", e2.getMessage());
 
 		//Add out of order and ensure list is sorted correctly
 		listAlphabetic.add(ANIME_B);

@@ -37,14 +37,13 @@ public class SortedMediaList implements Iterable<Media> {
 	/**
 	 * Adds the element to the list in sorted order.
 	 * @param element element to add
-	 * @throws NullPointerException if element is null
-	 * @throws IllegalArgumentException if element is duplicate 
+	 * @throws IllegalArgumentException if element is null or duplicate of another element
 	 */
 	public void add(Media element) {
 
 		//Check can add
 		if (element == null) {
-			throw new NullPointerException("Cannot add null element.");
+			throw new IllegalArgumentException("Cannot add null element.");
 		} else if (contains(element)) {
 			throw new IllegalArgumentException("Cannot add duplicate element.");
 		}
@@ -144,7 +143,7 @@ public class SortedMediaList implements Iterable<Media> {
 		}
 		//Else check to see if the list is contained in any node
 		while(temp.next != null) {
-			if (temp.data.equals(element)) {
+			if (temp.next.data.equals(element)) {
 				return true;
 			} else {
 				temp = temp.next;

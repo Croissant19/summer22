@@ -5,13 +5,16 @@ import java.io.File;
 
 import data.Anime;
 import data.Anime.Language;
-import data.Anime.Type;
+import data.Media.Type;
+import data.Media.MediaType;
 import data.Data;
+import data.Manga;
+import data.Media;
 import data.Preferences;
 import data.Preferences.ColorMethod;
 import data.Preferences.SortFocus;
 import io.DataIO;
-import util.SortedAnimeList;
+import util.SortedMediaList;
 
 /**
  * Connects actions on the GUI to computations performed and data retrieved from other classes.
@@ -22,9 +25,12 @@ public class Manager {
 	
 	/** Singleton pointer to the Manager object */
 	private static Manager instance = new Manager();
+
+	/** Pointer to anime list to display */
+	private SortedMediaList animeList;
 	
-	/** Pointer to list to display */
-	private SortedAnimeList animeList;
+	/** Pointer to manga list to display */
+	private SortedMediaList mangaList;
 
 	/** Object containing references to user data and preferences */
 	private Data userData;
@@ -36,6 +42,7 @@ public class Manager {
 	private Manager() {
 		userData = new Data();
 		animeList = userData.getAlphabeticalAnimeList();
+		mangaList = userData.getAlphabeticalMangaList();
 	}
 
 	/** 
@@ -52,13 +59,20 @@ public class Manager {
 	 */
 	public void processFile(String filename) {
 		userData = DataIO.readFile(filename);
+
 		//Set animeList
-		if (userData.getPreferences().getSortMethod() == SortFocus.ALPHABETICAL) {
+		if (userData.getAnimePreferences().getSortMethod() == SortFocus.ALPHABETICAL) {
 			animeList = userData.getAlphabeticalAnimeList();
-		} else if (userData.getPreferences().getSortMethod() == SortFocus.NUMERICAL) {
+		} else if (userData.getAnimePreferences().getSortMethod() == SortFocus.NUMERICAL) {
 			animeList = userData.getNumericalAnimeList();
 		}
-
+		
+		//Set mangaList
+		if (userData.getMangaPreferences().getSortMethod() == SortFocus.ALPHABETICAL) {
+			mangaList = userData.getAlphabeticalMangaList();
+		} else if (userData.getMangaPreferences().getSortMethod() == SortFocus.NUMERICAL) {
+			mangaList = userData.getNumericalMangaList();
+		}
 	}
 	
 	/**
@@ -68,25 +82,41 @@ public class Manager {
 	public void saveFile(File file) {		
 		DataIO.writeData(userData, file);		
 	}
-
+	
 	/**
-	 * Returns user Preferences 
-	 * @return Object containing the user's preferences
+	 * Returns user's Anime list Preferences 
+	 * @return Object containing the user's anime preferences
 	 */
-	public Preferences getPreferences() {
-		return this.userData.getPreferences();
+	public Preferences getAnimePreferences() {
+		return this.userData.getAnimePreferences();
 	}
 	
 	/**
-	 * Provides the animeList use in other classes
+	 * Returns user's Manga list Preferences 
+	 * @return Object containing the user's manga preferences
+	 */
+	public Preferences getMangaPreferences() {
+		return this.userData.getMangaPreferences();
+	}
+
+	/**
+	 * Provides the animeList for use in other classes
 	 * @return the animeList
 	 */
-	public SortedAnimeList getAnimeList() {
+	public SortedMediaList getAnimeList() {
 		return animeList;
 	}
 
 	/**
-	 * Sets the pointer animeList to the SortedAnimeList relevant to the user's
+	 * Provides the mangaList for use in other classes
+	 * @return the mangaList
+	 */
+	public SortedMediaList getMangaList() {
+		return mangaList;
+	}
+
+	/**
+	 * Sets the pointer animeList to the SortedMediaList relevant to the user's
 	 * sorting preference
 	 * @param focus method to sort anime data
 	 * @throws IllegalArgumentException if passed an invalid sorting method
@@ -102,6 +132,22 @@ public class Manager {
 	}
 	
 	/**
+	 * Sets the pointer mangaList to the SortedMediaList relevant to the user's
+	 * sorting preference
+	 * @param focus method to sort manga data
+	 * @throws IllegalArgumentException if passed an invalid sorting method
+	 */
+	public void setMangaList(SortFocus focus) {
+		if (focus == SortFocus.ALPHABETICAL) {
+			mangaList = userData.getAlphabeticalMangaList();
+		} else if (focus == SortFocus.NUMERICAL) {
+			mangaList = userData.getNumericalMangaList();
+		} else {
+			throw new IllegalArgumentException("Invalid sort method");
+		}
+	}
+
+	/**
 	 * Adds an anime to userData
 	 * @param a Anime to be added
 	 * @throws NullPointerException if a is null
@@ -110,8 +156,7 @@ public class Manager {
 	public void addAnime(Anime a) {
 		userData.addAnime(a);
 	}
-	
-	
+
 	/**
 	 * Removes a selected anime from the animeList
 	 * @param idx index to remove from
@@ -121,23 +166,42 @@ public class Manager {
 		userData.removeAnime(animeList.get(idx));
 	}
 
+	/**
+	 * Adds a manga to userData
+	 * @param m Manga to be added
+	 * @throws NullPointerException if a is null
+	 * @throws IllegalArgumentException if a is a copy of any other element
+	 */
+	public void addManga(Manga m) {
+		userData.addManga(m);
+	}
 	
+	
+	/**
+	 * Removes a selected manga from the mangaList
+	 * @param idx index to remove from
+	 * @throws IndexOutOfBoundsException if the passed index is out of bounds
+	 */
+	public void removeManga(int idx) {
+		userData.removeManga(mangaList.get(idx));
+	}
+
 	/**
 	 * Grabs title, year, and count for each anime for display on the GUI. 
 	 * Return is type Object[][] so that ints and Strings are both displayed in the table together.
 	 * It could be type String[][], but ultimately doesn't matter.
 	 * 
-	 * The sorting for this method is dependant on the sorting method of the list that 
+	 * The sorting for this method is dependent on the sorting method of the list that 
 	 * the pointer animeList is set to. This pointer can be changed by the user in the OptionsView 
 	 * 
 	 * @return 2D array of anime data for display on the GUI
 	 */
 	public Object[][] getAllAnimeAsArray() {
 		Object[][] list = new Object[animeList.size()][3];
-		
+
 		//Get wanted data for each anime
 		int index = 0;
-		for (Anime a : animeList) {
+		for (Media a : animeList) {
 			list[index][0] = a.getYear();
 			list[index][1] = a.getTitle();
 			list[index][2] = a.getCount();
@@ -146,45 +210,109 @@ public class Manager {
 
 		return list;
 	}
-	
+
+	/**
+	 * Grabs title, year, and count for each manga for display on the GUI. 
+	 * Return is type Object[][] so that ints and Strings are both displayed in the table together.
+	 * It could be type String[][], but ultimately doesn't matter.
+	 * 
+	 * The sorting for this method is dependent on the sorting method of the list that 
+	 * the pointer mangaList is set to. This pointer can be changed by the user in the OptionsView 
+	 * 
+	 * @return 2D array of manga data for display on the GUI
+	 */
+	public Object[][] getAllMangaAsArray() {
+		Object[][] list = new Object[mangaList.size()][3];
+
+		//Get wanted data for each manga
+		int index = 0;
+		for (Media m : mangaList) {
+			list[index][0] = m.getYear();
+			list[index][1] = m.getTitle();
+			list[index][2] = m.getCount();
+			index++;
+		}
+
+		return list;
+	}
+
 	////////////////////////
 	//Preference related methods
 	////////////////////////
 	
 	/**
-	 * Changes the sorting method and retrieves the proper animeList to use
-	 * @param sortBy SortFocus to sort anime by
+	 * Changes the sorting method and retrieves the proper SortedMediaList to use
+	 * @param mt MediaType indicating which data the method needs to work with
+	 * @param sortBy SortFocus to sort media by
 	 */
-	public void setSortMethod(SortFocus sortBy) {
-		userData.getPreferences().setSortMethod(sortBy);
-		if (sortBy == SortFocus.ALPHABETICAL) {
-			animeList = userData.getAlphabeticalAnimeList();
-		} else if (sortBy == SortFocus.NUMERICAL) {
-			animeList = userData.getNumericalAnimeList();
+	public void setSortMethod(MediaType mt, SortFocus sortBy) {
+		switch (mt) {
+		case ANIME:
+			userData.getAnimePreferences().setSortMethod(sortBy);
+			if (sortBy == SortFocus.ALPHABETICAL) {
+				animeList = userData.getAlphabeticalAnimeList();
+			} else if (sortBy == SortFocus.NUMERICAL) {
+				animeList = userData.getNumericalAnimeList();
+			}
+			break;
+		case MANGA:
+			userData.getMangaPreferences().setSortMethod(sortBy);
+			if (sortBy == SortFocus.ALPHABETICAL) {
+				mangaList = userData.getAlphabeticalMangaList();
+			} else if (sortBy == SortFocus.NUMERICAL) {
+				mangaList = userData.getNumericalMangaList();
+			}
+			break;
 		}
 	}
 	
 	/**
 	 * Changes the sorting method and retrieves the proper animeList to use
+	 * @param mt MediaType indicating which data the method needs to work with
 	 * @param colorBy ColorMethod to sort anime by
 	 */
-	public void setColorMethod(ColorMethod colorBy) {
-		userData.getPreferences().setColorMethod(colorBy);
+	public void setColorMethod(MediaType mt, ColorMethod colorBy) {
+		switch (mt) {
+		case ANIME:
+			userData.getAnimePreferences().setColorMethod(colorBy);
+			break;
+		case MANGA:
+			if (colorBy == ColorMethod.SUB_DUB) {
+				throw new IllegalArgumentException("Cannot color by language with Manga");
+			} else {
+				userData.getMangaPreferences().setColorMethod(colorBy);
+			}
+			break;
+		}
 	}
 
 	/**
 	 * Sets the designated color to the color passed as a parameter
+	 * @param mt MediaType indicating which data the method needs to work with
 	 * @param pointer String name indicating which user color is to be changed
 	 * @param c Color to set the user color to
 	 * @throws IllegalArgumentException if passed a bad pointer
 	 */
-	public void setColor(String pointer, Color c) {
-		if (pointer.equals("Color1")) {
-			getPreferences().setColor1(c.getRGB());
-		} else if (pointer.equals("Color2")) {
-			getPreferences().setColor2(c.getRGB());
-		} else {
-			throw new IllegalArgumentException("Pointer does not exist.");
+	public void setColor(MediaType mt, String pointer, Color c) {
+		switch (mt) {
+		case ANIME: 
+			if (pointer.equals("Color1")) {
+				getAnimePreferences().setColor1(c.getRGB());
+			} else if (pointer.equals("Color2")) {
+				getAnimePreferences().setColor2(c.getRGB());
+			} else {
+				throw new IllegalArgumentException("Pointer does not exist.");
+			}
+			break;
+		case MANGA:
+			if (pointer.equals("Color1")) {
+				getMangaPreferences().setColor1(c.getRGB());
+			} else if (pointer.equals("Color2")) {
+				getMangaPreferences().setColor2(c.getRGB());
+			} else {
+				throw new IllegalArgumentException("Pointer does not exist.");
+			}
+			break;
 		}
 	}
 	
@@ -194,53 +322,106 @@ public class Manager {
 
 	/**
 	 * Returns the number of entries for use as a stat on the HomeView
+	 * @param mt MediaType to get data for
+	 * @throws IllegalArgumentException if no MediaType is indicated
 	 * @return total number of entries
 	 */
-	public String getEntryCount() {
-		return "" + animeList.size();
+	public String getEntryCount(MediaType mt) {
+		switch (mt) {
+		case ANIME:
+			return "" + animeList.size();
+		case MANGA:
+			return "" + mangaList.size();
+		default:
+			throw new IllegalArgumentException("No MediaType indicated");	
+		}
 	}
 	
 	/**
 	 * Returns the number of entries that are series for use as a stat on the HomeView
+	 * @param mt MediaType to get data for
+	 * @throws IllegalArgumentException if no MediaType is indicated
 	 * @return total number of series
 	 */	
-	public String getNumSeries() {
+	public String getNumSeries(MediaType mt) {
 		int tally = 0;
-		//Increment each time an anime on the list is Type Series
-		for (Anime a : animeList) {
-			if (a.getType().equals(Type.SERIES.formattedName)) {
-				tally++;
+		switch (mt) {
+		case ANIME:
+			//Increment each time an anime on the list is Type Series
+			for (Media a : animeList) {
+				if (a.getType().equals(Type.SERIES.formattedName)) {
+					tally++;
+				}
 			}
+			break;
+		case MANGA:
+			//Increment each time a manga on the list is Type Series
+			for (Media m : mangaList) {
+				if (m.getType().equals(Type.SERIES.formattedName)) {
+					tally++;
+				}
+			}
+			break;
+		default:
+			throw new IllegalArgumentException("No MediaType indicated");
 		}
 		
-
 		return "" + tally;
 	}
 	
 	/**
 	 * Returns the number of entries that are classified as specials for use as a stat on the HomeView
+	 * @param mt MediaType to get data for
+	 * @throws IllegalArgumentException if no MediaType is indicated
 	 * @return total number of specials
 	 */		
-	public String getNumSpecial() {
+	public String getNumSpecial(MediaType mt) {
 		int tally = 0;
-		//Increment each time an anime on the list is Type Special
-		for (Anime a : animeList) {
-			if (a.getType().equals(Type.SPECIAL.formattedName)) {
-				tally++;
+		switch (mt) {
+		case ANIME:
+			//Increment each time an anime on the list is Type Series
+			for (Media a : animeList) {
+				if (a.getType().equals(Type.SPECIAL.formattedName)) {
+					tally++;
+				}
 			}
+			break;
+		case MANGA:
+			//Increment each time a manga on the list is Type Series
+			for (Media m : mangaList) {
+				if (m.getType().equals(Type.SPECIAL.formattedName)) {
+					tally++;
+				}
+			}
+			break;
+		default:
+			throw new IllegalArgumentException("No MediaType indicated");
 		}
-
+		
 		return "" + tally;
 	}
 	
 	/**
 	 * Returns the sum of all counts for use as a stat on the HomeView
-	 * @return sum of all anime counts
+	 * @param mt MediaType to get data for
+	 * @throws IllegalArgumentException if no MediaType is indicated
+	 * @return sum of all anime or manga counts
 	 */
-	public String getCountSum() {
+	public String getCountSum(MediaType mt) {
 		int tally = 0;
-		for (Anime a : animeList) {
-			tally += a.getCount();
+		switch (mt) {
+		case ANIME:
+			for (Media a : animeList) {
+				tally += a.getCount();
+			}
+			break;
+		case MANGA:
+			for (Media m : mangaList) {
+				tally += m.getCount();
+			}
+			break;
+		default:
+			throw new IllegalArgumentException("No MediaType indicated");
 		}
 
 		return "" + tally;
@@ -260,7 +441,8 @@ public class Manager {
 		int subCt = 0, dubCt = 0, otherCt = 0;
 		boolean tie = false;
 		//Tally counts for each language classification
-		for (Anime a : animeList) {
+		for (Media m : animeList) {
+			Anime a = (Anime) m;
 			switch (Language.parseLang(a.getLanguage())) {
 			
 			case SUB: 
@@ -309,27 +491,51 @@ public class Manager {
 	
 	
 	/**
-	 * Provides a string representation of the user's percent of finished anime,
+	 * Provides a string representation of the user's percent of finished media,
 	 * followed by the percent sign (%)
-	 * @return percent of total anime finished, "N/A" if list is empty
+	 * @param mt MediaType to get data for
+	 * @throws IllegalArgumentException if no MediaType is indicated
+	 * @return percent of total anime or manga finished, "N/A" if list is empty
 	 */
-	public String getPercentFinished() {
-		//If list is empty, return placeholder value
-		if (animeList == null || animeList.size() == 0) {
-			return "N/A";
-		}
-		
+	public String getPercentFinished(MediaType mt) {
 		int sumCt = 0;
 		int finCt = 0;
 		
-		//Iterate through each anime and tally the desired flag
-		for (Anime a : animeList) {
-			if (a.isFinished()) {
-				finCt++;
+		switch (mt) {
+		case ANIME:
+			//If list is empty, return placeholder value
+			if (animeList == null || animeList.size() == 0) {
+				return "N/A";
 			}
-			sumCt++;
+
+			//Iterate through each anime and tally the desired flag
+			for (Media a : animeList) {
+				if (a.isFinished()) {
+					finCt++;
+				}
+				sumCt++;
+			}
+			break;
+
+		case MANGA:
+			//If list is empty, return placeholder value
+			if (mangaList == null || mangaList.size() == 0) {
+				return "N/A";
+			}
+
+			//Iterate through each anime and tally the desired flag
+			for (Media m : mangaList) {
+				if (m.isFinished()) {
+					finCt++;
+				}
+				sumCt++;
+			}
+			break;
+
+		default:
+			throw new IllegalArgumentException("No MediaType indicated");
 		}
-		
+
 		//Get finished percent and build String
 		int percent = finCt * 100 / sumCt;
 
@@ -337,29 +543,83 @@ public class Manager {
 	}
 	
 	/**
-	 * Provides a string representation of the user's percent of dropped anime,
+	 * Provides a string representation of the user's percent of dropped media,
 	 * followed by the percent sign (%)
+	 * @param mt MediaType to get data for
+	 * @throws IllegalArgumentException if no MediaType is indicated
 	 * @return percent of total anime dropped, "N/A" if list is empty
 	 */
-	public String getPercentDropped() {
+	public String getPercentDropped(MediaType mt) {
+		int sumCt = 0;
+		int dropCt = 0;
+		
+		switch (mt) {
+		case ANIME:
+			//If list is empty, return placeholder value
+			if (animeList == null || animeList.size() == 0) {
+				return "N/A";
+			}
+
+			//Iterate through each anime and tally the desired flag
+			for (Media a : animeList) {
+				if (a.isDropped()) {
+					dropCt++;
+				}
+				sumCt++;
+			}
+			break;
+
+		case MANGA:
+			//If list is empty, return placeholder value
+			if (mangaList == null || mangaList.size() == 0) {
+				return "N/A";
+			}
+
+			//Iterate through each anime and tally the desired flag
+			for (Media m : mangaList) {
+				if (m.isDropped()) {
+					dropCt++;
+				}
+				sumCt++;
+			}
+			break;
+
+		default:
+			throw new IllegalArgumentException("No MediaType indicated");
+		}
+
+		//Get finished percent and build String
+		int percent = dropCt * 100 / sumCt;
+
+		return percent + "%";
+	}
+	
+	/**
+	 * Provides a string representation of the user's percent of ongoing media,
+	 * followed by the percent sign (%)
+	 * @return percent of total manga still ongoing, "N/A" if list is empty
+	 */
+	public String getPercentOngoing() {
 		//If list is empty, return placeholder value
-		if (animeList == null || animeList.size() == 0) {
+		if (mangaList == null || mangaList.size() == 0) {
 			return "N/A";
 		}
 		
 		int sumCt = 0;
-		int finCt = 0;
-		//Iterate through each anime and tally the desired flag
-		for (Anime a : animeList) {
-			if (a.isDropped()) {
-				finCt++;
+		int ongoingCt = 0;
+
+		//Currently only Manga can be ongoing, so no need to use a switch statement
+		for (Media m : mangaList) {
+			if (((Manga) m).isOngoing()) {
+				ongoingCt++;
 			}
 			sumCt++;
 		}
 		
 		//Get finished percent and build String
-		int percent = finCt * 100 / sumCt;
+		int percent = ongoingCt * 100 / sumCt;
 
 		return percent + "%";
+		
 	}
 }
