@@ -9,6 +9,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import data.Media.MediaType;
 import manager.Manager;
 
 import javax.swing.JOptionPane;
@@ -32,30 +33,33 @@ import java.awt.CardLayout;
 
 import javax.swing.UIManager;
 import java.awt.Dimension;
+import javax.swing.JLabel;
+import java.awt.Font;
 
 /**
- * Main container for user interface, holding a JAnimeTable and several JPanels in a Card Layout
+ * Main container for user interface, holding a JMediaTable and several JPanels in a Card Layout
  * @author Hunter Pruitt
- *
  */
 public class GUI extends JFrame {
 
-	/** Warning in case user tries to start browsing without any anime added */
-	private static final String BROWSE_WARNING = "To start browsing, you need to add at least one anime in your list.";
+	/** Warning in case user tries to start browsing without any media added */
+	private static final String BROWSE_WARNING = "To start browsing, you need to add at least one entry to your list.";
 
-	/** Notice that an anime needs to be selected to remove it*/
-	private static final String REMOVE_INTRUCTIONS = "You must select an anime to remove it.";
+	/** Notice that some media needs to be selected to be removed */
+	private static final String REMOVE_INTRUCTIONS = "You must select an entry to remove it.";
 	
-	/** Warning asking if user is sure they want to remove the anime, when used, the title of the anime is placed following */
+	/** Warning asking if user is sure they want to remove the entry, when used, the title of the media is placed following */
 	private static final String REMOVE_WARNING = "Are you sure you want to remove ";
 	
 	private JPanel contentPane;
 	private JScrollPane scrollPane;
-	private JAnimeTable table;
+	private JMediaTable table;
 	private JPanel cardPanel;
 
 	private JComboBox<String> fileOptions;
 
+	private JButton btnModeAnime;
+	private JButton btnModeManga;
 	private JButton btnHome;
 	private JButton btnBrowse;
 	private JButton btnAdd;
@@ -64,13 +68,14 @@ public class GUI extends JFrame {
 	
 	private HomeView homeView = new HomeView();
 	private BrowseView browseView = new BrowseView(this);
-	private NewAnimeView newAnimeView = new NewAnimeView(this);
+	private NewAnimeView addView = new NewAnimeView(this);
 	private OptionsView optionsView = new OptionsView(this);
 	
 	/** Used to prevent table row selection events from firing when table is being rebuilt and such */
 	private boolean engageTableListener = true;
 	
 	//TODO: change remove functionality to go by browse's current, not the table's current, fix room for error and existing bug
+	//TODO: implement change mode buttons
 	
 	/**
 	 * Launch the application.
@@ -151,7 +156,7 @@ public class GUI extends JFrame {
 		cardPanel.setLayout(new CardLayout(0, 0));
 				
 		cardPanel.add(homeView, "homeView");
-		cardPanel.add(newAnimeView, "addView");
+		cardPanel.add(addView, "addView");
 		cardPanel.add(browseView, "browseView");
 		cardPanel.add(optionsView, "optionsView");
 
@@ -164,6 +169,20 @@ public class GUI extends JFrame {
 		fileOptions.addItem("Save");
 
 		toolBar.add(fileOptions);
+		
+		JLabel lblMode = new JLabel("Mode:");
+		lblMode.setFont(new Font("Tahoma", Font.BOLD, 11));
+		toolBar.add(lblMode);
+		
+		btnModeAnime = new JButton("Anime");
+		toolBar.add(btnModeAnime);
+		
+		btnModeManga = new JButton("Manga");
+		toolBar.add(btnModeManga);
+		
+		JLabel lblView = new JLabel("View:");
+		lblView.setFont(new Font("Tahoma", Font.BOLD, 11));
+		toolBar.add(lblView);
 		
 		btnHome = new JButton("Home");
 		btnHome.setRequestFocusEnabled(false);
@@ -189,7 +208,7 @@ public class GUI extends JFrame {
 		
 		
 		//Declare table model and override isCellEditable so that no cells are editable
-		table = new JAnimeTable();
+		table = new JMediaTable();
 				
 		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
@@ -282,7 +301,7 @@ public class GUI extends JFrame {
 					setCard("homeView");
 					toggleToolbarButtons(btnHome);
 
-					browseView.setCurrentAnime(null);
+					browseView.setCurrentEntry(null);
 				} else {
 					return;
 				}
@@ -294,8 +313,8 @@ public class GUI extends JFrame {
 		btnBrowse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//If list is empty issue a warning that at least one anime needs to be added for this to work.
-				if (Manager.getInstance().getAnimeList() == null ||
-						Manager.getInstance().getAnimeList().size() == 0) {
+				if (Manager.getInstance().getList() == null ||
+						Manager.getInstance().getList().size() == 0) {
 					JOptionPane.showMessageDialog(rootPane, BROWSE_WARNING);
 					return;
 				}
@@ -315,7 +334,7 @@ public class GUI extends JFrame {
 					table.clearSelection();
 					setCard("addView");
 					toggleToolbarButtons(btnAdd);
-					browseView.setCurrentAnime(null);
+					browseView.setCurrentEntry(null);
 				} else {
 					return;
 				}
@@ -334,7 +353,7 @@ public class GUI extends JFrame {
 				} else {
 
 					//Ask user if they are sure they want to remove the anime
-					int ans = JOptionPane.showConfirmDialog(rootPane, REMOVE_WARNING + browseView.getCurrentAnime().getTitle() + "?");
+					int ans = JOptionPane.showConfirmDialog(rootPane, REMOVE_WARNING + browseView.getCurrentEntry().getTitle() + "?");
 					if (ans != JOptionPane.YES_OPTION) {
 						//If not yes, stop operation
 						return;
@@ -342,7 +361,7 @@ public class GUI extends JFrame {
 						//Remove the indicated element from Manager's master copy of the list
 						Manager.getInstance().removeAnime(selected);
 						//Reload data
-						updateData();
+						updateData(null);
 						toggleToolbarButtons(btnHome);
 						setCard("homeView");
 						
@@ -359,7 +378,7 @@ public class GUI extends JFrame {
 					table.clearSelection();
 					setCard("optionsView");
 					toggleToolbarButtons(btnOptions);
-					browseView.setCurrentAnime(null);
+					browseView.setCurrentEntry(null);
 
 				} else {
 					return;
@@ -382,8 +401,8 @@ public class GUI extends JFrame {
 	        	//Do nothing if selecting anime that is already being viewed
 	        	//May seem pointless, but protects against recursion when program has to counter user selection
 	        	//in situations where user accidently leaves unsaved data and decides to return in the warning prompt
-	        	int browseIdx = Manager.getInstance().getAnimeList().indexOf(browseView.getCurrentAnime());
-	        	if (browseView.getCurrentAnime() != null && table.getSelectedRow() == browseIdx) {
+	        	int browseIdx = Manager.getInstance().getList().indexOf(browseView.getCurrentEntry());
+	        	if (browseView.getCurrentEntry() != null && table.getSelectedRow() == browseIdx) {
 	        		return;
 	        	}
 	        	
@@ -393,7 +412,7 @@ public class GUI extends JFrame {
 		        	int idx = table.getSelectedRow();
 		        	//idx is -1 when table row is deselected
 		        	if (idx != -1) {
-			        	browseView.setCurrentAnime(Manager.getInstance().getAnimeList().get(idx));	
+			        	browseView.setCurrentEntry(Manager.getInstance().getList().get(idx));	
 		        	}	        	
 		        	//Change card
 		        	toggleToolbarButtons(btnBrowse);
@@ -417,7 +436,7 @@ public class GUI extends JFrame {
     	CardLayout cl = (CardLayout) cardPanel.getLayout();
     	cl.show(cardPanel, view);
     	// In case the user is leaving the NewAnimeView, reset the top text instructions and fields.
-    	newAnimeView.resetCard();
+    	addView.resetCard();
     	//In case the user is leaving the OptionsView, reset selected to current preferences
     	optionsView.displayCurrentSelection();
 	}
@@ -466,8 +485,12 @@ public class GUI extends JFrame {
 	
 	/**
 	 * Updates the table and statistics on the home view
+	 * @param mt MediaType to be displayed, null if media type is not changed
 	 */
-	public void updateData() {
+	public void updateData(MediaType mt) {
+		if (mt != null) {
+			Manager.getInstance().setCurrentList(mt);
+		}
 		updateTable();
 		homeView.updateStats();
 	}
@@ -477,9 +500,9 @@ public class GUI extends JFrame {
 	 */
 	private void updateTable() {
 		engageTableListener = false;
-		table.getRenderer().setRenderer(Manager.getInstance().getPreferences().getColorMethod());
+		table.getRenderer().setRenderer(Manager.getInstance().getAnimePreferences().getColorMethod());
 
-		int numRows = Manager.getInstance().getAnimeList().size();
+		int numRows = Manager.getInstance().getList().size();
 
 
 		//Get sorted table
@@ -505,5 +528,4 @@ public class GUI extends JFrame {
 	public void setTableSelected(int idx) {
     	table.setRowSelectionInterval(idx, idx);		
 	}
-
 }
