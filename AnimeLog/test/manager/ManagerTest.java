@@ -35,7 +35,7 @@ class ManagerTest {
 	@BeforeEach
 	void setUp() {
 		Manager.getInstance().processFile(TEST_FILE);
-		animeList = Manager.getInstance().getAnimeList();
+		animeList = Manager.getInstance().getList();
 		mangaList = Manager.getInstance().getMangaList();
 	}
 

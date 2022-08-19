@@ -35,6 +35,9 @@ public class Manager {
 	/** Object containing references to user data and preferences */
 	private Data userData;
 	
+	/** Pointer to the list to currently display */
+	private SortedMediaList currentList;
+	
 	/**
 	 * Initializes the Manager object, and creates empty or default user data so that it is not null.
 	 * Sorting method is set to alphabetical by default.
@@ -43,6 +46,7 @@ public class Manager {
 		userData = new Data();
 		animeList = userData.getAlphabeticalAnimeList();
 		mangaList = userData.getAlphabeticalMangaList();
+		currentList = animeList;
 	}
 
 	/** 
@@ -73,6 +77,8 @@ public class Manager {
 		} else if (userData.getMangaPreferences().getSortMethod() == SortFocus.NUMERICAL) {
 			mangaList = userData.getNumericalMangaList();
 		}
+		
+		//TODO: set currentList depending on if Anime list is even present in import data
 	}
 	
 	/**
@@ -100,19 +106,26 @@ public class Manager {
 	}
 
 	/**
-	 * Provides the animeList for use in other classes
-	 * @return the animeList
+	 * Provides whichever SortedMediaList is currently being used for use in other classes
+	 * @return the currentList
 	 */
-	public SortedMediaList getAnimeList() {
-		return animeList;
+	public SortedMediaList getList() {
+		return currentList;
 	}
 
 	/**
-	 * Provides the mangaList for use in other classes
-	 * @return the mangaList
+	 * Sets the currentList for use with the GUI.
+	 * @param mt MediaType enum for which list should be used
 	 */
-	public SortedMediaList getMangaList() {
-		return mangaList;
+	public void setCurrentList(MediaType mt) {
+		switch (mt) {
+		case ANIME:
+			currentList = animeList;
+			break;
+		case MANGA:
+			currentList = mangaList;
+			break;
+		}
 	}
 
 	/**

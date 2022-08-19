@@ -34,6 +34,7 @@ public class BrowseView extends JPanel {
 
 	private static final String WARNING_MESSAGE = "You have unsaved changes. Are you sure you want to leave?";
 	
+	/** Pointer to the GUI that this panel is in */
 	private GUI mainGUI;
 
 	/** Indicates which type of Media is being browsed, set in setCurrentEntry */
@@ -98,7 +99,6 @@ public class BrowseView extends JPanel {
 		add(btnPrevious);
 		
 		//Initialize components of card layouts
-		
 		cardLayout = new JPanel();
 		cardLayout.setBounds(10, 11, 405, 326);
 		add(cardLayout);
