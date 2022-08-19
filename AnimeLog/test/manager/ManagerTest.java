@@ -23,11 +23,9 @@ class ManagerTest {
 	/** Location of file used for testing */
 	private final String TEST_FILE = "test-files/SixWorkingImports.txt";
 	
-	/** Pointer to sorted anime list, refreshed with each test */
-	private SortedMediaList animeList;
+	/** Pointer to current focus list, refreshed with each test */
+	private SortedMediaList currentList;
 	
-	/** Pointer to sorted manga list, refreshed with each test */
-	private SortedMediaList mangaList;
 
 	/**
 	 * Loads the test file before each test to ensure tests do not interfere with each other
@@ -35,8 +33,6 @@ class ManagerTest {
 	@BeforeEach
 	void setUp() {
 		Manager.getInstance().processFile(TEST_FILE);
-		animeList = Manager.getInstance().getList();
-		mangaList = Manager.getInstance().getMangaList();
 	}
 
 	/**
@@ -46,8 +42,11 @@ class ManagerTest {
 	void testImport() {
 		
 		//Anime tests
-		assertEquals(3, animeList.size());
-		Anime a1 = (Anime) animeList.get(0);
+		Manager.getInstance().setCurrentList(MediaType.ANIME);
+		currentList = Manager.getInstance().getList();
+		
+		assertEquals(3, currentList.size());
+		Anime a1 = (Anime) currentList.get(0);
 
 		//Test each entry of the list
 		//Entry 1
@@ -65,7 +64,7 @@ class ManagerTest {
 				);
 		
 		//Entry 2
-		Anime a2 = (Anime) animeList.get(1);
+		Anime a2 = (Anime) currentList.get(1);
 		assertAll(
 				() -> assertEquals("Naruto", a2.getTitle()),
 				() -> assertEquals(2002, a2.getYear()),
@@ -80,7 +79,7 @@ class ManagerTest {
 				);
 
 		//Entry 3
-		Anime a3 = (Anime) animeList.get(2);
+		Anime a3 = (Anime) currentList.get(2);
 		assertAll(
 				() -> assertEquals("One Piece", a3.getTitle()),
 				() -> assertEquals(1999, a3.getYear()),
@@ -95,8 +94,10 @@ class ManagerTest {
 				);
 		
 		//Manga tests
-		assertEquals(3, mangaList.size());
-		Manga m1 = (Manga) mangaList.get(0);
+		Manager.getInstance().setCurrentList(MediaType.MANGA);
+		currentList = Manager.getInstance().getList();
+		assertEquals(3, currentList.size());
+		Manga m1 = (Manga) currentList.get(0);
 
 		//Test each entry of the list
 		//Entry 1
@@ -114,7 +115,7 @@ class ManagerTest {
 				);
 		
 		//Entry 2
-		Manga m2 = (Manga) mangaList.get(1);
+		Manga m2 = (Manga) currentList.get(1);
 		assertAll(
 				() -> assertEquals("Chainsaw Man", m2.getTitle()),
 				() -> assertEquals(2018, m2.getYear()),
@@ -130,7 +131,7 @@ class ManagerTest {
 				);
 
 		//Entry 3
-		Manga m3 = (Manga) mangaList.get(2);
+		Manga m3 = (Manga) currentList.get(2);
 		assertAll(
 				() -> assertEquals("Look Back", m3.getTitle()),
 				() -> assertEquals(2021, m3.getYear()),
@@ -240,6 +241,9 @@ class ManagerTest {
 	 */
 	@Test
 	void testEditAnimeList() {
+		Manager.getInstance().setCurrentList(MediaType.ANIME);
+		currentList = Manager.getInstance().getList();
+		
 		//Test exceptions for adding
 		Exception e1 = assertThrows(IllegalArgumentException.class, ()-> Manager.getInstance().addAnime(null));
 		assertEquals("Tried to add non-Anime object to Anime list.", e1.getMessage());
@@ -254,14 +258,14 @@ class ManagerTest {
 		//Test add
 		Anime testAnime = new Anime("a", 1999, 0, Language.DUB, Type.SERIES, false, false, null, null, null);
 		Manager.getInstance().addAnime(testAnime);
-		assertEquals(4, animeList.size());
-		assertEquals(testAnime, animeList.get(0));
+		assertEquals(4, currentList.size());
+		assertEquals(testAnime, currentList.get(0));
 
 		//Test remove
 		Manager.getInstance().removeAnime(0);
-		assertEquals(3, animeList.size());
+		assertEquals(3, currentList.size());
 		assertEquals(new Anime("Gurren Lagann", 2007, 26, Language.SUB, Type.SPECIAL, true, false, "Hiroyuki Imaishi", "Gainax", "Very good op!"), 
-				animeList.get(0));
+				currentList.get(0));
 	}
 	
 	/** 
@@ -269,6 +273,9 @@ class ManagerTest {
 	 */
 	@Test
 	void testEditMangaList() {
+		Manager.getInstance().setCurrentList(MediaType.MANGA);
+		currentList = Manager.getInstance().getList();
+		
 		//Test exceptions for adding
 		Exception e1 = assertThrows(IllegalArgumentException.class, ()-> Manager.getInstance().addManga(null));
 		assertEquals("Tried to add non-Manga object to Manga list.", e1.getMessage());
@@ -283,14 +290,14 @@ class ManagerTest {
 		//Test add
 		Manga testManga = new Manga("a", 2000, 0, "B.A. Author", "Magazine Weekly", Type.SERIES, false, true, false, "");
 		Manager.getInstance().addManga(testManga);
-		assertEquals(4, mangaList.size());
-		assertEquals(testManga, mangaList.get(0));
+		assertEquals(4, currentList.size());
+		assertEquals(testManga, currentList.get(0));
 
 		//Test remove
 		Manager.getInstance().removeManga(0);
-		assertEquals(3, mangaList.size());
+		assertEquals(3, currentList.size());
 		assertEquals(new Manga("Fire Punch", 2016, 83, "Tatsuki Fujimoto", "Shonen Jump", Type.SERIES, true, false, false, ""), 
-				mangaList.get(0));
+				currentList.get(0));
 	}
 
 	/**
