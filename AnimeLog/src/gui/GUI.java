@@ -35,6 +35,8 @@ import javax.swing.UIManager;
 import java.awt.Dimension;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Component;
+import javax.swing.Box;
 
 /**
  * Main container for user interface, holding a JMediaTable and several JPanels in a Card Layout
@@ -50,6 +52,12 @@ public class GUI extends JFrame {
 	
 	/** Warning asking if user is sure they want to remove the entry, when used, the title of the media is placed following */
 	private static final String REMOVE_WARNING = "Are you sure you want to remove ";
+	
+	/** Used to prevent table row selection events from firing when table is being rebuilt and such */
+	private boolean engageTableListener = true;
+	
+	/** Indicates which type of Media is being worked with, set at import and whenever changed*/
+	private MediaType mediaMode = MediaType.ANIME;
 	
 	private JPanel contentPane;
 	private JScrollPane scrollPane;
@@ -70,13 +78,11 @@ public class GUI extends JFrame {
 	private BrowseView browseView = new BrowseView(this);
 	private NewEntryView addView = new NewEntryView(this);
 	private OptionsView optionsView = new OptionsView(this);
-	
-	/** Used to prevent table row selection events from firing when table is being rebuilt and such */
-	private boolean engageTableListener = true;
-	
-	/** Indicates which type of Media is being worked with, set at import and whenever changed*/
-	private MediaType mediaMode;
-	
+	private Component strutModeL;
+	private Component strutModeR;
+	private Component strutViewR;
+	private Component strutViewL;
+		
 	//TODO: change remove functionality to go by browse's current, not the table's current, fix room for error and existing bug
 	//TODO: implement change mode buttons
 	
@@ -165,7 +171,6 @@ public class GUI extends JFrame {
 
 		fileOptions = new JComboBox<String>();
 
-
 		//Header and options for the fileOptions dropdown
 		fileOptions.addItem("File");
 		fileOptions.addItem("Load");
@@ -173,9 +178,16 @@ public class GUI extends JFrame {
 
 		toolBar.add(fileOptions);
 		
+		strutModeL = Box.createHorizontalStrut(20);
+		toolBar.add(strutModeL);
+		
 		JLabel lblMode = new JLabel("Mode:");
 		lblMode.setFont(new Font("Tahoma", Font.BOLD, 11));
 		toolBar.add(lblMode);
+		
+		strutModeR = Box.createHorizontalStrut(20);
+		strutModeR.setPreferredSize(new Dimension(5, 0));
+		toolBar.add(strutModeR);
 		
 		btnModeAnime = new JButton("Anime");
 		toolBar.add(btnModeAnime);
@@ -183,9 +195,17 @@ public class GUI extends JFrame {
 		btnModeManga = new JButton("Manga");
 		toolBar.add(btnModeManga);
 		
+		strutViewL = Box.createHorizontalStrut(20);
+		strutViewL.setPreferredSize(new Dimension(15, 0));
+		toolBar.add(strutViewL);
+		
 		JLabel lblView = new JLabel("View:");
 		lblView.setFont(new Font("Tahoma", Font.BOLD, 11));
 		toolBar.add(lblView);
+		
+		strutViewR = Box.createHorizontalStrut(20);
+		strutViewR.setPreferredSize(new Dimension(5, 0));
+		toolBar.add(strutViewR);
 		
 		btnHome = new JButton("Home");
 		btnHome.setRequestFocusEnabled(false);
@@ -210,10 +230,9 @@ public class GUI extends JFrame {
 		toggleToolbarButtons(btnHome);
 		
 		
-		//Declare table model and override isCellEditable so that no cells are editable
-		table = new JMediaTable();
-				
-		
+		//Instantiate table and set metadata
+		table = new JMediaTable(this);
+
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
@@ -225,7 +244,7 @@ public class GUI extends JFrame {
 		scrollPane.setViewportView(table);
 		contentPane.setLayout(gl_contentPane);
 
-		
+
 		//Logo from
 		//https://www.flaticon.com/premium-icon/anime_2314736?term=anime&related_id=2314736#
 		setIconImage(Toolkit.getDefaultToolkit().getImage(GUI.class.getResource("/resources/icon_24.png")));
