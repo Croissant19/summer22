@@ -64,6 +64,7 @@ public class GUI extends JFrame {
 	private JMediaTable table;
 	private JPanel cardPanel;
 
+	private JToolBar toolBar;
 	private JComboBox<String> fileOptions;
 
 	private JButton btnModeAnime;
@@ -130,12 +131,20 @@ public class GUI extends JFrame {
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportView(table);
 		
-		JToolBar toolBar = new JToolBar();
-		toolBar.setFloatable(false);
+		initToolbar();
+
+		//Create cards
 		cardPanel = new JPanel();
 		cardPanel.setMaximumSize(new Dimension(450, 300));
 
+		cardPanel.setLayout(new CardLayout(0, 0));
+				
+		cardPanel.add(homeView, "homeView");
+		cardPanel.add(addView, "addView");
+		cardPanel.add(browseView, "browseView");
+		cardPanel.add(optionsView, "optionsView");
 		
+		//Group layout info
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -160,14 +169,36 @@ public class GUI extends JFrame {
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		
+
+		//Disable home button to indicate that is where you start
+		toggleToolbarButtons(btnHome);
+
+		//Instantiate table and set metadata
+		table = new JMediaTable(this);
+
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.getTableHeader().setReorderingAllowed(false);
+		table.getTableHeader().setResizingAllowed(false);
 		
-		//Create cards
-		cardPanel.setLayout(new CardLayout(0, 0));
-				
-		cardPanel.add(homeView, "homeView");
-		cardPanel.add(addView, "addView");
-		cardPanel.add(browseView, "browseView");
-		cardPanel.add(optionsView, "optionsView");
+		table.getColumnModel().getColumn(0).setPreferredWidth(40);
+		table.getColumnModel().getColumn(1).setPreferredWidth(150);
+		table.getColumnModel().getColumn(2).setPreferredWidth(40);
+		scrollPane.setViewportView(table);
+		contentPane.setLayout(gl_contentPane);
+
+
+		//Logo from
+		//https://www.flaticon.com/premium-icon/anime_2314736?term=anime&related_id=2314736#
+		setIconImage(Toolkit.getDefaultToolkit().getImage(GUI.class.getResource("/resources/icon_24.png")));
+	}
+	
+	/**
+	 * Creates and adds the components for the toolbar
+	 */
+	private void initToolbar() {
+		toolBar = new JToolBar();
+		toolBar.setFloatable(false);
 
 		fileOptions = new JComboBox<String>();
 
@@ -224,32 +255,9 @@ public class GUI extends JFrame {
 		toolBar.add(btnRemove);
 		
 		btnOptions = new JButton("Options");
-		toolBar.add(btnOptions);
-
-		//Disable home button to indicate that is where you start
-		toggleToolbarButtons(btnHome);
-		
-		
-		//Instantiate table and set metadata
-		table = new JMediaTable(this);
-
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.getTableHeader().setReorderingAllowed(false);
-		table.getTableHeader().setResizingAllowed(false);
-		
-		table.getColumnModel().getColumn(0).setPreferredWidth(40);
-		table.getColumnModel().getColumn(1).setPreferredWidth(150);
-		table.getColumnModel().getColumn(2).setPreferredWidth(40);
-		scrollPane.setViewportView(table);
-		contentPane.setLayout(gl_contentPane);
-
-
-		//Logo from
-		//https://www.flaticon.com/premium-icon/anime_2314736?term=anime&related_id=2314736#
-		setIconImage(Toolkit.getDefaultToolkit().getImage(GUI.class.getResource("/resources/icon_24.png")));
+		toolBar.add(btnOptions);		
 	}
-	
+
 	/**
 	 * Code for creating events
 	 */
@@ -522,24 +530,44 @@ public class GUI extends JFrame {
 	 */
 	private void updateTable() {
 		engageTableListener = false;
-		table.getRenderer().setRenderer(Manager.getInstance().getAnimePreferences().getColorMethod());
-
 		int numRows = Manager.getInstance().getList().size();
-
-
-		//Get sorted table
 		Object[][] rowVals;
-		rowVals = Manager.getInstance().getAllAnimeAsArray();
+		DefaultTableModel tm;
+		Object[] row;
+		
+		//Get sorted table using proper procedure
+		switch (mediaMode) {
+			case ANIME:
+				table.getRenderer().setRenderer(Manager.getInstance().getAnimePreferences().getColorMethod());
+				rowVals = Manager.getInstance().getAllAnimeAsArray();
 
-		DefaultTableModel tm = (DefaultTableModel) table.getModel();
-		tm.setRowCount(0);
-		Object[] row = new Object[3];
-		
-		for (int i = 0; i < numRows; i++) {
-			row = rowVals[i];
-			tm.addRow(row);
-		}		
-		
+				tm = (DefaultTableModel) table.getModel();
+				tm.setRowCount(0);
+				row = new Object[3];
+				
+				for (int i = 0; i < numRows; i++) {
+					row = rowVals[i];
+					tm.addRow(row);
+				}
+				
+				
+				
+				break;
+			case MANGA:
+				table.getRenderer().setRenderer(Manager.getInstance().getMangaPreferences().getColorMethod());
+				rowVals = Manager.getInstance().getAllMangaAsArray();
+				
+				tm = (DefaultTableModel) table.getModel();
+				tm.setRowCount(0);
+				row = new Object[3];
+				
+				for (int i = 0; i < numRows; i++) {
+					row = rowVals[i];
+					tm.addRow(row);
+				}
+		}
+
+		//Re-engage table listener
 		engageTableListener = true;
 	}
 	

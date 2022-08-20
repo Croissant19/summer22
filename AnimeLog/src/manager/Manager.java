@@ -78,7 +78,15 @@ public class Manager {
 			mangaList = userData.getNumericalMangaList();
 		}
 		
-		//TODO: set currentList depending on if Anime list is even present in import data
+		//The animeList is the default
+		currentList = animeList;
+		
+		//TODO: ensure this is protected against null pointers
+		//However, if animeList is empty and mangaList is not, then mangaList is used
+		if (animeList.size() == 0 && mangaList.size() != 0) {
+			currentList = mangaList;
+		}
+		
 	}
 	
 	/**

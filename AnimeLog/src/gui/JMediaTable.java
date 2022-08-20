@@ -99,10 +99,7 @@ public class JMediaTable extends JTable {
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean hasFocus, int row, int col) {
 
-			super.getTableCellRendererComponent(table, value, selected, hasFocus, row, col);
-
-			//TODO: check both possible implementations, one by using currentMediaMode field in Manager, and other by usingunlikely work below
-			
+			super.getTableCellRendererComponent(table, value, selected, hasFocus, row, col);			
 			
 			switch (mainGUI.getMediaMode()) {
 			case ANIME:
