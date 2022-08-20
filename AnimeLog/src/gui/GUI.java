@@ -68,11 +68,14 @@ public class GUI extends JFrame {
 	
 	private HomeView homeView = new HomeView();
 	private BrowseView browseView = new BrowseView(this);
-	private NewAnimeView addView = new NewAnimeView(this);
+	private NewEntryView addView = new NewEntryView(this);
 	private OptionsView optionsView = new OptionsView(this);
 	
 	/** Used to prevent table row selection events from firing when table is being rebuilt and such */
 	private boolean engageTableListener = true;
+	
+	/** Indicates which type of Media is being worked with, set at import and whenever changed*/
+	private MediaType mediaMode;
 	
 	//TODO: change remove functionality to go by browse's current, not the table's current, fix room for error and existing bug
 	//TODO: implement change mode buttons
@@ -527,5 +530,13 @@ public class GUI extends JFrame {
 	 */
 	public void setTableSelected(int idx) {
     	table.setRowSelectionInterval(idx, idx);		
+	}
+	
+	/**
+	 * Indicates which type of media is being worked with
+	 * @return MediaType enum for the type on entries the user can see/interact with
+	 */
+	public MediaType getMediaMode() {
+		return this.mediaMode;
 	}
 }

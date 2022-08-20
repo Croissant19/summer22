@@ -34,13 +34,12 @@ public class BrowseView extends JPanel {
 
 	private static final String WARNING_MESSAGE = "You have unsaved changes. Are you sure you want to leave?";
 	
-	/** Pointer to the GUI that this panel is in */
+	/** Pointer to the main GUI component, used for accessing mediaMode and other functions */
 	private GUI mainGUI;
 
-	/** Indicates which type of Media is being browsed, set in setCurrentEntry */
-	private MediaType mediaMode;
 	/** Indicates if user is able to edit data components, acts as a flag to prevent leaving unsaved data and such */
 	private boolean inEditMode = false;
+
 	/** The Media object currently being displayed */
 	private Media currentEntry;
 	
@@ -455,18 +454,19 @@ public class BrowseView extends JPanel {
 		});
 	}
 
-
 	/**
 	 * Sets the current entry to an entry on the list or null if changing view from browse view
 	 * @param m Media to load
 	 */
 	public void setCurrentEntry(Media m) {
-		//Set the media mode
-		if (currentEntry instanceof Anime) {
-			mediaMode = MediaType.ANIME;
-		} else if (currentEntry instanceof Manga) {
-			mediaMode = MediaType.MANGA;
-		}
+		//TODO: can remove this right?
+		
+//		//Set the media mode
+//		if (currentEntry instanceof Anime) {
+//			mediaMode = MediaType.ANIME;
+//		} else if (currentEntry instanceof Manga) {
+//			mediaMode = MediaType.MANGA;
+//		}
 		
 		this.currentEntry = m;
 		if (m != null) {
@@ -496,7 +496,7 @@ public class BrowseView extends JPanel {
 		String oldCount = "" + currentEntry.getCount();
 		//Return statements to compare each field until either a contrast is found or all match
 		try {
-			switch (mediaMode) {
+			switch (mainGUI.getMediaMode()) {
 			case ANIME:
 				Anime currentAnime = (Anime) currentEntry;
 				return !currentAnime.getTitle().equals(txtFldTitleAnime.getText()) 
@@ -540,7 +540,7 @@ public class BrowseView extends JPanel {
 	 */
 	private String getSelectedType() {
 		String type;
-		switch (mediaMode) {
+		switch (mainGUI.getMediaMode()) {
 		case ANIME:
 			if (rdBtnSeriesAnime.isSelected()) {
 				type = Type.SERIES.formattedName;
@@ -574,7 +574,7 @@ public class BrowseView extends JPanel {
 	 * @throws IllegalArgumentException if type is not an accepted Type
 	 */
 	private void setSelectedType(String type) {
-		switch (mediaMode) {
+		switch (mainGUI.getMediaMode()) {
 		case ANIME:
 			if (type.equals(Type.SERIES.formattedName)) {
 				rdBtnSeriesAnime.setSelected(true);
@@ -641,7 +641,7 @@ public class BrowseView extends JPanel {
 	 */
 	private void changeEditMode() {
 		//Toggle booleans for editable-ness
-		switch (mediaMode) {
+		switch (mainGUI.getMediaMode()) {
 		case ANIME:
 			txtFldTitleAnime.setEditable(!txtFldTitleAnime.isEditable());
 			txtFldYearAnime.setEditable(!txtFldYearAnime.isEditable());
@@ -690,7 +690,7 @@ public class BrowseView extends JPanel {
 		clearFields();
 		
 		//Load data
-		switch (mediaMode) {
+		switch (mainGUI.getMediaMode()) {
 		case ANIME:
 			Anime currentAnime = (Anime) currentEntry;
 			txtFldTitleAnime.setText(currentAnime.getTitle());

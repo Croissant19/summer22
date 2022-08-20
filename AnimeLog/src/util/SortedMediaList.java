@@ -13,8 +13,6 @@ import data.Preferences.SortFocus;
  * @author Hunter Pruitt
  */
 public class SortedMediaList implements Iterable<Media> {
-
-	//TODO: ensure only of same type can be in the list? right?
 	
 	/** Number of elements in the list */
 	private int size;

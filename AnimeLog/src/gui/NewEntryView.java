@@ -36,12 +36,9 @@ public class NewEntryView extends JPanel {
 	/** Text that appears in the box if an anime has already been added since opening this view */
 	private String secondaryText;
 	
-	/** Pointer to the main GUI component */
+	/** Pointer to the main GUI component, used for accessing mediaMode and other functions */
 	private GUI mainGUI;
 	
-	//TODO: remove if no use
-	/** Indicates which type of Media is being browsed, set in setCurrentEntry */
-	private MediaType mediaMode;
 
 	private JTextField txtFldTitleAnime;
 	private JTextField txtFldYearAnime;
@@ -596,13 +593,4 @@ public class NewEntryView extends JPanel {
 		clearFields();
 	}
 	
-	//TODO: ensure used
-	/**
-	 * Sets which MediaType is being worked with so that the correct cards and actions are performed.
-	 * Called every time this view is visited.
-	 * @param mt
-	 */
-	public void setMediaMode(MediaType mt) {
-		this.mediaMode = mt;
-	}
 }
