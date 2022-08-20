@@ -632,7 +632,60 @@ public class Manager {
 		//Get finished percent and build String
 		int percent = ongoingCt * 100 / sumCt;
 
-		return percent + "%";
+		return percent + "%";	
+	}
+	
+	/**
+	 * Provides the name of the author found most frequently in the media list.
+	 * Subject to error if user is inconsistent with author spelling and spacing.
+	 * In case of a tie, the author that appeared first is returned
+	 * @return name of most common author
+	 */
+	public String getFavoredAuthor() {
+		//TODO: Test with empty, tie, and generic tests
+		/**
+		 * Object for linking an author String and an int counter of its frequency
+		 * @author Hunter Pruitt
+		 */
+		class AuthorAndCount { 
+		    String name;
+		    int frequency;
+		}
+
+		AuthorAndCount[] array = new AuthorAndCount[mangaList.size()];
 		
+		for (int i = 0; i < mangaList.size(); i++) {
+			String currentName = ((Manga) mangaList.get(i)).getAuthor();
+			int index = 0;
+			boolean alreadyInList = false;
+			while (array[index] != null) {
+				//If the name is already in the array
+				if (array[index].name.equals(currentName)) {
+					array[index].frequency++;
+					alreadyInList = true;
+					break;
+				}
+				index++;
+			}
+			//If the name is not in the array
+			if (!alreadyInList) {
+				AuthorAndCount aac = new AuthorAndCount();
+				aac.frequency = 1;
+				aac.name = currentName;
+				array[index] = aac;
+			}
+			
+		}
+		
+		//Get the AuthorAndCount from the array with the highest frequency
+		String currentHighestAuthor = "Not Found";
+		int currentHighestCount = 0;
+		for (AuthorAndCount aac : array) {
+			if (aac.frequency > currentHighestCount) {
+				currentHighestAuthor = aac.name;
+			}
+		}
+		
+		return currentHighestAuthor;
 	}
 }
