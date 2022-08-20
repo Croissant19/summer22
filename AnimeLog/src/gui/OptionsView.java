@@ -11,6 +11,7 @@ import manager.Manager;
 import javax.swing.JRadioButton;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 
+import data.Media.MediaType;
 import data.Preferences.ColorMethod;
 import data.Preferences.SortFocus;
 
@@ -47,6 +48,7 @@ public class OptionsView extends JPanel {
 	private JRadioButton rdBtnColorLanguage;
 	private JButton btnColor1;
 	private JButton btnColor2;
+	private JPanel panel;
 	
 	
 	/**
@@ -59,9 +61,14 @@ public class OptionsView extends JPanel {
 
 		setLayout(null);
 		
+		panel = new JPanel();
+		panel.setBounds(10, 11, 405, 319);
+		add(panel);
+		panel.setLayout(null);
+		
 		JPanel pnlFields = new JPanel();
-		pnlFields.setBounds(10, 11, 405, 319);
-		add(pnlFields);
+		pnlFields.setBounds(0, 0, 405, 319);
+		panel.add(pnlFields);
 		pnlFields.setLayout(null);
 		
 		rdBtnAlphabet = new JRadioButton("Title");
@@ -144,7 +151,7 @@ public class OptionsView extends JPanel {
 			
 				//Update data
 				applySelectedSortMethod();
-				mainGUI.updateData();
+				mainGUI.updateData(null);
 			}
 		});
 		rdBtnNumeric.addActionListener(new ActionListener() {
@@ -156,7 +163,7 @@ public class OptionsView extends JPanel {
 			
 				//Update data
 				applySelectedSortMethod();
-				mainGUI.updateData();
+				mainGUI.updateData(null);
 				
 			}
 		});
@@ -174,7 +181,7 @@ public class OptionsView extends JPanel {
 				
 				//Update data
 				applySelectedColorMethod();
-				mainGUI.updateData();
+				mainGUI.updateData(null);
 			}
 		});
 		rdBtnColorFinDrop.addActionListener(new ActionListener() {
@@ -188,7 +195,7 @@ public class OptionsView extends JPanel {
 			
 				//Update data
 				applySelectedColorMethod();
-				mainGUI.updateData();
+				mainGUI.updateData(null);
 			}
 		});
 		rdBtnColorSeriesSpecial.addActionListener(new ActionListener() {
@@ -202,7 +209,7 @@ public class OptionsView extends JPanel {
 
 				//Update data
 				applySelectedColorMethod();
-				mainGUI.updateData();
+				mainGUI.updateData(null);
 			}
 		});
 		rdBtnColorLanguage.addActionListener(new ActionListener() {
@@ -216,7 +223,7 @@ public class OptionsView extends JPanel {
 			
 				//Update data
 				applySelectedColorMethod();
-				mainGUI.updateData();
+				mainGUI.updateData(null);
 			}
 		});
 
@@ -224,18 +231,18 @@ public class OptionsView extends JPanel {
 		//Color choosers
 		btnColor1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Color oldColor = Manager.getInstance().getPreferences().getColor1();
+				Color oldColor = Manager.getInstance().getAnimePreferences().getColor1();
 				btnColor1.setBackground(getColorDialog(oldColor));
-				Manager.getInstance().setColor("Color1", btnColor1.getBackground());
-				mainGUI.updateData();
+				Manager.getInstance().setColor(mainGUI.getMediaMode(), "Color1", btnColor1.getBackground());
+				mainGUI.updateData(null);
 			}
 		});
 		btnColor2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Color oldColor = Manager.getInstance().getPreferences().getColor2();
+				Color oldColor = Manager.getInstance().getAnimePreferences().getColor2();
 				btnColor2.setBackground(getColorDialog(oldColor));
-				Manager.getInstance().setColor("Color2", btnColor2.getBackground());
-				mainGUI.updateData();
+				Manager.getInstance().setColor(mainGUI.getMediaMode(), "Color2", btnColor2.getBackground());
+				mainGUI.updateData(null);
 			}
 		});
 
@@ -278,7 +285,7 @@ public class OptionsView extends JPanel {
 		}
 		
 		//Report selection to Manager
-		Manager.getInstance().setColorMethod(colorBy);		
+		Manager.getInstance().setColorMethod(mainGUI.getMediaMode(), colorBy);		
 	}
 	
 	/**
@@ -298,7 +305,7 @@ public class OptionsView extends JPanel {
 		}
 
 		//Report selection to Manager
-		Manager.getInstance().setSortMethod(sortBy);
+		Manager.getInstance().setSortMethod(mainGUI.getMediaMode(), sortBy);
 	}
 
 	/**
@@ -306,7 +313,7 @@ public class OptionsView extends JPanel {
 	 * @throws IllegalArgumentException if the user has somehow stored an invalid selection
 	 */
 	public void displayCurrentSelection() {
-		SortFocus sortBy = Manager.getInstance().getPreferences().getSortMethod();
+		SortFocus sortBy = Manager.getInstance().getAnimePreferences().getSortMethod();
 		if (sortBy == SortFocus.ALPHABETICAL) {
 			rdBtnAlphabet.setSelected(true);
 			rdBtnNumeric.setSelected(false);
@@ -318,7 +325,7 @@ public class OptionsView extends JPanel {
 		}
 		
 		
-		ColorMethod colorBy = Manager.getInstance().getPreferences().getColorMethod();		
+		ColorMethod colorBy = Manager.getInstance().getAnimePreferences().getColorMethod();		
 		if (colorBy == ColorMethod.NO_COLOR) {
 			rdBtnNoColor.setSelected(true);
 			rdBtnColorFinDrop.setSelected(false);
@@ -343,8 +350,17 @@ public class OptionsView extends JPanel {
 			throw new IllegalArgumentException("Error with discovering user preferences");
 		}
 
-		btnColor1.setBackground(Manager.getInstance().getPreferences().getColor1());
-		btnColor2.setBackground(Manager.getInstance().getPreferences().getColor2());
+		//TODO: test that this is consistent
+		
+		//Hide language color options if current mode is Manga
+		if (mainGUI.getMediaMode() == MediaType.MANGA) {
+			rdBtnColorLanguage.setVisible(false);
+		} else {
+			rdBtnColorLanguage.setVisible(true);
+		}
+
+		btnColor1.setBackground(Manager.getInstance().getAnimePreferences().getColor1());
+		btnColor2.setBackground(Manager.getInstance().getAnimePreferences().getColor2());
 	}
 
 }

@@ -12,7 +12,7 @@ import java.awt.Font;
 import java.awt.CardLayout;
 
 /**
- * Defines the GUI components for creating a new Anime
+ * Defines the GUI components for the home view, with custom statistics for different Media Types
  * @author Hunter Pruitt
  */
 public class HomeView extends JPanel {
@@ -216,37 +216,37 @@ public class HomeView extends JPanel {
 		txtA4Manga.setBounds(121, 152, 61, 20);
 		pnlStatsManga.add(txtA4Manga);
 		
-		JLabel lblQ5Manga = new JLabel("Favored Language:");
+		JLabel lblQ5Manga = new JLabel("Most Read Mangaka:");
 		lblQ5Manga.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblQ5Manga.setBounds(207, 23, 117, 20);
+		lblQ5Manga.setBounds(207, 145, 131, 20);
 		pnlStatsManga.add(lblQ5Manga);
 		
 		txtA5Manga = new JTextField();
 		txtA5Manga.setEditable(false);
 		txtA5Manga.setColumns(10);
-		txtA5Manga.setBounds(323, 23, 61, 20);
+		txtA5Manga.setBounds(207, 167, 177, 20);
 		pnlStatsManga.add(txtA5Manga);
 
 		JLabel lblQ6Manga = new JLabel("Percent Finished:");
 		lblQ6Manga.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblQ6Manga.setBounds(207, 66, 117, 20);
+		lblQ6Manga.setBounds(207, 23, 117, 20);
 		pnlStatsManga.add(lblQ6Manga);
 		
 		txtA6Manga = new JTextField();
 		txtA6Manga.setEditable(false);
 		txtA6Manga.setColumns(10);
-		txtA6Manga.setBounds(323, 66, 61, 20);
+		txtA6Manga.setBounds(323, 23, 61, 20);
 		pnlStatsManga.add(txtA6Manga);
 
 		JLabel lblQ7Manga = new JLabel("Percent Dropped:");
 		lblQ7Manga.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblQ7Manga.setBounds(207, 109, 117, 20);
+		lblQ7Manga.setBounds(207, 66, 117, 20);
 		pnlStatsManga.add(lblQ7Manga);		
 
 		txtA7Manga = new JTextField();
 		txtA7Manga.setEditable(false);
 		txtA7Manga.setColumns(10);
-		txtA7Manga.setBounds(323, 109, 61, 20);
+		txtA7Manga.setBounds(323, 66, 61, 20);
 		pnlStatsManga.add(txtA7Manga);
 		
 		JLabel lblQ8Manga = new JLabel("Percent Ongoing:");
@@ -281,7 +281,6 @@ public class HomeView extends JPanel {
 			txtA2Manga.setText(Manager.getInstance().getNumSeries(MediaType.MANGA));
 			txtA3Manga.setText(Manager.getInstance().getNumSpecial(MediaType.MANGA));
 			txtA4Manga.setText(Manager.getInstance().getCountSum(MediaType.MANGA));
-			//TODO: implement getFavoredAuthor
 			txtA5Manga.setText(Manager.getInstance().getFavoredAuthor());		
 			txtA6Manga.setText(Manager.getInstance().getPercentFinished(MediaType.MANGA));
 			txtA7Manga.setText(Manager.getInstance().getPercentDropped(MediaType.MANGA));

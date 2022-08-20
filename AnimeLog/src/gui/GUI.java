@@ -66,7 +66,7 @@ public class GUI extends JFrame {
 	private JButton btnRemove;
 	private JButton btnOptions;
 	
-	private HomeView homeView = new HomeView();
+	private HomeView homeView = new HomeView(this);
 	private BrowseView browseView = new BrowseView(this);
 	private NewEntryView addView = new NewEntryView(this);
 	private OptionsView optionsView = new OptionsView(this);

@@ -33,7 +33,7 @@ import java.awt.CardLayout;
 public class BrowseView extends JPanel {
 
 	private static final String WARNING_MESSAGE = "You have unsaved changes. Are you sure you want to leave?";
-	
+
 	/** Pointer to the main GUI component, used for accessing mediaMode and other functions */
 	private GUI mainGUI;
 

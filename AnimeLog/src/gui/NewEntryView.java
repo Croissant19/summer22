@@ -22,7 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
 
 /**
- * Defines the GUI components for creating a new Anime
+ * Defines the GUI components for creating a new media entry
  * @author Hunter Pruitt
  */
 public class NewEntryView extends JPanel {

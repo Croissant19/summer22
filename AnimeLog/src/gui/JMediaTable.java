@@ -11,6 +11,7 @@ import javax.swing.table.TableModel;
 
 import data.Anime;
 import data.Anime.Language;
+import data.Manga;
 import data.Media;
 import data.Media.Type;
 import data.Preferences.ColorMethod;
@@ -40,6 +41,9 @@ public class JMediaTable extends JTable {
 	       return false;
 	    }
 	};
+
+	/** Pointer to the main GUI component, used for accessing mediaMode and other functions */
+	private GUI mainGUI;
 	
 	/** pointer to the table's ColorRenderer so that the color method therein can be changed */
 	private ColorRenderer renderer;
@@ -48,12 +52,14 @@ public class JMediaTable extends JTable {
 	 * Constructor for JMediaTable. Creates a JTable using the JTable(TableModel) constructor with this class's custom TableModel
 	 * and setting the default renderer to a ColorRenderer
 	 */
-	public JMediaTable() {
+	public JMediaTable(GUI gui) {
 		super(NO_EDIT_MODEL);
 		renderer = new ColorRenderer();
 		super.setDefaultRenderer(Object.class, renderer);
 		//Set header to bold
 		getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 11));
+		
+		mainGUI = gui;
 	}
 
 	/**
@@ -96,23 +102,43 @@ public class JMediaTable extends JTable {
 			super.getTableCellRendererComponent(table, value, selected, hasFocus, row, col);
 
 			//TODO: check both possible implementations, one by using currentMediaMode field in Manager, and other by usingunlikely work below
-			//Get Media object represented by row
-			Anime a = Manager.getInstance().getList().get(row);
-			//TODO: unlikely work
-			Media m = Manager.getInstance().getMangaList().get(row);
 			
-			//See if row meets status one
-			if (meetsStatusOne(a)) {
-				setBackground(Manager.getInstance().getAnimePreferences().getColor1());
-			} 
-			//See if row meets status two
-			else if (meetsStatusTwo(a)) {
-				setBackground(Manager.getInstance().getAnimePreferences().getColor2());
-			} else {
-				setBackground(Color.WHITE);
-				setForeground(Color.BLACK);
-			}
+			
+			switch (mainGUI.getMediaMode()) {
+			case ANIME:
+				//Get Media object represented by row
+				Anime a = (Anime) Manager.getInstance().getList().get(row);
 
+				//See if row meets status one
+				if (meetsStatusOne(a)) {
+					setBackground(Manager.getInstance().getAnimePreferences().getColor1());
+				} 
+				//See if row meets status two
+				else if (meetsStatusTwo(a)) {
+					setBackground(Manager.getInstance().getAnimePreferences().getColor2());
+				} else {
+					setBackground(Color.WHITE);
+					setForeground(Color.BLACK);
+				}
+				break;
+			case MANGA:
+				//Get Media object represented by row
+				Manga m = (Manga) Manager.getInstance().getList().get(row);
+
+				//See if row meets status one
+				if (meetsStatusOne(m)) {
+					setBackground(Manager.getInstance().getMangaPreferences().getColor1());
+				} 
+				//See if row meets status two
+				else if (meetsStatusTwo(m)) {
+					setBackground(Manager.getInstance().getMangaPreferences().getColor2());
+				} else {
+					setBackground(Color.WHITE);
+					setForeground(Color.BLACK);
+				}
+				break;
+			}
+			
 			return this;
 		}
 
