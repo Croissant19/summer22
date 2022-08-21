@@ -359,9 +359,7 @@ public class BrowseView extends JPanel {
 	/**
 	 * Creates events for components inside the card panel, so that fields can be edited/saved and interactables behave correctly
 	 */
-	private void createEvents() {
-		//TODO: manga events
-		
+	private void createEvents() {		
 		//Events pertaining to large buttons, edit/save, next, previous
 		//Edit/Save button
 		btnEdit.addActionListener(new ActionListener() {

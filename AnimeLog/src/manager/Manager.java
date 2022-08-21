@@ -644,11 +644,11 @@ public class Manager {
 	/**
 	 * Provides the name of the author found most frequently in the media list.
 	 * Subject to error if user is inconsistent with author spelling and spacing.
-	 * In case of a tie, the author that appeared first is returned
+	 * In case of a tie, "Tie" is returned
 	 * @return name of most common author
 	 */
 	public String getFavoredAuthor() {
-		//TODO: add special text if tie
+		//TODO: add special text if tie, TEST
 		/**
 		 * Object for linking an author String and an int counter of its frequency
 		 * @author Hunter Pruitt
@@ -685,11 +685,21 @@ public class Manager {
 		//Get the AuthorAndCount from the array with the highest frequency
 		String currentHighestAuthor = "Not Found";
 		int currentHighestCount = 0;
+		String secondHighestAuthor = "Not Found"; //Not used, but maybe in future development?
+		int secondHighestCount = 0;
 		for (AuthorAndCount aac : array) {
-			if (aac != null && aac.frequency > currentHighestCount) {
+			if (aac != null && aac.frequency >= currentHighestCount) {
+				//A new favored author displaces the previous currentHighestAuthor
+				secondHighestAuthor = currentHighestAuthor;
+				secondHighestCount = currentHighestCount;
+				
 				currentHighestAuthor = aac.name;
 				currentHighestCount = aac.frequency;
 			}
+		}
+		
+		if (currentHighestCount == secondHighestCount) {
+			return "Tie";
 		}
 		
 		return currentHighestAuthor;

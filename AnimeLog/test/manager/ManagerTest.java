@@ -363,6 +363,7 @@ class ManagerTest {
 		Manga m1 = new Manga("Mongo", 1999, 5, "foo", "bar", Type.SERIES, false, false, false, "");
 		Manga m2 = new Manga("Mungo", 1999, 15, "foo", "bar", Type.SERIES, false, false, false, "");
 		Manager.getInstance().addManga(m1);
+		assertEquals("Tie", Manager.getInstance().getFavoredAuthor());
 		Manager.getInstance().addManga(m2);
 		assertEquals("foo", Manager.getInstance().getFavoredAuthor());
 	}
