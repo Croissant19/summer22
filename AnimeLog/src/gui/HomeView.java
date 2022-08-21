@@ -265,7 +265,7 @@ public class HomeView extends JPanel {
 	 * Updates the statistics on the HomeView after loading a file or editing the anime list stored in Manager
 	 */
 	public void updateStats() {
-		toggleStatVisibility(mainGUI.getMediaMode());
+		toggleMediaCards(mainGUI.getMediaMode());
 		
 		switch (mainGUI.getMediaMode()) {
 		case ANIME:
@@ -295,7 +295,7 @@ public class HomeView extends JPanel {
 	 * rendering the components expected for the user's mediaMode visible
 	 * @param mediaMode MediaType currently being used in the program
 	 */
-	private void toggleStatVisibility(MediaType mediaMode) {
+	private void toggleMediaCards(MediaType mediaMode) {
     	CardLayout cl = (CardLayout) cardLayout.getLayout();
 		if (mediaMode == MediaType.ANIME) {
 	    	cl.show(cardLayout, "statsAnime");

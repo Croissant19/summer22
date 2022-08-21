@@ -222,10 +222,11 @@ public class GUI extends JFrame {
 		toolBar.add(strutModeR);
 		
 		btnModeAnime = new JButton("Anime");
-
+		btnModeAnime.setRequestFocusEnabled(false);
 		toolBar.add(btnModeAnime);
-		
+
 		btnModeManga = new JButton("Manga");
+		btnModeManga.setRequestFocusEnabled(false);
 		toolBar.add(btnModeManga);
 		
 		strutViewL = Box.createHorizontalStrut(20);
@@ -257,6 +258,7 @@ public class GUI extends JFrame {
 		toolBar.add(btnRemove);
 		
 		btnOptions = new JButton("Options");
+		btnOptions.setRequestFocusEnabled(false);
 		toolBar.add(btnOptions);		
 	}
 
@@ -412,6 +414,7 @@ public class GUI extends JFrame {
 				if (browseView.canLeave()) {
 
 					table.clearSelection();
+					addView.toggleMediaCards(mediaMode);
 					setCard("addView");
 					toggleViewButtons(btnAdd);
 					browseView.setCurrentEntry(null);

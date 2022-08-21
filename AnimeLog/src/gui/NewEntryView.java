@@ -581,6 +581,20 @@ public class NewEntryView extends JPanel {
 		secondaryText = "<html><em>" + title + "</em><br>was created successfully. Feel free to add another!</html>";
 		lblTopInfoManga.setText(secondaryText);
 	}
+
+	/**
+	 * Toggles which card on the cardLayout Panel is visible, therefore 
+	 * rendering the components expected for the user's mediaMode visible
+	 * @param mediaMode MediaType currently being used in the program
+	 */
+	public void toggleMediaCards(MediaType mediaMode) {
+    	CardLayout cl = (CardLayout) cardLayout.getLayout();
+		if (mediaMode == MediaType.ANIME) {
+	    	cl.show(cardLayout, "addAnime");
+		} else if (mediaMode == MediaType.MANGA) {
+	    	cl.show(cardLayout, "addManga");
+		}
+	}
 	
 	/**
 	 * Clears the card by resetting instruction text at the top of the panel to the default and clearing all fields..

@@ -683,6 +683,8 @@ public class BrowseView extends JPanel {
 		//Load data
 		switch (mainGUI.getMediaMode()) {
 		case ANIME:
+			toggleMediaCards(MediaType.ANIME);
+			
 			Anime currentAnime = (Anime) currentEntry;
 			txtFldTitleAnime.setText(currentAnime.getTitle());
 			txtFldYearAnime.setText("" + currentAnime.getYear());
@@ -706,6 +708,8 @@ public class BrowseView extends JPanel {
 			txtFldStudioAnime.setCaretPosition(0);
 			break;
 		case MANGA:
+			toggleMediaCards(MediaType.MANGA);
+			
 			Manga currentManga = (Manga) currentEntry;
 			txtFldTitleManga.setText(currentManga.getTitle());
 			txtFldYearManga.setText("" + currentManga.getYear());
@@ -805,6 +809,21 @@ public class BrowseView extends JPanel {
 
 		return leave;
 	}
+	
+	/**
+	 * Toggles which card on the cardLayout Panel is visible, therefore 
+	 * rendering the components expected for the user's mediaMode visible
+	 * @param mediaMode MediaType currently being used in the program
+	 */
+	private void toggleMediaCards(MediaType mediaMode) {
+    	CardLayout cl = (CardLayout) cardLayout.getLayout();
+		if (mediaMode == MediaType.ANIME) {
+	    	cl.show(cardLayout, "browseAnime");
+		} else if (mediaMode == MediaType.MANGA) {
+	    	cl.show(cardLayout, "browseManga");
+		}
+	}
+
 
 	
 	/**
