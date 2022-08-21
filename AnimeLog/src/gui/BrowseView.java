@@ -458,16 +458,7 @@ public class BrowseView extends JPanel {
 	 * Sets the current entry to an entry on the list or null if changing view from browse view
 	 * @param m Media to load
 	 */
-	public void setCurrentEntry(Media m) {
-		//TODO: can remove this right?
-		
-//		//Set the media mode
-//		if (currentEntry instanceof Anime) {
-//			mediaMode = MediaType.ANIME;
-//		} else if (currentEntry instanceof Manga) {
-//			mediaMode = MediaType.MANGA;
-//		}
-		
+	public void setCurrentEntry(Media m) {		
 		this.currentEntry = m;
 		if (m != null) {
 			loadData();

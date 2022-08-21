@@ -689,7 +689,7 @@ public class Manager {
 		String currentHighestAuthor = "Not Found";
 		int currentHighestCount = 0;
 		for (AuthorAndCount aac : array) {
-			if (aac.frequency > currentHighestCount) {
+			if (aac != null && aac.frequency > currentHighestCount) {
 				currentHighestAuthor = aac.name;
 			}
 		}

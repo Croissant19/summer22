@@ -353,7 +353,8 @@ class ManagerTest {
 				() -> assertEquals("1", Manager.getInstance().getNumSpecial(MediaType.MANGA)),
 				() -> assertEquals("0%", Manager.getInstance().getPercentDropped(MediaType.MANGA)),
 				() -> assertEquals("66%", Manager.getInstance().getPercentFinished(MediaType.MANGA)),
-				() -> assertEquals("33%", Manager.getInstance().getPercentOngoing())
+				() -> assertEquals("33%", Manager.getInstance().getPercentOngoing()),
+				() -> assertEquals("Tatsuki Fujimoto", Manager.getInstance().getFavoredAuthor())
 				);
 	}
 

@@ -170,8 +170,9 @@ public class GUI extends JFrame {
 		);
 		
 
-		//Disable home button to indicate that is where you start
-		toggleToolbarButtons(btnHome);
+		//Disable relative buttons to indicate where user is 
+		toggleViewButtons(btnHome);
+		toggleModeButtons(btnModeAnime);
 
 		//Instantiate table and set metadata
 		table = new JMediaTable(this);
@@ -221,6 +222,7 @@ public class GUI extends JFrame {
 		toolBar.add(strutModeR);
 		
 		btnModeAnime = new JButton("Anime");
+
 		toolBar.add(btnModeAnime);
 		
 		btnModeManga = new JButton("Manga");
@@ -283,7 +285,7 @@ public class GUI extends JFrame {
 						//Reset selection of dropdown and update as necessary
 						fileOptions.setSelectedIndex(0);
 						setCard("homeView");
-						toggleToolbarButtons(btnHome);
+						toggleViewButtons(btnHome);
 						
 						
 					} else if (fileOptions.getSelectedItem().equals("Save")) {
@@ -321,6 +323,54 @@ public class GUI extends JFrame {
 			}
 		});
 
+		///////////////
+		//Mode buttons
+		///////////////
+		//Add functionality to Anime mode button
+		btnModeAnime.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+	        	//In case user is editing in browse mode
+				if (browseView.canLeave()) {
+
+					table.clearSelection();
+
+					updateData(MediaType.ANIME);
+
+					setCard("homeView");
+					toggleViewButtons(btnHome);
+					toggleModeButtons(btnModeAnime);
+
+					browseView.setCurrentEntry(null);
+				} else {
+					return;
+				}
+			}
+		});
+
+		//Add functionality to Manga mode button
+		btnModeManga.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+	        	//In case user is editing in browse mode
+				if (browseView.canLeave()) {
+
+					table.clearSelection();
+
+					updateData(MediaType.MANGA);
+
+					setCard("homeView");
+					toggleViewButtons(btnHome);
+					toggleModeButtons(btnModeManga);
+
+					browseView.setCurrentEntry(null);
+				} else {
+					return;
+				}
+			}
+		});
+		
+		///////////////
+		//View buttons
+		///////////////
 		//Add functionality to Home button
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -329,7 +379,7 @@ public class GUI extends JFrame {
 
 					table.clearSelection();
 					setCard("homeView");
-					toggleToolbarButtons(btnHome);
+					toggleViewButtons(btnHome);
 
 					browseView.setCurrentEntry(null);
 				} else {
@@ -363,7 +413,7 @@ public class GUI extends JFrame {
 
 					table.clearSelection();
 					setCard("addView");
-					toggleToolbarButtons(btnAdd);
+					toggleViewButtons(btnAdd);
 					browseView.setCurrentEntry(null);
 				} else {
 					return;
@@ -392,7 +442,7 @@ public class GUI extends JFrame {
 						Manager.getInstance().removeAnime(selected);
 						//Reload data
 						updateData(null);
-						toggleToolbarButtons(btnHome);
+						toggleViewButtons(btnHome);
 						setCard("homeView");
 						
 					}
@@ -407,7 +457,7 @@ public class GUI extends JFrame {
 				if (browseView.canLeave()) {
 					table.clearSelection();
 					setCard("optionsView");
-					toggleToolbarButtons(btnOptions);
+					toggleViewButtons(btnOptions);
 					browseView.setCurrentEntry(null);
 
 				} else {
@@ -445,7 +495,7 @@ public class GUI extends JFrame {
 			        	browseView.setCurrentEntry(Manager.getInstance().getList().get(idx));	
 		        	}	        	
 		        	//Change card
-		        	toggleToolbarButtons(btnBrowse);
+		        	toggleViewButtons(btnBrowse);
 		        	setCard("browseView");
 	
 	        	} else {
@@ -472,11 +522,11 @@ public class GUI extends JFrame {
 	}
 
 	/**
-	 * Re-enables all toolbar buttons and selectively disables the most recently selected one.
+	 * Re-enables all view-related toolbar buttons and selectively disables the most recently selected one.
 	 * You can enable all buttons by passing null
 	 * @param selected button linking to the card the user is currently on
 	 */
-	private void toggleToolbarButtons(JButton selected) {
+	private void toggleViewButtons(JButton selected) {
 		//Enable all buttons
 		btnHome.setEnabled(true);
 		btnBrowse.setEnabled(true);
@@ -488,6 +538,21 @@ public class GUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Re-enables all mode-related toolbar buttons and selectively disables the most recently selected one.
+	 * You can enable all buttons by passing null
+	 * @param selected button linking to the card the user is currently on
+	 */
+	private void toggleModeButtons(JButton selected) {
+		//Enable all buttons
+		btnModeAnime.setEnabled(true);
+		btnModeManga.setEnabled(true);
+		//Disable the selected button
+		if (selected != null) {
+			selected.setEnabled(false);	
+		}
+	}
+	
 	/**
 	 * Gets a file location on the user's system via JFileChooser to save at or load information from.
 	 * @param boolean indicator of if JFileChooser needs to handle load or save procedure, true for load
@@ -520,7 +585,9 @@ public class GUI extends JFrame {
 	public void updateData(MediaType mt) {
 		if (mt != null) {
 			Manager.getInstance().setCurrentList(mt);
+			this.mediaMode = mt;
 		}
+
 		updateTable();
 		homeView.updateStats();
 	}
