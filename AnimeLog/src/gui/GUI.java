@@ -114,6 +114,9 @@ public class GUI extends JFrame {
 	public GUI() {
 		initComponents();
 		createEvents();
+		//TODO: remove below test method
+		preloadData();
+		updateData(MediaType.ANIME);
 	}
 
 	/**
@@ -656,4 +659,12 @@ public class GUI extends JFrame {
 	public MediaType getMediaMode() {
 		return this.mediaMode;
 	}
+	
+	/**
+	 * Testing method for automatically loading data at startup
+	 */
+	private void preloadData() {
+		Manager.getInstance().processFile("test-files/SixWorkingImports.txt");
+	}
+	
 }
