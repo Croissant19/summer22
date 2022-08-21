@@ -160,11 +160,10 @@ public class OptionsView extends JPanel {
 				if (rdBtnNumeric.isSelected()) {
 					rdBtnAlphabet.setSelected(false);
 				}
-			
+
 				//Update data
 				applySelectedSortMethod();
 				mainGUI.updateData(null);
-				
 			}
 		});
 
@@ -231,7 +230,14 @@ public class OptionsView extends JPanel {
 		//Color choosers
 		btnColor1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Color oldColor = Manager.getInstance().getAnimePreferences().getColor1();
+				//Get old color
+				Color oldColor;
+				if (mainGUI.getMediaMode() == MediaType.ANIME) {
+					oldColor = Manager.getInstance().getAnimePreferences().getColor1();
+				} else {
+					oldColor = Manager.getInstance().getMangaPreferences().getColor1();
+				}
+				//Apply changes
 				btnColor1.setBackground(getColorDialog(oldColor));
 				Manager.getInstance().setColor(mainGUI.getMediaMode(), "Color1", btnColor1.getBackground());
 				mainGUI.updateData(null);
@@ -239,7 +245,14 @@ public class OptionsView extends JPanel {
 		});
 		btnColor2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Color oldColor = Manager.getInstance().getAnimePreferences().getColor2();
+				//Get old color
+				Color oldColor;
+				if (mainGUI.getMediaMode() == MediaType.ANIME) {
+					oldColor = Manager.getInstance().getAnimePreferences().getColor2();
+				} else {
+					oldColor = Manager.getInstance().getMangaPreferences().getColor2();
+				}
+				//Apply changes
 				btnColor2.setBackground(getColorDialog(oldColor));
 				Manager.getInstance().setColor(mainGUI.getMediaMode(), "Color2", btnColor2.getBackground());
 				mainGUI.updateData(null);
@@ -350,17 +363,24 @@ public class OptionsView extends JPanel {
 			throw new IllegalArgumentException("Error with discovering user preferences");
 		}
 
-		//TODO: test that this is consistent
+		rdBtnColorLanguage.setVisible(true);
 		
-		//Hide language color options if current mode is Manga
-		if (mainGUI.getMediaMode() == MediaType.MANGA) {
-			rdBtnColorLanguage.setVisible(false);
-		} else {
-			rdBtnColorLanguage.setVisible(true);
-		}
+		switch (mainGUI.getMediaMode()) {
+		case ANIME: 
+			btnColor1.setBackground(Manager.getInstance().getAnimePreferences().getColor1());
+			btnColor2.setBackground(Manager.getInstance().getAnimePreferences().getColor2());
+			break;
+		case MANGA:
+			btnColor1.setBackground(Manager.getInstance().getMangaPreferences().getColor1());
+			btnColor2.setBackground(Manager.getInstance().getMangaPreferences().getColor2());
 
-		btnColor1.setBackground(Manager.getInstance().getAnimePreferences().getColor1());
-		btnColor2.setBackground(Manager.getInstance().getAnimePreferences().getColor2());
+			//Hide language color options if current mode is Manga
+			rdBtnColorLanguage.setVisible(false);
+			break;
+		}
+		
+
+
 	}
 
 }

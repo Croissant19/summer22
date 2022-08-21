@@ -323,9 +323,16 @@ public class NewEntryView extends JPanel {
 		//Bottom button	
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Try to construct the anime, catching exceptions is something is amiss
+				//Try to construct the media, depending on the mode and catching exceptions is something is amiss
 				try {
-					makeNewAnime();
+					switch (mainGUI.getMediaMode()) {
+					case ANIME:
+						makeNewAnime();
+						break;
+					case MANGA: 
+						makeNewManga();
+						break;
+					}
 					clearFields();
 				} catch (Exception e1) {
 					//Show user a prompt indicating the issue
@@ -382,7 +389,22 @@ public class NewEntryView extends JPanel {
 			
 			}
 		});
-
+		rdBtnSeriesManga.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnSeriesManga.isSelected()) {
+					rdBtnSpecialManga.setSelected(false);
+				}
+			
+			}
+		});
+		rdBtnSpecialManga.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnSpecialManga.isSelected()) {
+					rdBtnSeriesManga.setSelected(false);
+				}
+			
+			}
+		});
 	
 	
 	}

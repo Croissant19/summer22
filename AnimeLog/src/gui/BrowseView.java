@@ -371,15 +371,30 @@ public class BrowseView extends JPanel {
 				if (inEditMode) {
 						try {				
 							if (changeOccurred()) {	
-								//Try to construct new Anime
-								Anime updatedAnime = makeNewAnime();
-	
-								//Update and regenerate data
 								Manager manager = Manager.getInstance();
-								manager.removeAnime(manager.getList().indexOf(currentEntry));
-								manager.addAnime(updatedAnime);
+								Media updatedEntry = null;
+								switch (mainGUI.getMediaMode()) {
+								case ANIME:
+									//Try to construct new Anime
+									updatedEntry = makeNewAnime();
+		
+									//Update and regenerate data
+									manager.removeAnime(manager.getList().indexOf(currentEntry));
+									manager.addAnime(updatedEntry);
+									break;
+								case MANGA:
+									//Try to construct new Manga
+									updatedEntry = makeNewManga();
+		
+									//Update and regenerate data
+									manager.removeManga(manager.getList().indexOf(currentEntry));
+									manager.addManga(updatedEntry);
+									break;
+								}
+								
 								mainGUI.updateData(null);
-								setCurrentEntry(updatedAnime);
+								setCurrentEntry(updatedEntry);
+								
 							}
 						} catch (Exception e1) {
 							//Show warning dialog if necessary
@@ -393,7 +408,6 @@ public class BrowseView extends JPanel {
 			}
 		});
 
-				
 		
 		//Next button
 		btnNext.addActionListener(new ActionListener() {
@@ -449,6 +463,20 @@ public class BrowseView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (rdBtnSpecialAnime.isSelected()) {
 					rdBtnSeriesAnime.setSelected(false);
+				}
+			}
+		});
+		rdBtnSeriesManga.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnSeriesManga.isSelected()) {
+					rdBtnSpecialManga.setSelected(false);
+				}
+			}
+		});
+		rdBtnSpecialManga.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (rdBtnSpecialManga.isSelected()) {
+					rdBtnSeriesManga.setSelected(false);
 				}
 			}
 		});

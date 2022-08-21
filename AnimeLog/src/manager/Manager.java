@@ -171,10 +171,12 @@ public class Manager {
 	/**
 	 * Adds an anime to userData
 	 * @param a Anime to be added
-	 * @throws NullPointerException if a is null
 	 * @throws IllegalArgumentException if a is a copy of any other element
 	 */
-	public void addAnime(Anime a) {
+	public void addAnime(Media a) {
+		if (!(a instanceof Anime)) {
+			throw new IllegalArgumentException("Tried to add non-Anime to Anime list.");
+		}
 		userData.addAnime(a);
 	}
 
@@ -190,10 +192,12 @@ public class Manager {
 	/**
 	 * Adds a manga to userData
 	 * @param m Manga to be added
-	 * @throws NullPointerException if a is null
-	 * @throws IllegalArgumentException if a is a copy of any other element
+	 * @throws IllegalArgumentException if m is a copy of any other element
 	 */
-	public void addManga(Manga m) {
+	public void addManga(Media m) {
+		if (!(m instanceof Manga)) {
+			throw new IllegalArgumentException("Tried to add non-Manga to Manga list.");
+		}
 		userData.addManga(m);
 	}
 	
