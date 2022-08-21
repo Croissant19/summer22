@@ -83,9 +83,6 @@ public class GUI extends JFrame {
 	private Component strutModeR;
 	private Component strutViewR;
 	private Component strutViewL;
-		
-	//TODO: change remove functionality to go by browse's current, not the table's current, fix room for error and existing bug
-	//TODO: implement change mode buttons
 	
 	/**
 	 * Launch the application.
@@ -431,8 +428,9 @@ public class GUI extends JFrame {
 		//Add functionality to Remove button
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				int selected = Manager.getInstance().getList().indexOf(browseView.getCurrentEntry()); 
 				
-				int selected = table.getSelectedRow();
 				if (selected == -1) {
 					JOptionPane.showMessageDialog(rootPane, REMOVE_INTRUCTIONS);
 					return;
