@@ -69,11 +69,11 @@ public class DataIO {
 	 * @return Data object containing sorted collection of anime and/or manga from a user import
 	 */
 	public static Data readFile(String filename) {
-		//Setup list and file contents
-		SortedMediaList animeList = null;
-		Preferences animePreferences = null;
-		SortedMediaList mangaList = null;
-		Preferences mangaPreferences = null;
+		//Setup list and file contents with defaults in case no data is found
+		SortedMediaList animeList = new SortedMediaList(SortFocus.ALPHABETICAL);
+		Preferences animePreferences = new Preferences();
+		SortedMediaList mangaList = new SortedMediaList(SortFocus.ALPHABETICAL);
+		Preferences mangaPreferences = new Preferences();
 
 		String animeDataString = "";
 		String mangaDataString = "";

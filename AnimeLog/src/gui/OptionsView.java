@@ -326,7 +326,16 @@ public class OptionsView extends JPanel {
 	 * @throws IllegalArgumentException if the user has somehow stored an invalid selection
 	 */
 	public void displayCurrentSelection() {
-		SortFocus sortBy = Manager.getInstance().getAnimePreferences().getSortMethod();
+		SortFocus sortBy;
+		ColorMethod colorBy;
+		if (mainGUI.getMediaMode() == MediaType.ANIME) {
+			sortBy = Manager.getInstance().getAnimePreferences().getSortMethod();
+			colorBy = Manager.getInstance().getAnimePreferences().getColorMethod();
+		} else {
+			sortBy = Manager.getInstance().getMangaPreferences().getSortMethod();
+			colorBy = Manager.getInstance().getMangaPreferences().getColorMethod();
+		}
+
 		if (sortBy == SortFocus.ALPHABETICAL) {
 			rdBtnAlphabet.setSelected(true);
 			rdBtnNumeric.setSelected(false);
@@ -336,9 +345,7 @@ public class OptionsView extends JPanel {
 		} else {
 			throw new IllegalArgumentException("Error with discovering user preferences");
 		}
-		
-		
-		ColorMethod colorBy = Manager.getInstance().getAnimePreferences().getColorMethod();		
+
 		if (colorBy == ColorMethod.NO_COLOR) {
 			rdBtnNoColor.setSelected(true);
 			rdBtnColorFinDrop.setSelected(false);

@@ -409,8 +409,6 @@ public class NewEntryView extends JPanel {
 	
 	}
 	
-	//TODO: clear fields and reset card togetger. Test!!
-	
 	/**
 	 * Resets the fields to blank after an entry is successfully added
 	 */

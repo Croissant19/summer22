@@ -65,25 +65,29 @@ public class Manager {
 		userData = DataIO.readFile(filename);
 
 		//Set animeList
-		if (userData.getAnimePreferences().getSortMethod() == SortFocus.ALPHABETICAL) {
-			animeList = userData.getAlphabeticalAnimeList();
-		} else if (userData.getAnimePreferences().getSortMethod() == SortFocus.NUMERICAL) {
-			animeList = userData.getNumericalAnimeList();
+		if (userData.getAlphabeticalAnimeList() != null ) {
+			if (userData.getAnimePreferences().getSortMethod() == SortFocus.ALPHABETICAL) {
+				animeList = userData.getAlphabeticalAnimeList();
+			} else if (userData.getAnimePreferences().getSortMethod() == SortFocus.NUMERICAL) {
+				animeList = userData.getNumericalAnimeList();
+			}			
 		}
-		
+
 		//Set mangaList
-		if (userData.getMangaPreferences().getSortMethod() == SortFocus.ALPHABETICAL) {
-			mangaList = userData.getAlphabeticalMangaList();
-		} else if (userData.getMangaPreferences().getSortMethod() == SortFocus.NUMERICAL) {
-			mangaList = userData.getNumericalMangaList();
+		if (userData.getAlphabeticalMangaList() != null) {
+			if (userData.getMangaPreferences().getSortMethod() == SortFocus.ALPHABETICAL) {
+				mangaList = userData.getAlphabeticalMangaList();
+			} else if (userData.getMangaPreferences().getSortMethod() == SortFocus.NUMERICAL) {
+				mangaList = userData.getNumericalMangaList();
+			}			
 		}
+
 		
 		//The animeList is the default
 		currentList = animeList;
-		
-		//TODO: ensure this is protected against null pointers
+
 		//However, if animeList is empty and mangaList is not, then mangaList is used
-		if (animeList.size() == 0 && mangaList.size() != 0) {
+		if (animeList == null && mangaList != null) {
 			currentList = mangaList;
 		}
 		
@@ -648,7 +652,6 @@ public class Manager {
 	 * @return name of most common author
 	 */
 	public String getFavoredAuthor() {
-		//TODO: add special text if tie, TEST
 		/**
 		 * Object for linking an author String and an int counter of its frequency
 		 * @author Hunter Pruitt

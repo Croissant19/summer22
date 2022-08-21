@@ -111,9 +111,6 @@ public class GUI extends JFrame {
 	public GUI() {
 		initComponents();
 		createEvents();
-		//TODO: remove below test method
-		preloadData();
-		updateData(MediaType.ANIME);
 	}
 
 	/**
@@ -276,8 +273,9 @@ public class GUI extends JFrame {
 						try {
 							filename = getFilename(true);	
 							Manager.getInstance().processFile(filename);
-							updateTable();
-							homeView.updateStats();
+							//Use Anime mode as the default
+							updateData(MediaType.ANIME);
+							toggleModeButtons(btnModeAnime);
 						} catch (IllegalArgumentException iae) {
 							JOptionPane.showMessageDialog(rootPane, iae.getMessage());
 						} catch (IllegalStateException ise) {
@@ -521,12 +519,13 @@ public class GUI extends JFrame {
 	 * @param view identifying text unique to the desired view
 	 */
 	private void setCard(String view) {
-    	CardLayout cl = (CardLayout) cardPanel.getLayout();
-    	cl.show(cardPanel, view);
     	// In case the user is leaving the NewAnimeView, reset the top text instructions and fields.
     	addView.resetCard();
     	//In case the user is leaving the OptionsView, reset selected to current preferences
     	optionsView.displayCurrentSelection();
+    	
+    	CardLayout cl = (CardLayout) cardPanel.getLayout();
+    	cl.show(cardPanel, view);
 	}
 
 	/**
@@ -619,27 +618,27 @@ public class GUI extends JFrame {
 				tm = (DefaultTableModel) table.getModel();
 				tm.setRowCount(0);
 				row = new Object[3];
-				
+
 				for (int i = 0; i < numRows; i++) {
 					row = rowVals[i];
 					tm.addRow(row);
-				}
-				
-				
-				
+				}					
+
 				break;
 			case MANGA:
 				table.getRenderer().setRenderer(Manager.getInstance().getMangaPreferences().getColorMethod());
 				rowVals = Manager.getInstance().getAllMangaAsArray();
-				
+
 				tm = (DefaultTableModel) table.getModel();
 				tm.setRowCount(0);
 				row = new Object[3];
-				
+
 				for (int i = 0; i < numRows; i++) {
 					row = rowVals[i];
 					tm.addRow(row);
-				}
+				}					
+
+				break;
 		}
 
 		//Re-engage table listener
