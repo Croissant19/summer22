@@ -445,7 +445,11 @@ public class GUI extends JFrame {
 						return;
 					} else {  //Otherwise
 						//Remove the indicated element from Manager's master copy of the list
-						Manager.getInstance().removeAnime(selected);
+						if (mediaMode == MediaType.ANIME) {
+							Manager.getInstance().removeAnime(selected);
+						} else {
+							Manager.getInstance().removeManga(selected);
+						}
 						//Reload data
 						updateData(null);
 						toggleViewButtons(btnHome);
