@@ -273,10 +273,10 @@ class DataIOTest {
 		assertEquals(-16711936, p.getColor1().getRGB());
 		assertEquals(-16711681, p.getColor2().getRGB());
 
-		//Assert everything else null
-		assertNull(data.getAlphabeticalAnimeList());
-		assertNull(data.getAlphabeticalMangaList());
-		assertNull(data.getAnimePreferences());
+		//Assert everything else is the default / empty
+		assertEquals(0, data.getAlphabeticalAnimeList().size());
+		assertEquals(0, data.getAlphabeticalMangaList().size());
+		assertDefaultPreferences(data.getAnimePreferences());
 	}
 	
 	/**
@@ -305,14 +305,17 @@ class DataIOTest {
 	 * Ensures that everything is null when there is no data to read and that exceptions are not thrown.
 	 */
 	@Test
-	void testBlankFileGivesNull() {
+	void testBlankFileGivesDefaults() {
+		Preferences defaults = new Preferences();
+		
 		data = DataIO.readFile(TEST_FILE_TEN);
 
 		//Assert everything null
-		assertNull(data.getAlphabeticalAnimeList());
-		assertNull(data.getAnimePreferences());
-		assertNull(data.getAlphabeticalMangaList());
-		assertNull(data.getMangaPreferences());
+
+		assertEquals(0, data.getAlphabeticalAnimeList().size());
+		assertDefaultPreferences(data.getAnimePreferences());
+		assertEquals(0, data.getAlphabeticalMangaList().size());
+		assertDefaultPreferences(data.getMangaPreferences());
 	}
 	
 	/**
@@ -388,6 +391,21 @@ class DataIOTest {
 		fis.close();
 		
 		return expContents.equals(actContents) && expLineCt == actLineCt;
+	}
+	
+	/**
+	 * Asserts that all the fields of the passed Preference object are the default values
+	 * @param p Preference object to be tested
+	 */
+	private void assertDefaultPreferences(Preferences p) {
+		Preferences defaults = new Preferences();
+
+		assertAll(
+				() -> assertEquals(defaults.getColor1(), p.getColor1()),
+				() -> assertEquals(defaults.getColor2(), p.getColor2()),
+				() -> assertEquals(defaults.getColorMethod(), p.getColorMethod()),
+				() -> assertEquals(defaults.getSortMethod(), p.getSortMethod())
+		);
 	}
 	
 }

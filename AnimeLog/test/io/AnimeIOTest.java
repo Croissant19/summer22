@@ -85,7 +85,7 @@ class AnimeIOTest {
 	@Test
 	void testReadEmptyData() {
 		SortedMediaList list = AnimeIO.getAnimeFromString("");
-		assertNull(list);
+		assertEquals(0, list.size());
 	}
 
 }

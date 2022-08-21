@@ -83,6 +83,6 @@ class MangaIOTest {
 	@Test
 	void testReadEmptyData() {
 		SortedMediaList list = MangaIO.getMangaFromString("");
-		assertNull(list);
+		assertEquals(0, list.size());
 	}
 }

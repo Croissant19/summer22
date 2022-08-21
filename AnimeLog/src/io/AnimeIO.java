@@ -19,16 +19,15 @@ public class AnimeIO {
 	 * Takes information from String and creates Anime objects accordingly,
 	 * returning them in a list sorted by title
 	 * @param data string containing the Anime to be added to the program
-	 * @return SortedMediaList of user Anime, null if no Anime to read
+	 * @return SortedMediaList of user Anime, empty if no Anime to read
 	 * @throws IllegalArgumentException if an error occurs
 	 */
 	public static SortedMediaList getAnimeFromString(String data) {
-		SortedMediaList list = null;
+		SortedMediaList list = new SortedMediaList(SortFocus.ALPHABETICAL);
 		
 		//Ensures there is data to read, returns null if not
 		if (!data.isBlank()) {
 
-			list = new SortedMediaList(SortFocus.ALPHABETICAL);
 			if (data.substring(0, 3).equals("<|>")) {
 				//Remove the initial delimiter after verifying in the if conditional
 				data = data.substring(3);

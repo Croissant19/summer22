@@ -18,15 +18,14 @@ public class MangaIO {
 	 * Takes information from String and creates Manga objects accordingly,
 	 * returning them in a list sorted by title
 	 * @param data string containing the Manga to be added to the program
-	 * @return SortedMediaList of user Manga
+	 * @return SortedMediaList of user Manga, empty if no Manga to read
 	 * @throws IllegalArgumentException if an error occurs
 	 */
 	public static SortedMediaList getMangaFromString(String data) {
-		SortedMediaList list = null;
+		SortedMediaList list = new SortedMediaList(SortFocus.ALPHABETICAL);
 		
 		//Ensures there is data to read, returns null if not
 		if (!data.isBlank()) {
-			list = new SortedMediaList(SortFocus.ALPHABETICAL);
 			
 			if (data.substring(0, 3).equals("<|>")) {
 				//Remove the initial delimiter after verifying in the if conditional
