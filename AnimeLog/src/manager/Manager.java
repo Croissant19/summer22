@@ -174,9 +174,6 @@ public class Manager {
 	 * @throws IllegalArgumentException if a is a copy of any other element
 	 */
 	public void addAnime(Media a) {
-		if (!(a instanceof Anime)) {
-			throw new IllegalArgumentException("Tried to add non-Anime to Anime list.");
-		}
 		userData.addAnime(a);
 	}
 
@@ -195,9 +192,6 @@ public class Manager {
 	 * @throws IllegalArgumentException if m is a copy of any other element
 	 */
 	public void addManga(Media m) {
-		if (!(m instanceof Manga)) {
-			throw new IllegalArgumentException("Tried to add non-Manga to Manga list.");
-		}
 		userData.addManga(m);
 	}
 	
@@ -654,7 +648,7 @@ public class Manager {
 	 * @return name of most common author
 	 */
 	public String getFavoredAuthor() {
-		//TODO: Test with empty, tie, and generic tests
+		//TODO: add special text if tie
 		/**
 		 * Object for linking an author String and an int counter of its frequency
 		 * @author Hunter Pruitt
@@ -685,8 +679,7 @@ public class Manager {
 				aac.frequency = 1;
 				aac.name = currentName;
 				array[index] = aac;
-			}
-			
+			}			
 		}
 		
 		//Get the AuthorAndCount from the array with the highest frequency
@@ -695,6 +688,7 @@ public class Manager {
 		for (AuthorAndCount aac : array) {
 			if (aac != null && aac.frequency > currentHighestCount) {
 				currentHighestAuthor = aac.name;
+				currentHighestCount = aac.frequency;
 			}
 		}
 		

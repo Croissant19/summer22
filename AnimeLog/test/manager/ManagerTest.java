@@ -356,6 +356,15 @@ class ManagerTest {
 				() -> assertEquals("33%", Manager.getInstance().getPercentOngoing()),
 				() -> assertEquals("Tatsuki Fujimoto", Manager.getInstance().getFavoredAuthor())
 				);
+		
+		//Alternate test for favored author manga statistic
+		Manager.getInstance().removeManga(0);
+		Manager.getInstance().removeManga(0);
+		Manga m1 = new Manga("Mongo", 1999, 5, "foo", "bar", Type.SERIES, false, false, false, "");
+		Manga m2 = new Manga("Mungo", 1999, 15, "foo", "bar", Type.SERIES, false, false, false, "");
+		Manager.getInstance().addManga(m1);
+		Manager.getInstance().addManga(m2);
+		assertEquals("foo", Manager.getInstance().getFavoredAuthor());
 	}
 
 }
