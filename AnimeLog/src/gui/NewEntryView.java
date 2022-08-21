@@ -124,7 +124,7 @@ public class NewEntryView extends JPanel {
 		lblYearManga.setBounds(10, 90, 99, 14);
 		pnlFieldsManga.add(lblYearManga);
 		
-		JLabel lblCountManga = new JLabel("Number Watched:");
+		JLabel lblCountManga = new JLabel("Number Read:");
 		lblCountManga.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblCountManga.setBounds(10, 115, 99, 14);
 		pnlFieldsManga.add(lblCountManga);
@@ -147,7 +147,7 @@ public class NewEntryView extends JPanel {
 
 		JLabel lblPublisherManga = new JLabel("Publisher:");
 		lblPublisherManga.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblPublisherManga.setBounds(10, 222, 99, 14);
+		lblPublisherManga.setBounds(10, 225, 99, 14);
 		pnlFieldsManga.add(lblPublisherManga);
 
 		JLabel lblNotesManga = new JLabel("You can add notes/comments to this entry on the main viewer.");
@@ -256,7 +256,7 @@ public class NewEntryView extends JPanel {
 
 		JLabel lblStudioAnime = new JLabel("Studio:");
 		lblStudioAnime.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblStudioAnime.setBounds(10, 246, 99, 14);
+		lblStudioAnime.setBounds(10, 249, 99, 14);
 		pnlFieldsAnime.add(lblStudioAnime);
 
 		JLabel lblNotesAnime = new JLabel("You can add notes/comments to this entry on the main viewer.");
