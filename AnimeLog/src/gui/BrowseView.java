@@ -205,6 +205,7 @@ public class BrowseView extends JPanel {
 		pnlFieldsAnime.add(scrollPaneNotesAnime);
 		
 		txtAreaNotesAnime = new JTextArea();
+		txtAreaNotesAnime.setWrapStyleWord(true);
 		scrollPaneNotesAnime.setViewportView(txtAreaNotesAnime);
 		txtAreaNotesAnime.setEditable(false);
 		txtAreaNotesAnime.setColumns(10);
@@ -334,10 +335,11 @@ public class BrowseView extends JPanel {
 		pnlFieldsManga.add(scrollPaneNotesManga);
 		
 		txtAreaNotesManga = new JTextArea();
+		txtAreaNotesManga.setLineWrap(true);
+		txtAreaNotesManga.setWrapStyleWord(true);
 		scrollPaneNotesManga.setViewportView(txtAreaNotesManga);
 		txtAreaNotesManga.setEditable(false);
 		txtAreaNotesManga.setColumns(10);
-		txtAreaNotesManga.setLineWrap(true);
 		
 		chckBxFinishedManga = new JCheckBox("Finished");
 		chckBxFinishedManga.setEnabled(false);
