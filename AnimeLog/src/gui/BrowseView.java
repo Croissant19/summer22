@@ -25,6 +25,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.CardLayout;
+import javax.swing.JScrollPane;
 
 /**
  * Defines the GUI components for viewing media entries
@@ -74,6 +75,8 @@ public class BrowseView extends JPanel {
 	private JButton btnPrevious;
 
 	private JPanel cardLayout;
+	private JScrollPane scrollPaneNotesAnime;
+	private JScrollPane scrollPaneNotesManga;
 	
 	/**
 	 * Create the panel.
@@ -197,10 +200,13 @@ public class BrowseView extends JPanel {
 		txtFldStudioAnime.setBounds(119, 189, 172, 20);
 		pnlFieldsAnime.add(txtFldStudioAnime);
 		
+		scrollPaneNotesAnime = new JScrollPane();
+		scrollPaneNotesAnime.setBounds(10, 219, 385, 96);
+		pnlFieldsAnime.add(scrollPaneNotesAnime);
+		
 		txtAreaNotesAnime = new JTextArea();
+		scrollPaneNotesAnime.setViewportView(txtAreaNotesAnime);
 		txtAreaNotesAnime.setEditable(false);
-		txtAreaNotesAnime.setBounds(10, 219, 385, 96);
-		pnlFieldsAnime.add(txtAreaNotesAnime);
 		txtAreaNotesAnime.setColumns(10);
 		txtAreaNotesAnime.setLineWrap(true);
 		
@@ -323,10 +329,13 @@ public class BrowseView extends JPanel {
 		txtFldPublisherManga.setBounds(119, 165, 172, 20);
 		pnlFieldsManga.add(txtFldPublisherManga);
 		
+		scrollPaneNotesManga = new JScrollPane();
+		scrollPaneNotesManga.setBounds(10, 219, 385, 96);
+		pnlFieldsManga.add(scrollPaneNotesManga);
+		
 		txtAreaNotesManga = new JTextArea();
+		scrollPaneNotesManga.setViewportView(txtAreaNotesManga);
 		txtAreaNotesManga.setEditable(false);
-		txtAreaNotesManga.setBounds(10, 219, 385, 96);
-		pnlFieldsManga.add(txtAreaNotesManga);
 		txtAreaNotesManga.setColumns(10);
 		txtAreaNotesManga.setLineWrap(true);
 		
