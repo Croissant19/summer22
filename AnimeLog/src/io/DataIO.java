@@ -63,8 +63,8 @@ public class DataIO {
 	
 	
 	/**
-	 * Transforms a passed file into a sorted collection of Anime objects
-	 * @param filename
+	 * Transforms a passed file into a sorted collection of Media objects
+	 * @param filename name of the file to read
 	 * @throws IllegalArgumentException if the file cannot be read or file contains bad data
 	 * @return Data object containing sorted collection of anime and/or manga from a user import
 	 */

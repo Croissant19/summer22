@@ -51,6 +51,7 @@ public class JMediaTable extends JTable {
 	/**
 	 * Constructor for JMediaTable. Creates a JTable using the JTable(TableModel) constructor with this class's custom TableModel
 	 * and setting the default renderer to a ColorRenderer
+	 * @param gui pointer to the GUI instance containing this table
 	 */
 	public JMediaTable(GUI gui) {
 		super(NO_EDIT_MODEL);

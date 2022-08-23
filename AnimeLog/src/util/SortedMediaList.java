@@ -25,6 +25,7 @@ public class SortedMediaList implements Iterable<Media> {
 	
 	/**
 	 * Constructor for SortedList, initializes size and front
+	 * @param sortBy SortFocus to sort elements in the list by
 	 */
 	public SortedMediaList(SortFocus sortBy) {
 		size = 0;
@@ -201,8 +202,8 @@ public class SortedMediaList implements Iterable<Media> {
 	
 	/**
 	 * Determines if the first parameter sorts before the second parameter depending on the SortedMediaList's SortFocus
-	 * @param firstMedia 
-	 * @param secondMedia
+	 * @param firstMedia first entry to compare with
+	 * @param secondMedia second entry to compare with
 	 * @return boolean indicator if the first Media precedes the second Media
 	 * @throws IllegalArgumentException if SortedMediaList has an invalid sorting method or if the two Media are equal
 	 */

@@ -49,6 +49,7 @@ public class HomeView extends JPanel {
 	
 	/**
 	 * Create the panel.
+	 * @param gui pointer to the GUI instance containing this panel
 	 */
 	public HomeView(GUI gui) {
 		//Set pointer to mainGUI
