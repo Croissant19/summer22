@@ -646,25 +646,25 @@ public class Manager {
 	}
 	
 	/**
-	 * Provides the name of the author found most frequently in the media list.
-	 * Subject to error if user is inconsistent with author spelling and spacing.
+	 * Provides the name of the publisher found most frequently in the media list.
+	 * Subject to error if user is inconsistent with publisher spelling and spacing.
 	 * In case of a tie, "Tie" is returned
-	 * @return name of most common author
+	 * @return name of most common publisher
 	 */
-	public String getFavoredAuthor() {
+	public String getFavoredPublisher() {
 		/**
-		 * Object for linking an author String and an int counter of its frequency
+		 * Object for linking a publisher String and an int counter of its frequency
 		 * @author Hunter Pruitt
 		 */
-		class AuthorAndCount { 
+		class PublisherAndCount { 
 		    String name;
 		    int frequency;
 		}
 
-		AuthorAndCount[] array = new AuthorAndCount[mangaList.size()];
+		PublisherAndCount[] array = new PublisherAndCount[mangaList.size()];
 		
 		for (int i = 0; i < mangaList.size(); i++) {
-			String currentName = ((Manga) mangaList.get(i)).getAuthor();
+			String currentName = ((Manga) mangaList.get(i)).getPublisher();
 			int index = 0;
 			boolean alreadyInList = false;
 			while (array[index] != null) {
@@ -678,26 +678,26 @@ public class Manager {
 			}
 			//If the name is not in the array
 			if (!alreadyInList) {
-				AuthorAndCount aac = new AuthorAndCount();
+				PublisherAndCount aac = new PublisherAndCount();
 				aac.frequency = 1;
 				aac.name = currentName;
 				array[index] = aac;
 			}			
 		}
 		
-		//Get the AuthorAndCount from the array with the highest frequency
-		String currentHighestAuthor = "Not Found";
+		//Get the PublisherAndCount from the array with the highest frequency
+		String currentHighestPublisher = "Not Found";
 		int currentHighestCount = 0;
-		String secondHighestAuthor = "Not Found"; //Not used, but maybe in future development?
+		String secondHighestPublisher = "Not Found"; //Not used, but maybe in future development?
 		int secondHighestCount = 0;
-		for (AuthorAndCount aac : array) {
-			if (aac != null && aac.frequency >= currentHighestCount) {
-				//A new favored author displaces the previous currentHighestAuthor
-				secondHighestAuthor = currentHighestAuthor;
+		for (PublisherAndCount pac : array) {
+			if (pac != null && pac.frequency >= currentHighestCount) {
+				//A new favored Publisher displaces the previous currentHighestAuthor
+				secondHighestPublisher = currentHighestPublisher;
 				secondHighestCount = currentHighestCount;
 				
-				currentHighestAuthor = aac.name;
-				currentHighestCount = aac.frequency;
+				currentHighestPublisher = pac.name;
+				currentHighestCount = pac.frequency;
 			}
 		}
 		
@@ -705,6 +705,6 @@ public class Manager {
 			return "Tie";
 		}
 		
-		return currentHighestAuthor;
+		return currentHighestPublisher;
 	}
 }

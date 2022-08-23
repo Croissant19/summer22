@@ -216,7 +216,7 @@ public class HomeView extends JPanel {
 		txtA4Manga.setBounds(121, 152, 61, 20);
 		pnlStatsManga.add(txtA4Manga);
 		
-		JLabel lblQ5Manga = new JLabel("Most Read Mangaka:");
+		JLabel lblQ5Manga = new JLabel("Favored Publisher:");
 		lblQ5Manga.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblQ5Manga.setBounds(207, 145, 131, 20);
 		pnlStatsManga.add(lblQ5Manga);
@@ -282,7 +282,7 @@ public class HomeView extends JPanel {
 			txtA2Manga.setText(Manager.getInstance().getNumSeries(MediaType.MANGA));
 			txtA3Manga.setText(Manager.getInstance().getNumSpecial(MediaType.MANGA));
 			txtA4Manga.setText(Manager.getInstance().getCountSum(MediaType.MANGA));
-			txtA5Manga.setText(Manager.getInstance().getFavoredAuthor());		
+			txtA5Manga.setText(Manager.getInstance().getFavoredPublisher());		
 			txtA6Manga.setText(Manager.getInstance().getPercentFinished(MediaType.MANGA));
 			txtA7Manga.setText(Manager.getInstance().getPercentDropped(MediaType.MANGA));
 			txtA8Manga.setText(Manager.getInstance().getPercentOngoing());
