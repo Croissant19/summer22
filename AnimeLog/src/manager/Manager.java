@@ -183,11 +183,11 @@ public class Manager {
 
 	/**
 	 * Removes a selected anime from the animeList
-	 * @param idx index to remove from
+	 * @param a Media object (hopefully an Anime) to remove
 	 * @throws IndexOutOfBoundsException if the passed index is out of bounds
 	 */
-	public void removeAnime(int idx) {
-		userData.removeAnime(animeList.get(idx));
+	public void removeAnime(Media a) {
+		userData.removeAnime(a);
 	}
 
 	/**
@@ -202,11 +202,11 @@ public class Manager {
 	
 	/**
 	 * Removes a selected manga from the mangaList
-	 * @param idx index to remove from
+	 * @param a Media object (hopefully a Manga) to remove
 	 * @throws IndexOutOfBoundsException if the passed index is out of bounds
 	 */
-	public void removeManga(int idx) {
-		userData.removeManga(mangaList.get(idx));
+	public void removeManga(Media m) {
+		userData.removeManga(m);
 	}
 
 	/**

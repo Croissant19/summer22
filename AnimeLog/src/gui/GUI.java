@@ -9,6 +9,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import data.Media;
 import data.Media.MediaType;
 import manager.Manager;
 
@@ -427,9 +428,9 @@ public class GUI extends JFrame {
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				int selected = Manager.getInstance().getList().indexOf(browseView.getCurrentEntry()); 
+				Media selected = browseView.getCurrentEntry(); 
 				
-				if (selected == -1) {
+				if (selected == null) {
 					JOptionPane.showMessageDialog(rootPane, REMOVE_INTRUCTIONS);
 					return;
 				} else {
@@ -484,7 +485,7 @@ public class GUI extends JFrame {
 	        		return;
 	        	}
 
-	        	//Do nothing if selecting anime that is already being viewed
+	        	//Do nothing if selecting media that is already being viewed
 	        	//May seem pointless, but protects against recursion when program has to counter user selection
 	        	//in situations where user accidently leaves unsaved data and decides to return in the warning prompt
 	        	int browseIdx = Manager.getInstance().getList().indexOf(browseView.getCurrentEntry());
@@ -494,7 +495,7 @@ public class GUI extends JFrame {
 	        	
 	        	//In case user is editing in browse mode
 	        	if (browseView.canLeave()) {
-		        	//Get index and pass corresponding anime to BrowseView
+		        	//Get index and pass corresponding media to BrowseView
 		        	int idx = table.getSelectedRow();
 		        	//idx is -1 when table row is deselected
 		        	if (idx != -1) {

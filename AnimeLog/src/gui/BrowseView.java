@@ -388,7 +388,7 @@ public class BrowseView extends JPanel {
 									updatedEntry = makeNewAnime();
 		
 									//Update and regenerate data
-									manager.removeAnime(manager.getList().indexOf(currentEntry));
+									manager.removeAnime(currentEntry);
 									manager.addAnime(updatedEntry);
 									break;
 								case MANGA:
@@ -396,7 +396,7 @@ public class BrowseView extends JPanel {
 									updatedEntry = makeNewManga();
 		
 									//Update and regenerate data
-									manager.removeManga(manager.getList().indexOf(currentEntry));
+									manager.removeManga(currentEntry);
 									manager.addManga(updatedEntry);
 									break;
 								}
