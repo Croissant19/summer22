@@ -33,6 +33,7 @@ class ManagerTest {
 	@BeforeEach
 	void setUp() {
 		Manager.getInstance().processFile(TEST_FILE);
+		currentList = Manager.getInstance().getList();
 	}
 
 	/**
@@ -42,7 +43,7 @@ class ManagerTest {
 	void testImport() {
 		
 		//Anime tests
-		Manager.getInstance().setCurrentList(MediaType.ANIME);
+		Manager.getInstance().setCurrentList(MediaType.ANIME, null);
 		currentList = Manager.getInstance().getList();
 		
 		assertEquals(3, currentList.size());
@@ -94,7 +95,7 @@ class ManagerTest {
 				);
 		
 		//Manga tests
-		Manager.getInstance().setCurrentList(MediaType.MANGA);
+		Manager.getInstance().setCurrentList(MediaType.MANGA, null);
 		currentList = Manager.getInstance().getList();
 		assertEquals(3, currentList.size());
 		Manga m1 = (Manga) currentList.get(0);
@@ -153,7 +154,7 @@ class ManagerTest {
 	void testGetAllMediaAsArrayTitleBased() {
 
 		//Test with anime
-		Manager.getInstance().setAnimeList(SortFocus.ALPHABETICAL);
+		Manager.getInstance().setCurrentList(MediaType.ANIME, SortFocus.ALPHABETICAL);
 		Object[][] animeArray = Manager.getInstance().getAllAnimeAsArray();
 		
 		//Test each column, one at a time
@@ -172,7 +173,7 @@ class ManagerTest {
 		);
 		
 		//Test with manga
-		Manager.getInstance().setMangaList(SortFocus.ALPHABETICAL);
+		Manager.getInstance().setCurrentList(MediaType.MANGA, SortFocus.ALPHABETICAL);
 		Object[][] mangaArray = Manager.getInstance().getAllMangaAsArray();
 
 		//Test each column, one at a time
@@ -198,7 +199,7 @@ class ManagerTest {
 	void testGetAllMediaAsArrayYearBased() {
 		
 		//Test with Anime
-		Manager.getInstance().setAnimeList(SortFocus.NUMERICAL);		
+		Manager.getInstance().setCurrentList(MediaType.ANIME, SortFocus.NUMERICAL);
 		Object[][] animeArray = Manager.getInstance().getAllAnimeAsArray();
 		
 		//Test each column, one at a time
@@ -217,7 +218,7 @@ class ManagerTest {
 				);
 		
 		//Test with Manga
-		Manager.getInstance().setMangaList(SortFocus.NUMERICAL);		
+		Manager.getInstance().setCurrentList(MediaType.MANGA, SortFocus.NUMERICAL);
 		Object[][] mangaArray = Manager.getInstance().getAllMangaAsArray();
 		
 		//Test each column, one at a time
@@ -241,7 +242,7 @@ class ManagerTest {
 	 */
 	@Test
 	void testEditAnimeList() {
-		Manager.getInstance().setCurrentList(MediaType.ANIME);
+		Manager.getInstance().setCurrentList(MediaType.ANIME, null);
 		currentList = Manager.getInstance().getList();
 		
 		//Test exceptions for adding
@@ -253,7 +254,7 @@ class ManagerTest {
 		assertEquals("Cannot add duplicate element.", e2.getMessage());
 
 		//Test exception for removing
-		assertThrows(IndexOutOfBoundsException.class, ()-> Manager.getInstance().removeAnime(10));
+		assertThrows(IndexOutOfBoundsException.class, ()-> Manager.getInstance().removeAnime(currentList.get(10)));
 		
 		//Test add
 		Anime testAnime = new Anime("a", 1999, 0, Language.DUB, Type.SERIES, false, false, null, null, null);
@@ -262,7 +263,7 @@ class ManagerTest {
 		assertEquals(testAnime, currentList.get(0));
 
 		//Test remove
-		Manager.getInstance().removeAnime(0);
+		Manager.getInstance().removeAnime(currentList.get(0));
 		assertEquals(3, currentList.size());
 		assertEquals(new Anime("Gurren Lagann", 2007, 26, Language.SUB, Type.SPECIAL, true, false, "Hiroyuki Imaishi", "Gainax", "Very good op!"), 
 				currentList.get(0));
@@ -273,7 +274,7 @@ class ManagerTest {
 	 */
 	@Test
 	void testEditMangaList() {
-		Manager.getInstance().setCurrentList(MediaType.MANGA);
+		Manager.getInstance().setCurrentList(MediaType.MANGA, null);
 		currentList = Manager.getInstance().getList();
 		
 		//Test exceptions for adding
@@ -285,7 +286,7 @@ class ManagerTest {
 		assertEquals("Cannot add duplicate element.", e2.getMessage());
 		
 		//Test exception for removing
-		assertThrows(IndexOutOfBoundsException.class, ()-> Manager.getInstance().removeManga(10));
+		assertThrows(IndexOutOfBoundsException.class, ()-> Manager.getInstance().removeManga(currentList.get(10)));
 		
 		//Test add
 		Manga testManga = new Manga("a", 2000, 0, "B.A. Author", "Magazine Weekly", Type.SERIES, false, true, false, "");
@@ -294,7 +295,7 @@ class ManagerTest {
 		assertEquals(testManga, currentList.get(0));
 
 		//Test remove
-		Manager.getInstance().removeManga(0);
+		Manager.getInstance().removeManga(currentList.get(0));
 		assertEquals(3, currentList.size());
 		assertEquals(new Manga("Fire Punch", 2016, 83, "Tatsuki Fujimoto", "Shonen Jump", Type.SERIES, true, false, false, ""), 
 				currentList.get(0));
@@ -328,11 +329,11 @@ class ManagerTest {
 		
 		//Test stats after removing all anime (should be defaults)
 		//Including further tests for getFavoredLanguageAndPercent()
-		Manager.getInstance().removeAnime(0);
+		Manager.getInstance().removeAnime(currentList.get(0));
 		assertEquals("Dub 100%", Manager.getInstance().getFavoredLanguageAndPercent()); //Is dub 100% here because Other languages arent counted unless some anime is watched ( count != 0)
-		Manager.getInstance().removeAnime(0);
+		Manager.getInstance().removeAnime(currentList.get(0));
 		assertEquals("Dub 100%", Manager.getInstance().getFavoredLanguageAndPercent());
-		Manager.getInstance().removeAnime(0);
+		Manager.getInstance().removeAnime(currentList.get(0));
 		
 		assertAll(
 				() -> assertEquals("0", Manager.getInstance().getEntryCount(MediaType.ANIME)),
@@ -358,8 +359,10 @@ class ManagerTest {
 				);
 		
 		//Alternate test for favored author manga statistic
-		Manager.getInstance().removeManga(0);
-		Manager.getInstance().removeManga(0);
+		Manager.getInstance().setCurrentList(MediaType.MANGA, null);
+		currentList = Manager.getInstance().getList();
+		Manager.getInstance().removeManga(currentList.get(0));
+		Manager.getInstance().removeManga(currentList.get(0));
 		Manga m1 = new Manga("Mongo", 1999, 5, "foo", "bar", Type.SERIES, false, false, false, "");
 		Manga m2 = new Manga("Mungo", 1999, 15, "foo", "bar", Type.SERIES, false, false, false, "");
 		Manager.getInstance().addManga(m1);

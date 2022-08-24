@@ -592,7 +592,7 @@ public class GUI extends JFrame {
 	 */
 	public void updateData(MediaType mt) {
 		if (mt != null) {
-			Manager.getInstance().setCurrentList(mt);
+			Manager.getInstance().setCurrentList(mt, null);
 			this.mediaMode = mt;
 		}
 

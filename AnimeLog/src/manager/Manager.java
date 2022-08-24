@@ -128,47 +128,28 @@ public class Manager {
 	/**
 	 * Sets the currentList for use with the GUI.
 	 * @param mt MediaType enum for which list should be used
+	 * @param focus sort method to sort data, null if no change
 	 */
-	public void setCurrentList(MediaType mt) {
+	public void setCurrentList(MediaType mt, SortFocus focus) {
 		switch (mt) {
 		case ANIME:
+			if (focus == SortFocus.ALPHABETICAL) {
+				animeList = userData.getAlphabeticalAnimeList();
+			} else if (focus == SortFocus.NUMERICAL) {
+				animeList = userData.getNumericalAnimeList();
+			}
+
 			currentList = animeList;
 			break;
 		case MANGA:
+			if (focus == SortFocus.ALPHABETICAL) {
+				mangaList = userData.getAlphabeticalMangaList();
+			} else if (focus == SortFocus.NUMERICAL) {
+				mangaList = userData.getNumericalMangaList();
+			} 
+
 			currentList = mangaList;
 			break;
-		}
-	}
-
-	/**
-	 * Sets the pointer animeList to the SortedMediaList relevant to the user's
-	 * sorting preference
-	 * @param focus method to sort anime data
-	 * @throws IllegalArgumentException if passed an invalid sorting method
-	 */
-	public void setAnimeList(SortFocus focus) {
-		if (focus == SortFocus.ALPHABETICAL) {
-			animeList = userData.getAlphabeticalAnimeList();
-		} else if (focus == SortFocus.NUMERICAL) {
-			animeList = userData.getNumericalAnimeList();
-		} else {
-			throw new IllegalArgumentException("Invalid sort method");
-		}
-	}
-	
-	/**
-	 * Sets the pointer mangaList to the SortedMediaList relevant to the user's
-	 * sorting preference
-	 * @param focus method to sort manga data
-	 * @throws IllegalArgumentException if passed an invalid sorting method
-	 */
-	public void setMangaList(SortFocus focus) {
-		if (focus == SortFocus.ALPHABETICAL) {
-			mangaList = userData.getAlphabeticalMangaList();
-		} else if (focus == SortFocus.NUMERICAL) {
-			mangaList = userData.getNumericalMangaList();
-		} else {
-			throw new IllegalArgumentException("Invalid sort method");
 		}
 	}
 
@@ -277,6 +258,7 @@ public class Manager {
 			} else if (sortBy == SortFocus.NUMERICAL) {
 				animeList = userData.getNumericalAnimeList();
 			}
+			currentList = animeList;
 			break;
 		case MANGA:
 			userData.getMangaPreferences().setSortMethod(sortBy);
@@ -285,6 +267,7 @@ public class Manager {
 			} else if (sortBy == SortFocus.NUMERICAL) {
 				mangaList = userData.getNumericalMangaList();
 			}
+			currentList = mangaList;
 			break;
 		}
 	}
