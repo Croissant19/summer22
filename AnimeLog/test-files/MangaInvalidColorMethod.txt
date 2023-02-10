@@ -1,2 +1,2 @@
 {{MANGA}}
-{PREFERENCES}Numerical,_SubDub,_-16711936,_-16711681
+{PREFERENCES}Numerical,_SubDub,_false,_-16711936,_-16711681

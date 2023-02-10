@@ -271,7 +271,7 @@ public class Manager {
 			break;
 		}
 	}
-	
+
 	/**
 	 * Changes the sorting method and retrieves the proper animeList to use
 	 * @param mt MediaType indicating which data the method needs to work with
@@ -292,6 +292,22 @@ public class Manager {
 		}
 	}
 
+	/**
+	 * Changes the sorting method and retrieves the proper animeList to use
+	 * @param mt MediaType indicating which data the method needs to work with
+	 * @param color flag indicating if only media that is finished should be colored
+	 */
+	public void setColorOnlyFinished(MediaType mt, boolean color) {
+		switch (mt) {
+		case ANIME:
+			userData.getAnimePreferences().setColorOnlyFinished(color);
+			break;
+		case MANGA:
+			userData.getMangaPreferences().setColorOnlyFinished(color);
+			break;
+		}	
+	}
+	
 	/**
 	 * Sets the designated color to the color passed as a parameter
 	 * @param mt MediaType indicating which data the method needs to work with
@@ -690,4 +706,5 @@ public class Manager {
 		
 		return currentHighestPublisher;
 	}
+
 }

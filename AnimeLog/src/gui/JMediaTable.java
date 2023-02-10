@@ -84,13 +84,17 @@ public class JMediaTable extends JTable {
 
 		/** ColorMethod used for coloring the table, set to NO_COLOR until something is specified otherwise */
 		private ColorMethod colorBy = ColorMethod.NO_COLOR;
-		
+
+		/** Flag indicating if unfinished media are allowed to be colored */
+		private boolean colorOnlyFinished = false;
+
 		/**
 		 * Sets the color rendering method.
 		 * @param colorBy ColorMethod to render with
 		 */
-		public void setRenderer(ColorMethod colorBy) {
+		public void setRenderer(ColorMethod colorBy, boolean colorOnlyFin) {
 			this.colorBy = colorBy;
+			this.colorOnlyFinished = colorOnlyFin;
 		}
 		
 		/**
@@ -108,11 +112,11 @@ public class JMediaTable extends JTable {
 				Anime a = (Anime) Manager.getInstance().getList().get(row);
 
 				//See if row meets status one
-				if (meetsStatusOne(a)) {
+				if (meetsStatusOne(a) && meetsFinishedStatus(a)) {
 					setBackground(Manager.getInstance().getAnimePreferences().getColor1());
 				} 
 				//See if row meets status two
-				else if (meetsStatusTwo(a)) {
+				else if (meetsStatusTwo(a) && meetsFinishedStatus(a)) {
 					setBackground(Manager.getInstance().getAnimePreferences().getColor2());
 				} else {
 					setBackground(Color.WHITE);
@@ -124,11 +128,11 @@ public class JMediaTable extends JTable {
 				Manga m = (Manga) Manager.getInstance().getList().get(row);
 
 				//See if row meets status one
-				if (meetsStatusOne(m)) {
+				if (meetsStatusOne(m) && meetsFinishedStatus(m)) {
 					setBackground(Manager.getInstance().getMangaPreferences().getColor1());
 				} 
 				//See if row meets status two
-				else if (meetsStatusTwo(m)) {
+				else if (meetsStatusTwo(m) && meetsFinishedStatus(m)) {
 					setBackground(Manager.getInstance().getMangaPreferences().getColor2());
 				} else {
 					setBackground(Color.WHITE);
@@ -194,5 +198,14 @@ public class JMediaTable extends JTable {
 			return meetsStatus;
 		}
 
+		/**
+		 * Indicates if the Media is allowed to be colored according to the TableRenderer's colorOnlyFinished flag.
+		 * @param media to be investigated
+		 * @return boolean indicator as to if the Media meets the finished qualifier for coloring
+		 */
+		private boolean meetsFinishedStatus(Media m) {
+			return colorOnlyFinished && !m.isFinished();
+		}
+		
 	}
 }

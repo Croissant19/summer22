@@ -66,7 +66,7 @@ class DataIOTest {
 	private static final Preferences DEFAULT_PREFERENCES = new Preferences();
 	
 	/** Reference pointer to alternative preference settings used in TEST_FILE_ONE */
-	private static final Preferences TEST_PREFERENCES = new Preferences(SortFocus.NUMERICAL, ColorMethod.NO_COLOR, -16711936,-16711681);
+	private static final Preferences TEST_PREFERENCES = new Preferences(SortFocus.NUMERICAL, ColorMethod.NO_COLOR, true, -16711936,-16711681);
 
 	/** Sorted collection of Anime returned and passed to file IO methods */
 	private SortedMediaList animeList; 
@@ -254,6 +254,7 @@ class DataIOTest {
 
 		assertEquals(SortFocus.NUMERICAL, p.getSortMethod());
 		assertEquals(ColorMethod.SUB_DUB, p.getColorMethod());
+		assertTrue(p.getColorOnlyFinished());
 		assertEquals(-10001936, p.getColor1().getRGB());
 		assertEquals(-16710081, p.getColor2().getRGB());
 	}

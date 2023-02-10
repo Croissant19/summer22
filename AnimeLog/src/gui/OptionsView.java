@@ -278,7 +278,6 @@ public class OptionsView extends JPanel {
 				mainGUI.updateData(null);
 			}
 		});
-
 		
 	}
 	
@@ -345,10 +344,8 @@ public class OptionsView extends JPanel {
 	 * Applies checkbox selection for coloring only finished media to data stored in the Manager.
 	 */
 	private void applySelectedColorOnlyFinished() {
-		boolean colorFin;
-		
 		//Report selection to Manager
-		Manager.getInstance().setColorOnlyFinished(chckbxOnlyColorFinished.isSelected());		
+		Manager.getInstance().setColorOnlyFinished(mainGUI.getMediaMode(), chckbxOnlyColorFinished.isSelected());		
 	}
 	
 

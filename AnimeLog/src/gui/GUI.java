@@ -613,7 +613,8 @@ public class GUI extends JFrame {
 		//Get sorted table using proper procedure
 		switch (mediaMode) {
 			case ANIME:
-				table.getRenderer().setRenderer(Manager.getInstance().getAnimePreferences().getColorMethod());
+				table.getRenderer().setRenderer(Manager.getInstance().getAnimePreferences().getColorMethod(), 
+						Manager.getInstance().getAnimePreferences().getColorOnlyFinished());
 				rowVals = Manager.getInstance().getAllAnimeAsArray();
 
 				tm = (DefaultTableModel) table.getModel();
@@ -627,7 +628,8 @@ public class GUI extends JFrame {
 
 				break;
 			case MANGA:
-				table.getRenderer().setRenderer(Manager.getInstance().getMangaPreferences().getColorMethod());
+				table.getRenderer().setRenderer(Manager.getInstance().getMangaPreferences().getColorMethod(), 
+						Manager.getInstance().getMangaPreferences().getColorOnlyFinished());
 				rowVals = Manager.getInstance().getAllMangaAsArray();
 
 				tm = (DefaultTableModel) table.getModel();
