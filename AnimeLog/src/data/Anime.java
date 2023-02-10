@@ -67,7 +67,7 @@ public class Anime extends Media {
 	 * @param type series or special
 	 * @param finished if the user finished watching
 	 * @param dropped if the user stopped watching
-	 * @param director 
+	 * @param director director of the show
 	 * @param studio producers of the show
 	 * @param notes personal notes about the entry
 	 * @throws IllegalArgumentException if passed bad parameters
@@ -112,7 +112,7 @@ public class Anime extends Media {
 	/**
 	 * Changes or sets the director field
 	 * @param director the director to set
-	 * @throws IllegalArguemntException if the string contains an illegal substring
+	 * @throws IllegalArgumentException if the string contains an illegal substring
 	 */
 	public void setDirector(String director) {
 		if (!isValidString(director)) {
@@ -133,7 +133,7 @@ public class Anime extends Media {
 	/**
 	 * Changes or sets the studio field
 	 * @param studio the studio to set
-	 * @throws IllegalArguemntException if the string contains an illegal substring
+	 * @throws IllegalArgumentException if the string contains an illegal substring
 	 */
 	public void setStudio(String studio) {
 		if (!isValidString(studio)) {

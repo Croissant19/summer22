@@ -183,7 +183,7 @@ public class Manager {
 	
 	/**
 	 * Removes a selected manga from the mangaList
-	 * @param a Media object (hopefully a Manga) to remove
+	 * @param m Media object (hopefully a Manga) to remove
 	 * @throws IndexOutOfBoundsException if the passed index is out of bounds
 	 */
 	public void removeManga(Media m) {
