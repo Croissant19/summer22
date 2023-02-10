@@ -271,6 +271,7 @@ class DataIOTest {
 
 		assertEquals(SortFocus.NUMERICAL, p.getSortMethod());
 		assertEquals(ColorMethod.NO_COLOR, p.getColorMethod());
+		assertFalse(p.getColorOnlyFinished());
 		assertEquals(-16711936, p.getColor1().getRGB());
 		assertEquals(-16711681, p.getColor2().getRGB());
 
@@ -307,11 +308,7 @@ class DataIOTest {
 	 */
 	@Test
 	void testBlankFileGivesDefaults() {
-		Preferences defaults = new Preferences();
-		
 		data = DataIO.readFile(TEST_FILE_TEN);
-
-		//Assert everything null
 
 		assertEquals(0, data.getAlphabeticalAnimeList().size());
 		assertDefaultPreferences(data.getAnimePreferences());
@@ -405,7 +402,8 @@ class DataIOTest {
 				() -> assertEquals(defaults.getColor1(), p.getColor1()),
 				() -> assertEquals(defaults.getColor2(), p.getColor2()),
 				() -> assertEquals(defaults.getColorMethod(), p.getColorMethod()),
-				() -> assertEquals(defaults.getSortMethod(), p.getSortMethod())
+				() -> assertEquals(defaults.getSortMethod(), p.getSortMethod()),
+				() -> assertEquals(defaults.getColorOnlyFinished(), p.getColorOnlyFinished())
 		);
 	}
 	

@@ -204,7 +204,7 @@ public class JMediaTable extends JTable {
 		 * @return boolean indicator as to if the Media meets the finished qualifier for coloring
 		 */
 		private boolean meetsFinishedStatus(Media m) {
-			return colorOnlyFinished && !m.isFinished();
+			return (colorOnlyFinished && m.isFinished()) || !colorOnlyFinished;
 		}
 		
 	}
