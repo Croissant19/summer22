@@ -1,3 +1,3 @@
 {{ANIME}}
-{PREFERENCES}Alphabetical,_NoColor,_-3342388,_-3355393
+{PREFERENCES}Alphabetical,_NoColor,_false,_-3342388,_-3355393
 <|>Gurren Lagann,_2007,_26,_Sub,_Series,_true,_false,_Hiroyuki Imaishi,_Gainax,_

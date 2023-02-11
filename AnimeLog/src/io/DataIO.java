@@ -139,7 +139,7 @@ public class DataIO {
 	}
 	
 	/**
-	 * Processes a line of data into a set of preferences for the program to use
+	 * Processes a line of data into a set of preferences for the program to use.
 	 * @param data line of data from which preferences can be understood
 	 * @param mt indicates the media subclass involved, in case certain behaviors are/aren't necessary
 	 * @return Preferences object with information on how user wants data displayed
@@ -158,6 +158,7 @@ public class DataIO {
 		in.useDelimiter(",_");
 		SortFocus sortBy = SortFocus.parseSort(in.next());
 		ColorMethod colorBy = ColorMethod.parseSort(in.next());
+		boolean colorOnlyFinished = Boolean.parseBoolean(in.next());
 		int c1 = Integer.parseInt(in.next());
 		int c2 = Integer.parseInt(in.next());
 		
@@ -169,6 +170,6 @@ public class DataIO {
 		if (mt == MediaType.MANGA && colorBy == ColorMethod.SUB_DUB) {
 			throw new IllegalArgumentException("Using language-based color method with Manga, not allowed.");
 		}
-		return new Preferences(sortBy, colorBy, c1, c2);
+		return new Preferences(sortBy, colorBy, colorOnlyFinished, c1, c2);
 	}
 }

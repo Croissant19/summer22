@@ -20,6 +20,7 @@ import java.awt.Font;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JCheckBox;
 
 /**
  * Defines the GUI components for changing program settings
@@ -48,6 +49,7 @@ public class OptionsView extends JPanel {
 	private JRadioButton rdBtnColorLanguage;
 	private JButton btnColor1;
 	private JButton btnColor2;
+	private JCheckBox chckbxOnlyColorFinished;
 	private JPanel panel;
 	
 	
@@ -119,6 +121,15 @@ public class OptionsView extends JPanel {
 		btnColor2.setBounds(287, 166, 74, 23);
 		btnColor2.setRequestFocusEnabled(false);
 		pnlFields.add(btnColor2);
+		
+		JLabel lblOther = new JLabel("Other:");
+		lblOther.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblOther.setBounds(33, 239, 64, 14);
+		pnlFields.add(lblOther);
+		
+		chckbxOnlyColorFinished = new JCheckBox("Only highlight finished");
+		chckbxOnlyColorFinished.setBounds(49, 254, 150, 23);
+		pnlFields.add(chckbxOnlyColorFinished);
 
 
 		//Set swatch, the AbstractColorChooserPanel which will be used for selecting colors
@@ -216,7 +227,15 @@ public class OptionsView extends JPanel {
 			}
 		});
 
-
+		//Checkbox for colorOnlyFinished
+		chckbxOnlyColorFinished.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {			
+				//Update data
+				applySelectedColorOnlyFinished();
+				mainGUI.updateData(null);
+			}
+		});
+		
 	}
 	
 	/**
@@ -340,18 +359,31 @@ public class OptionsView extends JPanel {
 
 	
 	/**
+	 * Applies checkbox selection for coloring only finished media to data stored in the Manager.
+	 */
+	private void applySelectedColorOnlyFinished() {
+		//Report selection to Manager
+		Manager.getInstance().setColorOnlyFinished(mainGUI.getMediaMode(), chckbxOnlyColorFinished.isSelected());		
+	}
+	
+
+	/**
 	 * Indicates the current preferences by selecting the proper JRadioButtons
 	 * @throws IllegalArgumentException if the user has somehow stored an invalid selection
 	 */
 	public void displayCurrentSelection() {
 		SortFocus sortBy;
 		ColorMethod colorBy;
+		boolean colorOnlyFinished;
+
 		if (mainGUI.getMediaMode() == MediaType.ANIME) {
 			sortBy = Manager.getInstance().getAnimePreferences().getSortMethod();
 			colorBy = Manager.getInstance().getAnimePreferences().getColorMethod();
+			colorOnlyFinished = Manager.getInstance().getAnimePreferences().getColorOnlyFinished();
 		} else {
 			sortBy = Manager.getInstance().getMangaPreferences().getSortMethod();
 			colorBy = Manager.getInstance().getMangaPreferences().getColorMethod();
+			colorOnlyFinished = Manager.getInstance().getMangaPreferences().getColorOnlyFinished();
 		}
 
 		if (sortBy == SortFocus.ALPHABETICAL) {
@@ -404,8 +436,7 @@ public class OptionsView extends JPanel {
 			break;
 		}
 		
-
+		chckbxOnlyColorFinished.setSelected(colorOnlyFinished);
 
 	}
-
 }

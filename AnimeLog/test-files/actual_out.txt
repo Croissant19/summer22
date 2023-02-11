@@ -1,5 +1,5 @@
 {{ANIME}}
-{PREFERENCES}Alphabetical,_NoColor,_-3342388,_-3355393
+{PREFERENCES}Alphabetical,_NoColor,_false,_-3342388,_-3355393
 <|>Gurren Lagann,_2007,_27,_Sub,_Series,_true,_false,_Hiroyuki Imaishi,_Gainax,_Very good op!
 <|>Naruto,_2002,_0,_Other,_Special,_false,_true,_,_Pierrot,_W
 O
@@ -7,7 +7,7 @@ A
 H
 <|>One Piece,_1999,_100,_Dub,_Series,_false,_false,_multiple,_Toei,_Watching with brother
 {{MANGA}}
-{PREFERENCES}Numerical,_NoColor,_-16711936,_-16711681
+{PREFERENCES}Numerical,_NoColor,_true,_-16711936,_-16711681
 <|>Chainsaw Man,_2018,_99,_Tatsuki Fujimoto,_Shonen Jump,_Series,_false,_false,_true,_
 <|>Fire Punch,_2016,_83,_Tatsuki Fujimoto,_Shonen Jump,_Series,_true,_false,_false,_Worth a reread
 <|>Look Back,_2021,_1,_Tatsuki Fujimoto,_Shonen Jump,_Special,_true,_false,_false,_Fav oneshot so far

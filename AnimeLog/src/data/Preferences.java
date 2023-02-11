@@ -18,13 +18,16 @@ public class Preferences {
 	
 	/** Method used to shade Anime table data */
 	private ColorMethod colorBy;
+
+	/** Flag to only color finished media in the table */
+	private boolean colorOnlyFinished;
 	
 	/** Color one for shading rows */
 	private Color color1;
 
 	/** Color two for shading rows */
 	private Color color2;
-
+	
 
 	/**
 	 * Indicates whether the data is sorted by title (alphabetical) or by year (numerical).
@@ -108,20 +111,22 @@ public class Preferences {
 	 */
 	public Preferences() {
 		//Set defaults
-		this(SortFocus.ALPHABETICAL, ColorMethod.NO_COLOR, Preferences.DEFAULT_COLOR_1.getRGB(), Preferences.DEFAULT_COLOR_2.getRGB());
+		this(SortFocus.ALPHABETICAL, ColorMethod.NO_COLOR, false, Preferences.DEFAULT_COLOR_1.getRGB(), Preferences.DEFAULT_COLOR_2.getRGB());
 	}
 	
 	/**
 	 * Constructs preferences object by setting fields
 	 * @param sort SortFocus to sort by
 	 * @param color method for coloring data rows
+	 * @param colorOnlyFinished flag for limited coloring on the media table
 	 * @param c1 RGB of color for shading some data rows
 	 * @param c2 RGB of color for shading some other data rows
 	 */
-	public Preferences(SortFocus sort, ColorMethod color, int c1, int c2) {
+	public Preferences(SortFocus sort, ColorMethod color, boolean colorOnlyFinished, int c1, int c2) {
 		//Set parameters
 		setSortMethod(sort);
 		setColorMethod(color);
+		setColorOnlyFinished(colorOnlyFinished);
 		setColor1(c1);
 		setColor2(c2);
 	}
@@ -141,7 +146,7 @@ public class Preferences {
 	public SortFocus getSortMethod() {
 		return sortBy;
 	}
-	
+
 	/**
 	 * Indicates the coloring method the user is using.
 	 * @return ColorMethod for the user's data table
@@ -157,6 +162,23 @@ public class Preferences {
 	public void setColorMethod(ColorMethod colorMethod) {
 		colorBy = colorMethod;
 	}
+
+	/**
+	 * Indicates if the user only wants media marked as finished to be colored.
+	 * @return colorOnlyFinished flag for the user's data table
+	 */
+	public boolean getColorOnlyFinished() {
+		return colorOnlyFinished;
+	}
+
+	/**
+	 * Sets the decision to color media in the table with the attribute of not finished.
+	 * @param colorOnlyFinished flag for limited coloring on the media table
+	 */
+	public void setColorOnlyFinished(boolean colorOnlyFinished) {
+		this.colorOnlyFinished = colorOnlyFinished;
+	}
+	
 	
 	/**
 	 * Indicates the first color selected by the user or the default if not color selected
@@ -197,8 +219,8 @@ public class Preferences {
 	 */
 	@Override
 	public String toString() {
-		String s = sortBy.formattedName + ",_" + colorBy.formattedName + ",_"
-				+ color1.getRGB() + ",_" + color2.getRGB();
+		String s = sortBy.formattedName + ",_" + colorBy.formattedName + ",_" + colorOnlyFinished
+				+ ",_" + color1.getRGB() + ",_" + color2.getRGB();
 		
 		return s;
 	}
