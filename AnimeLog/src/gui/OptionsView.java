@@ -20,6 +20,7 @@ import java.awt.Font;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JCheckBox;
 
 /**
@@ -39,7 +40,7 @@ public class OptionsView extends JPanel {
 
 	/** JColorChooser pointer */
 	private JColorChooser colorChooser;
-	
+
 	private GUI mainGUI;
 	private JRadioButton rdBtnTitle;
 	private JRadioButton rdBtnYear;
@@ -51,6 +52,7 @@ public class OptionsView extends JPanel {
 	private JButton btnColor2;
 	private JCheckBox chckbxOnlyColorFinished;
 	private JPanel panel;
+	private JButton btnSurprise;
 	
 	
 	/**
@@ -130,6 +132,10 @@ public class OptionsView extends JPanel {
 		chckbxOnlyColorFinished = new JCheckBox("Only highlight finished");
 		chckbxOnlyColorFinished.setBounds(49, 254, 150, 23);
 		pnlFields.add(chckbxOnlyColorFinished);
+		
+		btnSurprise = new JButton("?");
+		btnSurprise.setBounds(49, 285, 37, 23);
+		pnlFields.add(btnSurprise);
 
 
 		//Set swatch, the AbstractColorChooserPanel which will be used for selecting colors
@@ -235,8 +241,21 @@ public class OptionsView extends JPanel {
 				mainGUI.updateData(null);
 			}
 		});
-		
+
+
+		//Surprise button
+		this.btnSurprise.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new SurpriseDialog(mainGUI);
+				//Temporarily disable the main window
+//				mainGUI.setEnabled(false);
+	//			mainGUI.setEnabled(true);
+			}
+		});
+	
+	
 	}
+
 	
 	/**
 	 * Shows a dialog to get a color from the user for display in the gui
