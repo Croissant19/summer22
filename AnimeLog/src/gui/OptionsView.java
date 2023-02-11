@@ -41,8 +41,8 @@ public class OptionsView extends JPanel {
 	private JColorChooser colorChooser;
 	
 	private GUI mainGUI;
-	private JRadioButton rdBtnAlphabet;
-	private JRadioButton rdBtnNumeric;
+	private JRadioButton rdBtnTitle;
+	private JRadioButton rdBtnYear;
 	private JRadioButton rdBtnNoColor;
 	private JRadioButton rdBtnColorFinDrop;
 	private JRadioButton rdBtnColorSeriesSpecial;
@@ -73,13 +73,13 @@ public class OptionsView extends JPanel {
 		panel.add(pnlFields);
 		pnlFields.setLayout(null);
 		
-		rdBtnAlphabet = new JRadioButton("Title");
-		rdBtnAlphabet.setBounds(49, 83, 74, 23);
-		pnlFields.add(rdBtnAlphabet);
+		rdBtnTitle = new JRadioButton("Title");
+		rdBtnTitle.setBounds(49, 83, 74, 23);
+		pnlFields.add(rdBtnTitle);
 		
-		rdBtnNumeric = new JRadioButton("Year");
-		rdBtnNumeric.setBounds(125, 83, 74, 23);
-		pnlFields.add(rdBtnNumeric);
+		rdBtnYear = new JRadioButton("Year");
+		rdBtnYear.setBounds(125, 83, 74, 23);
+		pnlFields.add(rdBtnYear);
 		
 		JLabel lblSortBy = new JLabel("Sort by:");
 		lblSortBy.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -153,16 +153,16 @@ public class OptionsView extends JPanel {
 	private void createEvents() {		
 		//Events for ensuring only one radio button of each type can be selected at once
 		//Sort method
-		rdBtnAlphabet.addActionListener(new ActionListener() {
+		rdBtnTitle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Toggle other JRadioButton
-				toggleSortRadioBtns(rdBtnAlphabet);
+				toggleSortRadioBtns(rdBtnTitle);
 			}
 		});
-		rdBtnNumeric.addActionListener(new ActionListener() {
+		rdBtnYear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Toggle other JRadioButton
-				toggleSortRadioBtns(rdBtnNumeric);
+				toggleSortRadioBtns(rdBtnYear);
 			}
 		});
 
@@ -285,9 +285,9 @@ public class OptionsView extends JPanel {
 		SortFocus sortBy;
 		
 		//Get sortBy
-		if (rdBtnAlphabet.isSelected()) {
+		if (rdBtnTitle.isSelected()) {
 			sortBy = SortFocus.ALPHABETICAL;
-		} else if (rdBtnNumeric.isSelected()) {
+		} else if (rdBtnYear.isSelected()) {
 			sortBy = SortFocus.NUMERICAL;
 		} else {
 			throw new IllegalArgumentException("You must select a sorting preference.");
@@ -307,10 +307,10 @@ public class OptionsView extends JPanel {
 	private void toggleSortRadioBtns(JRadioButton clickedBtn) {
 		if (clickedBtn.isSelected()) {
 			//If-statements so that you don't toggle the selected button
-			if (clickedBtn != rdBtnAlphabet)
-				rdBtnAlphabet.setSelected(false);
-			if (clickedBtn != rdBtnNumeric)
-				rdBtnNumeric.setSelected(false);
+			if (clickedBtn != rdBtnTitle)
+				rdBtnTitle.setSelected(false);
+			if (clickedBtn != rdBtnYear)
+				rdBtnYear.setSelected(false);
 
 			//Update data
 			applySelectedSortMethod();
@@ -387,11 +387,11 @@ public class OptionsView extends JPanel {
 		}
 
 		if (sortBy == SortFocus.ALPHABETICAL) {
-			rdBtnAlphabet.setSelected(true);
-			rdBtnNumeric.setSelected(false);
+			rdBtnTitle.setSelected(true);
+			rdBtnYear.setSelected(false);
 		} else if (sortBy == SortFocus.NUMERICAL) {
-			rdBtnNumeric.setSelected(true);
-			rdBtnAlphabet.setSelected(false);
+			rdBtnYear.setSelected(true);
+			rdBtnTitle.setSelected(false);
 		} else {
 			throw new IllegalArgumentException("Error with discovering user preferences");
 		}
