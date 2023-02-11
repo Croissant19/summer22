@@ -145,25 +145,13 @@ public class OptionsView extends JPanel {
 		rdBtnAlphabet.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Toggle other JRadioButton
-				if (rdBtnAlphabet.isSelected()) {
-					rdBtnNumeric.setSelected(false);
-				}
-			
-				//Update data
-				applySelectedSortMethod();
-				mainGUI.updateData(null);
+				toggleSortRadioBtns(rdBtnAlphabet);
 			}
 		});
 		rdBtnNumeric.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Toggle other JRadioButton
-				if (rdBtnNumeric.isSelected()) {
-					rdBtnAlphabet.setSelected(false);
-				}
-
-				//Update data
-				applySelectedSortMethod();
-				mainGUI.updateData(null);
+				toggleSortRadioBtns(rdBtnNumeric);
 			}
 		});
 
@@ -172,57 +160,26 @@ public class OptionsView extends JPanel {
 		rdBtnNoColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Toggle other JRadioButtons
-				if (rdBtnNoColor.isSelected()) {
-					rdBtnColorFinDrop.setSelected(false);
-					rdBtnColorSeriesSpecial.setSelected(false);
-					rdBtnColorLanguage.setSelected(false);
-				}
+				toggleColorRadioBtns(rdBtnNoColor);
 				
-				//Update data
-				applySelectedColorMethod();
-				mainGUI.updateData(null);
 			}
 		});
 		rdBtnColorFinDrop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Toggle other JRadioButtons
-				if (rdBtnColorFinDrop.isSelected()) {
-					rdBtnNoColor.setSelected(false);
-					rdBtnColorSeriesSpecial.setSelected(false);
-					rdBtnColorLanguage.setSelected(false);
-				}
-			
-				//Update data
-				applySelectedColorMethod();
-				mainGUI.updateData(null);
+				toggleColorRadioBtns(rdBtnColorFinDrop);
 			}
 		});
 		rdBtnColorSeriesSpecial.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Toggle other JRadioButtons
-				if (rdBtnColorSeriesSpecial.isSelected()) {
-					rdBtnNoColor.setSelected(false);
-					rdBtnColorFinDrop.setSelected(false);
-					rdBtnColorLanguage.setSelected(false);
-				}
-
-				//Update data
-				applySelectedColorMethod();
-				mainGUI.updateData(null);
+				toggleColorRadioBtns(rdBtnColorSeriesSpecial);
 			}
 		});
 		rdBtnColorLanguage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Toggle other JRadioButtons
-				if (rdBtnColorLanguage.isSelected()) {
-					rdBtnNoColor.setSelected(false);
-					rdBtnColorFinDrop.setSelected(false);
-					rdBtnColorSeriesSpecial.setSelected(false);
-				}
-			
-				//Update data
-				applySelectedColorMethod();
-				mainGUI.updateData(null);
+				toggleColorRadioBtns(rdBtnColorLanguage);
 			}
 		});
 
@@ -321,6 +278,67 @@ public class OptionsView extends JPanel {
 		Manager.getInstance().setSortMethod(mainGUI.getMediaMode(), sortBy);
 	}
 
+	/***
+	 * Sets all SortMethod buttons aside from the passed one to be not selected and updates the selected SortMethod.
+	 * EXCEPT!! for the case when the clicked button was turned off, which creates an unallowed situation
+	 * where no radio buttons for this particular option are selected. 
+	 * In that case, the method simply reselects that radio button.
+	 * @param clickedBtn JRadioButton to toggle around
+	 */
+	private void toggleSortRadioBtns(JRadioButton clickedBtn) {
+		if (clickedBtn.isSelected()) {
+			//If-statements so that you don't toggle the selected button
+			if (clickedBtn != rdBtnAlphabet)
+				rdBtnAlphabet.setSelected(false);
+			if (clickedBtn != rdBtnNumeric)
+				rdBtnNumeric.setSelected(false);
+
+			//Update data
+			applySelectedSortMethod();
+			mainGUI.updateData(null);
+
+		} else {
+			//If it is not selected after being clicked, then the user has created 
+			//a situation where no color method is selected, which is not allowed.
+			//Fix by reselecting this button.
+			clickedBtn.setSelected(true);
+		}
+	}
+
+
+	/***
+	 * Sets all ColorMethod buttons aside from the passed one to be not selected and updated the selected ColorMethod.
+	 * EXCEPT!! for the case when the clicked button was turned off, which creates an unallowed situation
+	 * where no radio buttons for this particular option are selected. 
+	 * In that case, the method simply reselects that radio button.
+	 * @param clickedBtn JRadioButton to toggle around
+	 */
+	private void toggleColorRadioBtns(JRadioButton clickedBtn) {
+
+		if (clickedBtn.isSelected()) {
+			//If-statements so that you don't toggle the selected button
+			if (clickedBtn != rdBtnNoColor)
+				rdBtnNoColor.setSelected(false);
+			if (clickedBtn != rdBtnColorFinDrop)
+				rdBtnColorFinDrop.setSelected(false);
+			if (clickedBtn != rdBtnColorSeriesSpecial)
+				rdBtnColorSeriesSpecial.setSelected(false);
+			if (clickedBtn != rdBtnColorLanguage)
+				rdBtnColorLanguage.setSelected(false);
+
+			//Update data
+			applySelectedColorMethod();
+			mainGUI.updateData(null);
+
+		} else {
+			//If it is not selected after being clicked, then the user has created 
+			//a situation where no color method is selected, which is not allowed.
+			//Fix by reselecting this button.
+			clickedBtn.setSelected(true);
+		}
+	}
+
+	
 	/**
 	 * Indicates the current preferences by selecting the proper JRadioButtons
 	 * @throws IllegalArgumentException if the user has somehow stored an invalid selection
