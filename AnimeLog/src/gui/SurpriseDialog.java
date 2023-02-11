@@ -36,7 +36,7 @@ public class SurpriseDialog extends JDialog {
 
 	/**
 	 * Create the dialog.
-	 * @param pointer to the main GUI from which this dialog originates
+	 * @param mainGUI pointer to the main GUI from which this dialog originates
 	 */
 	public SurpriseDialog(GUI mainGUI) {
 		//Initialize surprise frame
@@ -55,8 +55,8 @@ public class SurpriseDialog extends JDialog {
 	}
 
 	/**
-	 * Initializes the main components of the dialog, being the image jlabel, the text jlabel, 
-	 * the jbutton, and thepanel which holds them.
+	 * Initializes the main components of the dialog, being the image JLabel, the text JLabel, 
+	 * the JButton, and the JPanel which holds them.
 	 */
 	private void addComponents() {
 		contentPanel = new JPanel();
