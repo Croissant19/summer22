@@ -66,7 +66,7 @@ class DataIOTest {
 	private static final Preferences DEFAULT_PREFERENCES = new Preferences();
 	
 	/** Reference pointer to alternative preference settings used in TEST_FILE_ONE */
-	private static final Preferences TEST_PREFERENCES = new Preferences(SortFocus.NUMERICAL, ColorMethod.NO_COLOR, -16711936,-16711681);
+	private static final Preferences TEST_PREFERENCES = new Preferences(SortFocus.NUMERICAL, ColorMethod.NO_COLOR, true, -16711936,-16711681);
 
 	/** Sorted collection of Anime returned and passed to file IO methods */
 	private SortedMediaList animeList; 
@@ -254,6 +254,7 @@ class DataIOTest {
 
 		assertEquals(SortFocus.NUMERICAL, p.getSortMethod());
 		assertEquals(ColorMethod.SUB_DUB, p.getColorMethod());
+		assertTrue(p.getColorOnlyFinished());
 		assertEquals(-10001936, p.getColor1().getRGB());
 		assertEquals(-16710081, p.getColor2().getRGB());
 	}
@@ -270,6 +271,7 @@ class DataIOTest {
 
 		assertEquals(SortFocus.NUMERICAL, p.getSortMethod());
 		assertEquals(ColorMethod.NO_COLOR, p.getColorMethod());
+		assertFalse(p.getColorOnlyFinished());
 		assertEquals(-16711936, p.getColor1().getRGB());
 		assertEquals(-16711681, p.getColor2().getRGB());
 
@@ -306,11 +308,7 @@ class DataIOTest {
 	 */
 	@Test
 	void testBlankFileGivesDefaults() {
-		Preferences defaults = new Preferences();
-		
 		data = DataIO.readFile(TEST_FILE_TEN);
-
-		//Assert everything null
 
 		assertEquals(0, data.getAlphabeticalAnimeList().size());
 		assertDefaultPreferences(data.getAnimePreferences());
@@ -404,7 +402,8 @@ class DataIOTest {
 				() -> assertEquals(defaults.getColor1(), p.getColor1()),
 				() -> assertEquals(defaults.getColor2(), p.getColor2()),
 				() -> assertEquals(defaults.getColorMethod(), p.getColorMethod()),
-				() -> assertEquals(defaults.getSortMethod(), p.getSortMethod())
+				() -> assertEquals(defaults.getSortMethod(), p.getSortMethod()),
+				() -> assertEquals(defaults.getColorOnlyFinished(), p.getColorOnlyFinished())
 		);
 	}
 	

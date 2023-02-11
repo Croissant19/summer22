@@ -108,7 +108,7 @@ public class DataIO {
 				} else if (mt == MediaType.MANGA) {
 					mangaDataString += nextLine + "\n";
 				} else {
-					throw new IllegalArgumentException("Data present but no media type declared.");
+					throw new IllegalArgumentException("File data could not be understood.");
 				}
 			}
 		}
@@ -139,7 +139,7 @@ public class DataIO {
 	}
 	
 	/**
-	 * Processes a line of data into a set of preferences for the program to use
+	 * Processes a line of data into a set of preferences for the program to use.
 	 * @param data line of data from which preferences can be understood
 	 * @param mt indicates the media subclass involved, in case certain behaviors are/aren't necessary
 	 * @return Preferences object with information on how user wants data displayed
@@ -156,19 +156,33 @@ public class DataIO {
 		//Scan and parse the data
 		Scanner in = new Scanner(data);
 		in.useDelimiter(",_");
-		SortFocus sortBy = SortFocus.parseSort(in.next());
-		ColorMethod colorBy = ColorMethod.parseSort(in.next());
-		int c1 = Integer.parseInt(in.next());
-		int c2 = Integer.parseInt(in.next());
+		SortFocus sortBy; 
+		ColorMethod colorBy; 
+		boolean colorOnlyFinished;
+		int c1, c2;
 		
+		try {
+			sortBy = SortFocus.parseSort(in.next());
+			colorBy = ColorMethod.parseSort(in.next());
+			colorOnlyFinished = Boolean.parseBoolean(in.next());
+			c1 = Integer.parseInt(in.next());
+			c2 = Integer.parseInt(in.next());
+		} catch (Exception e) {
+			in.close();
+			throw new IllegalArgumentException("Error parsing preference data.");
+		}
+
 		if (in.hasNext()) {
 			in.close();
 			throw new IllegalArgumentException("Too much preference data.");
 		}
+
 		in.close();
+
 		if (mt == MediaType.MANGA && colorBy == ColorMethod.SUB_DUB) {
 			throw new IllegalArgumentException("Using language-based color method with Manga, not allowed.");
 		}
-		return new Preferences(sortBy, colorBy, c1, c2);
+	
+		return new Preferences(sortBy, colorBy, colorOnlyFinished, c1, c2);
 	}
 }

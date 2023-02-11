@@ -44,7 +44,7 @@ import javax.swing.Box;
  * @author Hunter Pruitt
  */
 public class GUI extends JFrame {
-	
+
 	/** Warning in case user tries to start browsing without any media added */
 	private static final String BROWSE_WARNING = "To start browsing, you need to add at least one entry to your list.";
 
@@ -613,7 +613,8 @@ public class GUI extends JFrame {
 		//Get sorted table using proper procedure
 		switch (mediaMode) {
 			case ANIME:
-				table.getRenderer().setRenderer(Manager.getInstance().getAnimePreferences().getColorMethod());
+				table.getRenderer().setRenderer(Manager.getInstance().getAnimePreferences().getColorMethod(), 
+						Manager.getInstance().getAnimePreferences().getColorOnlyFinished());
 				rowVals = Manager.getInstance().getAllAnimeAsArray();
 
 				tm = (DefaultTableModel) table.getModel();
@@ -627,7 +628,8 @@ public class GUI extends JFrame {
 
 				break;
 			case MANGA:
-				table.getRenderer().setRenderer(Manager.getInstance().getMangaPreferences().getColorMethod());
+				table.getRenderer().setRenderer(Manager.getInstance().getMangaPreferences().getColorMethod(), 
+						Manager.getInstance().getMangaPreferences().getColorOnlyFinished());
 				rowVals = Manager.getInstance().getAllMangaAsArray();
 
 				tm = (DefaultTableModel) table.getModel();

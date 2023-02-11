@@ -21,6 +21,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JCheckBox;
+
 /**
  * Defines the GUI components for changing program settings
  * @author Hunter Pruitt
@@ -38,17 +40,19 @@ public class OptionsView extends JPanel {
 
 	/** JColorChooser pointer */
 	private JColorChooser colorChooser;
-	
+
 	private GUI mainGUI;
-	private JRadioButton rdBtnAlphabet;
-	private JRadioButton rdBtnNumeric;
+	private JRadioButton rdBtnTitle;
+	private JRadioButton rdBtnYear;
 	private JRadioButton rdBtnNoColor;
 	private JRadioButton rdBtnColorFinDrop;
 	private JRadioButton rdBtnColorSeriesSpecial;
 	private JRadioButton rdBtnColorLanguage;
 	private JButton btnColor1;
 	private JButton btnColor2;
+	private JCheckBox chckbxOnlyColorFinished;
 	private JPanel panel;
+	private JButton btnSurprise;
 	
 	
 	/**
@@ -71,13 +75,13 @@ public class OptionsView extends JPanel {
 		panel.add(pnlFields);
 		pnlFields.setLayout(null);
 		
-		rdBtnAlphabet = new JRadioButton("Title");
-		rdBtnAlphabet.setBounds(49, 83, 74, 23);
-		pnlFields.add(rdBtnAlphabet);
+		rdBtnTitle = new JRadioButton("Title");
+		rdBtnTitle.setBounds(49, 83, 74, 23);
+		pnlFields.add(rdBtnTitle);
 		
-		rdBtnNumeric = new JRadioButton("Year");
-		rdBtnNumeric.setBounds(125, 83, 74, 23);
-		pnlFields.add(rdBtnNumeric);
+		rdBtnYear = new JRadioButton("Year");
+		rdBtnYear.setBounds(125, 83, 74, 23);
+		pnlFields.add(rdBtnYear);
 		
 		JLabel lblSortBy = new JLabel("Sort by:");
 		lblSortBy.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -119,6 +123,19 @@ public class OptionsView extends JPanel {
 		btnColor2.setBounds(287, 166, 74, 23);
 		btnColor2.setRequestFocusEnabled(false);
 		pnlFields.add(btnColor2);
+		
+		JLabel lblOther = new JLabel("Other:");
+		lblOther.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblOther.setBounds(33, 239, 64, 14);
+		pnlFields.add(lblOther);
+		
+		chckbxOnlyColorFinished = new JCheckBox("Only highlight finished");
+		chckbxOnlyColorFinished.setBounds(49, 254, 150, 23);
+		pnlFields.add(chckbxOnlyColorFinished);
+		
+		btnSurprise = new JButton("?");
+		btnSurprise.setBounds(49, 285, 37, 23);
+		pnlFields.add(btnSurprise);
 
 
 		//Set swatch, the AbstractColorChooserPanel which will be used for selecting colors
@@ -142,28 +159,16 @@ public class OptionsView extends JPanel {
 	private void createEvents() {		
 		//Events for ensuring only one radio button of each type can be selected at once
 		//Sort method
-		rdBtnAlphabet.addActionListener(new ActionListener() {
+		rdBtnTitle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Toggle other JRadioButton
-				if (rdBtnAlphabet.isSelected()) {
-					rdBtnNumeric.setSelected(false);
-				}
-			
-				//Update data
-				applySelectedSortMethod();
-				mainGUI.updateData(null);
+				toggleSortRadioBtns(rdBtnTitle);
 			}
 		});
-		rdBtnNumeric.addActionListener(new ActionListener() {
+		rdBtnYear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Toggle other JRadioButton
-				if (rdBtnNumeric.isSelected()) {
-					rdBtnAlphabet.setSelected(false);
-				}
-
-				//Update data
-				applySelectedSortMethod();
-				mainGUI.updateData(null);
+				toggleSortRadioBtns(rdBtnYear);
 			}
 		});
 
@@ -172,57 +177,26 @@ public class OptionsView extends JPanel {
 		rdBtnNoColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Toggle other JRadioButtons
-				if (rdBtnNoColor.isSelected()) {
-					rdBtnColorFinDrop.setSelected(false);
-					rdBtnColorSeriesSpecial.setSelected(false);
-					rdBtnColorLanguage.setSelected(false);
-				}
+				toggleColorRadioBtns(rdBtnNoColor);
 				
-				//Update data
-				applySelectedColorMethod();
-				mainGUI.updateData(null);
 			}
 		});
 		rdBtnColorFinDrop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Toggle other JRadioButtons
-				if (rdBtnColorFinDrop.isSelected()) {
-					rdBtnNoColor.setSelected(false);
-					rdBtnColorSeriesSpecial.setSelected(false);
-					rdBtnColorLanguage.setSelected(false);
-				}
-			
-				//Update data
-				applySelectedColorMethod();
-				mainGUI.updateData(null);
+				toggleColorRadioBtns(rdBtnColorFinDrop);
 			}
 		});
 		rdBtnColorSeriesSpecial.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Toggle other JRadioButtons
-				if (rdBtnColorSeriesSpecial.isSelected()) {
-					rdBtnNoColor.setSelected(false);
-					rdBtnColorFinDrop.setSelected(false);
-					rdBtnColorLanguage.setSelected(false);
-				}
-
-				//Update data
-				applySelectedColorMethod();
-				mainGUI.updateData(null);
+				toggleColorRadioBtns(rdBtnColorSeriesSpecial);
 			}
 		});
 		rdBtnColorLanguage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Toggle other JRadioButtons
-				if (rdBtnColorLanguage.isSelected()) {
-					rdBtnNoColor.setSelected(false);
-					rdBtnColorFinDrop.setSelected(false);
-					rdBtnColorSeriesSpecial.setSelected(false);
-				}
-			
-				//Update data
-				applySelectedColorMethod();
-				mainGUI.updateData(null);
+				toggleColorRadioBtns(rdBtnColorLanguage);
 			}
 		});
 
@@ -259,8 +233,29 @@ public class OptionsView extends JPanel {
 			}
 		});
 
+		//Checkbox for colorOnlyFinished
+		chckbxOnlyColorFinished.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {			
+				//Update data
+				applySelectedColorOnlyFinished();
+				mainGUI.updateData(null);
+			}
+		});
 
+
+		//Surprise button
+		this.btnSurprise.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new SurpriseDialog(mainGUI);
+				//Temporarily disable the main window
+//				mainGUI.setEnabled(false);
+	//			mainGUI.setEnabled(true);
+			}
+		});
+	
+	
 	}
+
 	
 	/**
 	 * Shows a dialog to get a color from the user for display in the gui
@@ -309,9 +304,9 @@ public class OptionsView extends JPanel {
 		SortFocus sortBy;
 		
 		//Get sortBy
-		if (rdBtnAlphabet.isSelected()) {
+		if (rdBtnTitle.isSelected()) {
 			sortBy = SortFocus.ALPHABETICAL;
-		} else if (rdBtnNumeric.isSelected()) {
+		} else if (rdBtnYear.isSelected()) {
 			sortBy = SortFocus.NUMERICAL;
 		} else {
 			throw new IllegalArgumentException("You must select a sorting preference.");
@@ -321,6 +316,76 @@ public class OptionsView extends JPanel {
 		Manager.getInstance().setSortMethod(mainGUI.getMediaMode(), sortBy);
 	}
 
+	/***
+	 * Sets all SortMethod buttons aside from the passed one to be not selected and updates the selected SortMethod.
+	 * EXCEPT!! for the case when the clicked button was turned off, which creates an unallowed situation
+	 * where no radio buttons for this particular option are selected. 
+	 * In that case, the method simply reselects that radio button.
+	 * @param clickedBtn JRadioButton to toggle around
+	 */
+	private void toggleSortRadioBtns(JRadioButton clickedBtn) {
+		if (clickedBtn.isSelected()) {
+			//If-statements so that you don't toggle the selected button
+			if (clickedBtn != rdBtnTitle)
+				rdBtnTitle.setSelected(false);
+			if (clickedBtn != rdBtnYear)
+				rdBtnYear.setSelected(false);
+
+			//Update data
+			applySelectedSortMethod();
+			mainGUI.updateData(null);
+
+		} else {
+			//If it is not selected after being clicked, then the user has created 
+			//a situation where no color method is selected, which is not allowed.
+			//Fix by reselecting this button.
+			clickedBtn.setSelected(true);
+		}
+	}
+
+
+	/***
+	 * Sets all ColorMethod buttons aside from the passed one to be not selected and updated the selected ColorMethod.
+	 * EXCEPT!! for the case when the clicked button was turned off, which creates an unallowed situation
+	 * where no radio buttons for this particular option are selected. 
+	 * In that case, the method simply reselects that radio button.
+	 * @param clickedBtn JRadioButton to toggle around
+	 */
+	private void toggleColorRadioBtns(JRadioButton clickedBtn) {
+
+		if (clickedBtn.isSelected()) {
+			//If-statements so that you don't toggle the selected button
+			if (clickedBtn != rdBtnNoColor)
+				rdBtnNoColor.setSelected(false);
+			if (clickedBtn != rdBtnColorFinDrop)
+				rdBtnColorFinDrop.setSelected(false);
+			if (clickedBtn != rdBtnColorSeriesSpecial)
+				rdBtnColorSeriesSpecial.setSelected(false);
+			if (clickedBtn != rdBtnColorLanguage)
+				rdBtnColorLanguage.setSelected(false);
+
+			//Update data
+			applySelectedColorMethod();
+			mainGUI.updateData(null);
+
+		} else {
+			//If it is not selected after being clicked, then the user has created 
+			//a situation where no color method is selected, which is not allowed.
+			//Fix by reselecting this button.
+			clickedBtn.setSelected(true);
+		}
+	}
+
+	
+	/**
+	 * Applies checkbox selection for coloring only finished media to data stored in the Manager.
+	 */
+	private void applySelectedColorOnlyFinished() {
+		//Report selection to Manager
+		Manager.getInstance().setColorOnlyFinished(mainGUI.getMediaMode(), chckbxOnlyColorFinished.isSelected());		
+	}
+	
+
 	/**
 	 * Indicates the current preferences by selecting the proper JRadioButtons
 	 * @throws IllegalArgumentException if the user has somehow stored an invalid selection
@@ -328,20 +393,24 @@ public class OptionsView extends JPanel {
 	public void displayCurrentSelection() {
 		SortFocus sortBy;
 		ColorMethod colorBy;
+		boolean colorOnlyFinished;
+
 		if (mainGUI.getMediaMode() == MediaType.ANIME) {
 			sortBy = Manager.getInstance().getAnimePreferences().getSortMethod();
 			colorBy = Manager.getInstance().getAnimePreferences().getColorMethod();
+			colorOnlyFinished = Manager.getInstance().getAnimePreferences().getColorOnlyFinished();
 		} else {
 			sortBy = Manager.getInstance().getMangaPreferences().getSortMethod();
 			colorBy = Manager.getInstance().getMangaPreferences().getColorMethod();
+			colorOnlyFinished = Manager.getInstance().getMangaPreferences().getColorOnlyFinished();
 		}
 
 		if (sortBy == SortFocus.ALPHABETICAL) {
-			rdBtnAlphabet.setSelected(true);
-			rdBtnNumeric.setSelected(false);
+			rdBtnTitle.setSelected(true);
+			rdBtnYear.setSelected(false);
 		} else if (sortBy == SortFocus.NUMERICAL) {
-			rdBtnNumeric.setSelected(true);
-			rdBtnAlphabet.setSelected(false);
+			rdBtnYear.setSelected(true);
+			rdBtnTitle.setSelected(false);
 		} else {
 			throw new IllegalArgumentException("Error with discovering user preferences");
 		}
@@ -386,8 +455,7 @@ public class OptionsView extends JPanel {
 			break;
 		}
 		
-
+		chckbxOnlyColorFinished.setSelected(colorOnlyFinished);
 
 	}
-
 }

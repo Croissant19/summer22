@@ -183,7 +183,7 @@ public class Manager {
 	
 	/**
 	 * Removes a selected manga from the mangaList
-	 * @param a Media object (hopefully a Manga) to remove
+	 * @param m Media object (hopefully a Manga) to remove
 	 * @throws IndexOutOfBoundsException if the passed index is out of bounds
 	 */
 	public void removeManga(Media m) {
@@ -271,7 +271,7 @@ public class Manager {
 			break;
 		}
 	}
-	
+
 	/**
 	 * Changes the sorting method and retrieves the proper animeList to use
 	 * @param mt MediaType indicating which data the method needs to work with
@@ -292,6 +292,22 @@ public class Manager {
 		}
 	}
 
+	/**
+	 * Changes the sorting method and retrieves the proper animeList to use
+	 * @param mt MediaType indicating which data the method needs to work with
+	 * @param color flag indicating if only media that is finished should be colored
+	 */
+	public void setColorOnlyFinished(MediaType mt, boolean color) {
+		switch (mt) {
+		case ANIME:
+			userData.getAnimePreferences().setColorOnlyFinished(color);
+			break;
+		case MANGA:
+			userData.getMangaPreferences().setColorOnlyFinished(color);
+			break;
+		}	
+	}
+	
 	/**
 	 * Sets the designated color to the color passed as a parameter
 	 * @param mt MediaType indicating which data the method needs to work with
@@ -335,9 +351,9 @@ public class Manager {
 	public String getEntryCount(MediaType mt) {
 		switch (mt) {
 		case ANIME:
-			return "" + animeList.size();
+			return String.format("%,d", animeList.size());
 		case MANGA:
-			return "" + mangaList.size();
+			return String.format("%,d", mangaList.size());
 		default:
 			throw new IllegalArgumentException("No MediaType indicated");	
 		}
@@ -371,8 +387,8 @@ public class Manager {
 		default:
 			throw new IllegalArgumentException("No MediaType indicated");
 		}
-		
-		return "" + tally;
+
+		return String.format("%,d", tally);
 	}
 	
 	/**
@@ -403,8 +419,8 @@ public class Manager {
 		default:
 			throw new IllegalArgumentException("No MediaType indicated");
 		}
-		
-		return "" + tally;
+
+		return String.format("%,d", tally);
 	}
 	
 	/**
@@ -430,7 +446,7 @@ public class Manager {
 			throw new IllegalArgumentException("No MediaType indicated");
 		}
 
-		return "" + tally;
+		return String.format("%,d", tally);
 	}
 
 	/**
@@ -690,4 +706,5 @@ public class Manager {
 		
 		return currentHighestPublisher;
 	}
+
 }

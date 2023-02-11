@@ -178,7 +178,7 @@ public abstract class Media {
 	/**
 	 * Changes or sets the title field
 	 * @param title the title to set
-	 * @throws IllegalArumentException if title is blank or contains an illegal String
+	 * @throws IllegalArgumentException if title is blank or contains an illegal String
 	 */
 	public void setTitle(String title) {
 		if (title.isBlank()) {
@@ -220,7 +220,7 @@ public abstract class Media {
 	/**
 	 * Changes or sets the count field
 	 * @param count the count to set
-	 * @throws IllegalArumentException if passed a negative value
+	 * @throws IllegalArgumentException if passed a negative value
 	 */
 	public void setCount(int count) {
 		if (count < 0) {
@@ -296,7 +296,7 @@ public abstract class Media {
 	/**
 	 * Changes or sets the notes field
 	 * @param notes the notes to set
-	 * @throws IllegalArguemntException if the string contains an illegal substring
+	 * @throws IllegalArgumentException if the string contains an illegal substring
 	 */
 	public void setNotes(String notes) {
 		if (!isValidString(notes)) {
