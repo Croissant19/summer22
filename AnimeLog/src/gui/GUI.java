@@ -44,7 +44,7 @@ import javax.swing.Box;
  * @author Hunter Pruitt
  */
 public class GUI extends JFrame {
-	
+
 	/** Warning in case user tries to start browsing without any media added */
 	private static final String BROWSE_WARNING = "To start browsing, you need to add at least one entry to your list.";
 
