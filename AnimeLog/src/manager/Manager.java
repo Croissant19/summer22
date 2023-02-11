@@ -351,9 +351,9 @@ public class Manager {
 	public String getEntryCount(MediaType mt) {
 		switch (mt) {
 		case ANIME:
-			return "" + animeList.size();
+			return String.format("%,d", animeList.size());
 		case MANGA:
-			return "" + mangaList.size();
+			return String.format("%,d", mangaList.size());
 		default:
 			throw new IllegalArgumentException("No MediaType indicated");	
 		}
@@ -387,8 +387,8 @@ public class Manager {
 		default:
 			throw new IllegalArgumentException("No MediaType indicated");
 		}
-		
-		return "" + tally;
+
+		return String.format("%,d", tally);
 	}
 	
 	/**
@@ -419,8 +419,8 @@ public class Manager {
 		default:
 			throw new IllegalArgumentException("No MediaType indicated");
 		}
-		
-		return "" + tally;
+
+		return String.format("%,d", tally);
 	}
 	
 	/**
@@ -446,7 +446,7 @@ public class Manager {
 			throw new IllegalArgumentException("No MediaType indicated");
 		}
 
-		return "" + tally;
+		return String.format("%,d", tally);
 	}
 
 	/**
